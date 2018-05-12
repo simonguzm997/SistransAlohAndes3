@@ -1,0 +1,458 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Postman Alohandes",
+		"_postman_id": "c792a812-b8a5-d868-ac55-b79db9eac98c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get By ID Alohado",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojados/9",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"sedesa111\", \"direccion\": \"calle 1\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET By ID OperadorEmpresa",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadoresParticulas/22",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET By ID OperadoreMPRESA",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadoresEmpresa/17",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Alohado",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojados",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"sedesa111\", \"direccion\": \"calle 1\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all operadoresParticular",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadoresParticulas",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"sedesa111\", \"direccion\": \"calle 1\"}"
+				},
+				"description": "RFC1"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all operadoresEmpresa",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadoresEmpresa",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"sedesa111\", \"direccion\": \"calle 1\"}"
+				},
+				"description": "RFC1"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all top20 Apartamentos",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/apartamentos/top20",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"sedesa111\", \"direccion\": \"calle 1\"}"
+				},
+				"description": "RFC2"
+			},
+			"response": []
+		},
+		{
+			"name": "GET all Top20 HabParticular",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/habitacionesPar/top20",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"sedesa111\", \"direccion\": \"calle 1\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET all Top20 HabEmpresa",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/habitacionesEmp/top20",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"sedesa111\", \"direccion\": \"calle 1\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all HabEmpresaIntervaloTiempo",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/Iter1_Alohandes/rest/habitacionesEmp/filterHora?inicio=25-FEB-18&fin=21-APR-18",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Iter1_Alohandes",
+						"rest",
+						"habitacionesEmp",
+						"filterHora"
+					],
+					"query": [
+						{
+							"key": "inicio",
+							"value": "25-FEB-18",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "fin",
+							"value": "21-APR-18",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"sedesa111\", \"direccion\": \"calle 1\"}"
+				},
+				"description": "RFC4"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all AlojadosFrecuentesHotel",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/Iter1_Alohandes/rest/hoteles/Frecuentes?NIT=145698563",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Iter1_Alohandes",
+						"rest",
+						"hoteles",
+						"Frecuentes"
+					],
+					"query": [
+						{
+							"key": "NIT",
+							"value": "145698563",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"sedesa111\", \"direccion\": \"calle 1\"}"
+				},
+				"description": "RFC8"
+			},
+			"response": []
+		},
+		{
+			"name": "GET reservasDeUsuario",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/Iter1_Alohandes/rest/reservas/usuario?idUsuario=9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Iter1_Alohandes",
+						"rest",
+						"reservas",
+						"usuario"
+					],
+					"query": [
+						{
+							"key": "idUsuario",
+							"value": "9",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET all Apartamento",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/apartamentos",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"id\": 10,\n        \"nombreEdificio\": \"cascada\",\n        \"direccion\": \"transversal22#30-12\",\n        \"precioMensual\": 1200000,\n        \"menaje\": \"camas, televisores, nevera, lavadora, closets, juego de sala\",\n        \"operadorApartamento\": {\n        \"id\": 22,\n        \"nombre\": \"Mathew Hassan\",\n        \"usuario\": \"mhassanl\",\n        \"contrasena\": \"oMWVr2dr\",\n        \"correoElectronico\": \"mhassanl@gravatar.com\",\n        \"numeroContacto\": 3173417615,\n        \"dineroAnoActual\": 4000000,\n        \"dineroAnoCorrido\": 650000,\n        \"vinculoUniversidad\": \"padre de estudiante\",\n        \"viviendaEsporadica\": null,\n        \"apartamentos\": [],\n        \"viviendas\": []\n    },\n        \"contratosApartamento\": []\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST cliente",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/clientes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 42,\n        \"nombre\": \"Rriocard NaldrettADA\",\n        \"usuario\": \"rnaldrBAT\",\n        \"contrasena\": \"zHAT2hwPU\",\n        \"correoElectronico\": \"dundrett0@techcrunch.com\",\n        \"numeroContacto\": 33469979\n    }"
+				},
+				"description": "RF1 /RF3"
+			},
+			"response": []
+		},
+		{
+			"name": "POST ReservaGrupal",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/reservaGrupal",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"id\": 4,\n\t\"reservas\": \n\t[\n\t\t{\"id\":1},\n\t\t{\"id\":2}\n\t]\n\t\n\t\n}"
+				},
+				"description": "RF7"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Alojado",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojados",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"id\": 42,\n        \"nombre\": \"Rriocard NaldrettADA\",\n        \"usuario\": \"rnaldrBAT\",\n        \"contrasena\": \"zHAT2hwPU\",\n        \"correoElectronico\": \"dundrett0@techcrunch.com\",\n        \"numeroContacto\": 131423,\n        \"vinculoUniversidad\": \"estudiante\",\n        \"contratos\": [],\n        \"reservas\": []\n    }"
+				},
+				"description": "RF3"
+			},
+			"response": []
+		},
+		{
+			"name": "POST OperadorParticular",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadoresParticulas",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"id\": 42,\n        \"nombre\": \"Mathew Hassan\",\n        \"usuario\": \"mhassanl\",\n        \"contrasena\": \"oMWVr2dr\",\n        \"correoElectronico\": \"mhassanl@gravatar.com\",\n        \"numeroContacto\": 3173417615,\n        \"dineroAnoActual\": 4500000,\n        \"dineroAnoCorrido\": 650000,\n        \"vinculoUniversidad\": \"estudiante\",\n        \"viviendaEsporadica\": null,\n        \"apartamentos\": [],\n        \"viviendas\": []\n    }"
+				},
+				"description": "RFC1"
+			},
+			"response": []
+		},
+		{
+			"name": "POST OperadoreEmpresa",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadoresEmpresa",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 43,\n        \"nombre\": \"dadsa Szymanowski\",\n        \"usuario\": \"iknka\",\n        \"contrasena\": \"juna\",\n        \"correoElectronico\": \"robet@people.com.cn\",\n        \"numeroContacto\": 772732,\n        \"dineroAnoActual\": 2975958,\n        \"dineroAnoCorrido\": 270000,\n        \"hoteles\": [],\n        \"viviendasUniversitarias\": [],\n        \"hostales\": []\n    }"
+				},
+				"description": "RF1"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Apartamento",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/apartamentos",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"id\": 10,\n        \"nombreEdificio\": \"cascada\",\n        \"direccion\": \"transversal22#30-12\",\n        \"precioMensual\": 1200000,\n        \"menaje\": \"camas, televisores, nevera, lavadora, closets, juego de sala\",\n        \"operadorApartamento\": {\n        \"id\": 22,\n        \"nombre\": \"Mathew Hassan\",\n        \"usuario\": \"mhassanl\",\n        \"contrasena\": \"oMWVr2dr\",\n        \"correoElectronico\": \"mhassanl@gravatar.com\",\n        \"numeroContacto\": 3173417615,\n        \"dineroAnoActual\": 4000000,\n        \"dineroAnoCorrido\": 650000,\n        \"vinculoUniversidad\": \"padre de estudiante\",\n        \"viviendaEsporadica\": null,\n        \"apartamentos\": [],\n        \"viviendas\": []\n    },\n        \"contratosApartamento\": []\n    }"
+				},
+				"description": "RF2"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Apartamento ",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/apartamentos/10",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": "RF6"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE ReservaGrupal",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/reservaGrupal/1",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": "RF8"
+			},
+			"response": []
+		}
+	]
+}
