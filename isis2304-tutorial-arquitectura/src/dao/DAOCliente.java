@@ -33,23 +33,28 @@ public class DAOCliente
 	 * Atributo que genera la conexion a la base de datos
 	 */
 	private Connection conn;
+
+
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODOS DE INICIALIZACION
 	//----------------------------------------------------------------------------------------------------------------------------------
-
+	
 	/**
-	 * Metodo constructor de la clase DAOBebedor <br/>
+	 * Metodo constructor de la clase DAOCliente <br/>
 	*/
+	
 	public DAOCliente() 
 	{
+		
 		recursos = new ArrayList<Object>();
 	}
-	
-	
+
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODOS DE COMUNICACION CON LA BASE DE DATOS
 	//----------------------------------------------------------------------------------------------------------------------------------
+
+	
 
 	/**
 	 * Metodo que obtiene la informacion de todos los clientes en la Base de Datos <br/>
@@ -59,39 +64,26 @@ public class DAOCliente
 	 */
 	public ArrayList<Cliente> getClientes() throws SQLException, Exception 
 	{
-		
-		System.out.println("------ENTRO  A GET ALL DAO");
-		
-		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+		ArrayList<Cliente> clientees = new ArrayList<Cliente>();
 
-		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-		String sql = String.format("SELECT * FROM %1$s.CLIENTE ", USUARIO);
+		String sql = String.format("SELECT * FROM %1$s.CLIENTES ", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
-		System.out.println("prepstm sys" + prepStmt);
-		
-		System.out.println("rs sysout" + rs);
-		
-		
-		
-		while (rs.next()) 
-		{
-			clientes.add(convertResultSetToCliente(rs));
+		while (rs.next()) {
+			clientees.add(convertResultSetToCliente(rs));
 		}
-		
-		System.out.println("------SALGO  A GET ALL DAO");
-		
-		return clientes;
+		return clientees;
 	}
 	
-	public Cliente findClienteById(Integer id) throws SQLException, Exception 
+	
+	public Cliente findClienteById(long id) throws SQLException, Exception 
 	{
 		Cliente cliente = null;
 
-		String sql = String.format("SELECT * FROM %1$s.CLIENTE WHERE ID = %2$d ", USUARIO, id); 
+		String sql = String.format("SELECT * FROM %1$s.CLIENTES WHERE ID = %2$d ", USUARIO, id); 
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -108,15 +100,17 @@ public class DAOCliente
 	public void addCliente(Cliente cliente) throws SQLException, Exception 
 	{
 
-		String sql = String.format("INSERT INTO %1$s.CLIENTE (ID, USUARIO, NOMBRE, CORREO_ELECTRONICO, CONTRASENIA, NUMERO_CONTACTO) "
-				+ "VALUES ( %2$s , '%3$s' , '%4$s' , '%5$s' , '%6$s' , '%7$s' ) ", 
+		String sql = String.format("INSERT INTO %1$s.CLIENTES (ID, NOMBRE, USUARIO, CONTRASENA, CORREOELECTRONICO, NUMEROCONTACTO, "
+				+ " RELACIONUNIVERSIDAD ) "
+				+ " VALUES ( %2$s , '%3$s' , '%4$s' , '%5$s' , '%6$s' , '%7$s' , '%8$s' ) ", 
 									USUARIO, 
 									cliente.getId(),
-									cliente.getUsuario(),
 									cliente.getNombre(),
-									cliente.getCorreoElectronico(),
+									cliente.getUsuario(),
 									cliente.getContrasena(),
-									cliente.getNumeroContacto());
+									cliente.getCorreoElectronico(),
+									cliente.getNumeroContacto(),
+									cliente.getRelacionUniversidad());
 		System.out.println(sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -125,30 +119,22 @@ public class DAOCliente
 
 	}
 	
-	public void deleteCliente(Cliente cliente) throws SQLException, Exception
-	{
-
-		String sql = String.format("DELETE FROM %1$s.CLIENTE WHERE ID = %2$d", USUARIO, cliente.getId());
-
-		System.out.println(sql);
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		prepStmt.executeQuery();
-	}
 	
 	public void updateCliente (Cliente cliente) throws SQLException, Exception
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.CLIENTE SET ", USUARIO));
+		sql.append(String.format("UPDATE %s.CLIENTES  ", USUARIO));
 		
-		sql.append(String.format("USUARIO = '%1$s' AND NOMBRE = '%2$s' AND CORREO_ELECTRONICO = '%3$s' "
-				+ "AND CONTRASENIA = '%4$s' AND NUMERO_CONTACTO = '%5$s'", 
-				cliente.getUsuario(),
+		sql.append(String.format(" SET NOMBRE = '%1$s' , CONTRASENA = '%2$s', CORREOELECTRONICO = '%3$s' , "
+				+ "NUMEROCONTACTO = '%4$s' , RELACIONUNIVERSIDAD = '%5$s' , "
+				+ "DINEROANOACTUAL = '%6$s' , DINEROANOCORRIDO = '%7$s' ",
+				
 				cliente.getNombre(),
-				cliente.getCorreoElectronico(),
 				cliente.getContrasena(),
-				cliente.getNumeroContacto()));
+				cliente.getCorreoElectronico(),
+				cliente.getNumeroContacto(),
+				cliente.getRelacionUniversidad()));
+		sql.append (" WHERE ID = " + cliente.getId ());
 		
 		System.out.println(sql);
 		
@@ -157,6 +143,24 @@ public class DAOCliente
 		prepStmt.executeQuery();
 		
 	}
+	
+
+	public void deleteCliente(Cliente cliente) throws SQLException, Exception
+	{
+
+		String sql = String.format("DELETE FROM %1$s.CLIENTES WHERE ID = %2$d ", USUARIO, cliente.getId());
+
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	
+	
+	
+	
+	
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODOS AUXILIARES
@@ -196,29 +200,18 @@ public class DAOCliente
 	 */
 	public Cliente convertResultSetToCliente(ResultSet resultSet) throws SQLException 
 	{
-		System.out.println("------ENTRE A CONVERT RESULTSET");
+	
 		
-		int pId  = resultSet.getInt("ID");
-		System.out.println( pId);
+		long pId  = resultSet.getInt("ID");
 		String pNombre = resultSet.getString("NOMBRE");
-		System.out.println(pNombre);
 		String pUsuario = resultSet.getString("USUARIO");
-		System.out.println(pUsuario);
-		String pContrasena = resultSet.getString("CONTRASENIA");
-		System.out.println(pContrasena);
-		String pCorreoElectronico = resultSet.getString("CORREO_ELECTRONICO");
-		System.out.println(pCorreoElectronico);
-		long pNumeroContacto  = resultSet.getLong("NUMERO_CONTACTO");
-		System.out.println(pNumeroContacto);
+		String pContrasena = resultSet.getString("CONTRASENA");
+		String pCorreoElectronico = resultSet.getString("CORREOELECTRONICO");
+		long pNumeroContacto  = resultSet.getLong("NUMEROCONTACTO");			
+		String pRelacionUniversidad = resultSet.getString("RELACIONUNIVERSIDAD");
 
-		Cliente cliente = new Cliente(pId, pNombre, pUsuario, pContrasena, pCorreoElectronico, pNumeroContacto);
-		
-		System.out.println("------SALGO A CONVERT RESULTSET");
-		
-		
+		Cliente cliente = new Cliente(pId, pNombre, pUsuario, pContrasena, pCorreoElectronico, pNumeroContacto, pRelacionUniversidad);
 		return cliente;
-		
-		
 	}
 	
 	
