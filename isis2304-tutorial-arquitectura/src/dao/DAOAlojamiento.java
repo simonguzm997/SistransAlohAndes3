@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Reserva;
+import vos.Alojamiento;
+import vos.Cliente;
 
-public class DAOReserva 
+public class DAOAlojamiento 
 {
-
 	//----------------------------------------------------------------------------------------------------------------------------------
 		// CONSTANTES
 		//----------------------------------------------------------------------------------------------------------------------------------
@@ -45,8 +45,9 @@ public class DAOReserva
 		 * Metodo constructor de la clase DAOCliente <br/>
 		*/
 		
-		public   DAOReserva() 
+		public DAOAlojamiento() 
 		{
+			
 			recursos = new ArrayList<Object>();
 		}
 
@@ -96,14 +97,17 @@ public class DAOReserva
 		 * @return Bebedor cuyos atributos corresponden a los valores asociados a un registro particular de la tabla BEBEDORES.
 		 * @throws SQLException Si existe algun problema al extraer la informacion del ResultSet.
 		 */
-		public Reserva convertResultSetToReserva(ResultSet resultSet) throws SQLException 
+		public Cliente convertResultSetToAlojamiento(ResultSet resultSet) throws SQLException 
 		{
 		
 			
 			
-			Reserva r = null;
-			return r;
+			Cliente alojamiento = null;
+			return alojamiento;
 		
 		}
-	
+		
+		
+		
+
 }
