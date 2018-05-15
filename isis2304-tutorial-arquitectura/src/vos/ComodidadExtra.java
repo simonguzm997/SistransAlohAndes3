@@ -10,6 +10,13 @@ public class ComodidadExtra
 	//----------------------------------------------------------------------------------------------------------------------------------
 
 	/**
+	 * Id de la comodidad extra
+	 */
+	@JsonProperty(value="id")
+	private long id;
+
+	
+	/**
 	 * Nombre de la comodidad extra
 	 */
 	@JsonProperty(value="nombre")
@@ -18,61 +25,90 @@ public class ComodidadExtra
 	/**
 	 * Valor de la comodidad extra
 	 */
-	@JsonProperty(value="valor")
-	private Double valor;
+	@JsonProperty(value="costo")
+	private Double costo;
 	
 	/**
-	 * Hab de la comodidad
+	 * Descripcion de la comodidad extra
 	 */
-	@JsonProperty(value="habComextra")
-	private HabitacionEmp habEmp;
+	@JsonProperty(value="descripcion")
+	private String descripcion;
+	
 	
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODO CONSTRUCTOR
 	//----------------------------------------------------------------------------------------------------------------------------------
 	
-	public ComodidadExtra (@JsonProperty(value="nombre")String pNombre, @JsonProperty(value="valor")Double pValor)
+	public ComodidadExtra (@JsonProperty(value="id")long pId, @JsonProperty(value="nombre")String pNombre,
+			@JsonProperty(value="costo")Double pCosto, @JsonProperty(value="descripcion")String pDescripcion)
 	{
+		this.id = pId;
 		this.nombre = pNombre;
-		this.valor = pValor;
-		this.habEmp = null;
+		this.costo = pCosto;
+		this.descripcion = pDescripcion;
 	}
-	
+
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODOS DE LA CLASE
 	//----------------------------------------------------------------------------------------------------------------------------------
 
 
-	public String getNombre() {
+
+	public long getId() 
+	{
+		return id;
+	}
+
+
+
+	public void setId(long id)
+	{
+		this.id = id;
+	}
+
+
+
+	public String getNombre() 
+	{
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
+
+
+	public void setNombre(String nombre) 
+	{
 		this.nombre = nombre;
 	}
 
-	public Double getValor() {
-		return valor;
-	}
-
-	public void setValor(Double valor) {
-		this.valor = valor;
-	}
 
 
-	public HabitacionEmp getHabEmp() {
-		return habEmp;
+	public Double getCosto() 
+	{
+		return costo;
 	}
 
 
-	public void setHabEmp(HabitacionEmp habEmp) {
-		this.habEmp = habEmp;
+
+	public void setCosto(Double costo)
+	{
+		this.costo = costo;
 	}
-	
-	
-	
-	
+
+
+
+	public String getDescripcion() 
+	{
+		return descripcion;
+	}
+
+
+
+	public void setDescripcion(String descripcion)
+	{
+		this.descripcion = descripcion;
+	}
+
 
 }
