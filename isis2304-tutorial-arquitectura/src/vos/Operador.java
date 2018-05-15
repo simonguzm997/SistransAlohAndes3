@@ -198,15 +198,6 @@ public class Operador
 		{
 			this.relacionUniversidad = relacionUniversidad;
 		}
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
+	
 
 }
