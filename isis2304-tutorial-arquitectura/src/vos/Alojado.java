@@ -22,7 +22,7 @@ public class Alojado extends Cliente
 	 * Reservas del alojado
 	 */
 	@JsonProperty(value="reservas")
-	private List<Reservas> reservas;
+	private List<Reserva> reservas;
 	
 	/**
 	 * Reservas del alojado
@@ -44,7 +44,7 @@ public class Alojado extends Cliente
 	{
 		super(pId, pNombre, pUsuario, pContrasena, pCorreoElectronico, pNumeroContacto);
 		this.vinculoUniversidad = pVinculoUniversidad;
-		this.reservas = new ArrayList<Reservas>();
+		this.reservas = new ArrayList<Reserva>();
 		this.contratos = new ArrayList<Contrato>();
 	}
 
@@ -64,13 +64,13 @@ public class Alojado extends Cliente
 
 
 
-	public List<Reservas> getReservas() {
+	public List<Reserva> getReservas() {
 		return reservas;
 	}
 
 
 
-	public void setReservas(List<Reservas> reservas) {
+	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
 

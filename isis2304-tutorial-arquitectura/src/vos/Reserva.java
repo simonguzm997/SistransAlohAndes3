@@ -2,11 +2,9 @@ package vos;
 
 
 
-import java.util.Date;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class Reservas 
+public class Reserva 
 {
 
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -18,7 +16,7 @@ public class Reservas
 	 * Id de la reserva
 	 */
 	@JsonProperty(value="id")
-	private int id;
+	private long id;
 
 	/**
 	 * cantidad de personas de la reserva
@@ -31,53 +29,50 @@ public class Reservas
 	 * Fecha inicial de la reserva
 	 */
 	@JsonProperty(value="fechaInicio")
-	private Date FechaInicio;
+	private String FechaInicio;
 	
 	/**
 	 * Fecha de terminacion de la reserva 
 	 */
 	@JsonProperty(value="fechaFin")
-	private Date FechaFin;
+	private String FechaFin;
 	
 	/**
-	 * Valor de la comodidad extra
+	 * Valor de la reserva 
 	 */
 	@JsonProperty(value="valor")
 	private Double valor;
 	
-//	/**
-//	 * Nombre del alojamiento de la reserva
-//	 */
-//	@JsonProperty(value="nomAlojamiento")
-//	private String nomAlojamiento;
 
-	/**
-	 * Alojado de la reserva
-	 */
-	@JsonProperty(value="alojado")
-	private Alojado alojado;
-	
-	/**
-	 * habitacion emp de la reserva
-	 */
-	@JsonProperty(value="habitacionReservada")
-	private HabitacionEmp habitacionReservada;
-	
+
 	/**
 	 * Estado de la reserva
 	 */
 	@JsonProperty(value="estado")
-	private boolean estado;
+	private String estado;
 	
 	
+	
+//	/**
+//	 * Alojado de la reserva
+//	 */
+//	@JsonProperty(value="alojado")
+//	private Alojado alojado;
+//	
+//	/**
+//	 * habitacion emp de la reserva
+//	 */
+//	@JsonProperty(value="habitacionReservada")
+//	private HabitacionEmp habitacionReservada;
+//	
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODO CONSTRUCTOR
 	//----------------------------------------------------------------------------------------------------------------------------------
 		
-	public Reservas(@JsonProperty(value="id")int pId, @JsonProperty(value="cantPersonas") int pCantPersonas, 
-			@JsonProperty(value="fechaInicio") Date pFechaInicio, @JsonProperty(value="fechaFin") Date pFechaFin, 
-			@JsonProperty(value="valor") Double pValor, @JsonProperty(value="estado") boolean pEstado)
+	public Reserva(@JsonProperty(value="id")long pId, @JsonProperty(value="cantPersonas") int pCantPersonas, 
+			@JsonProperty(value="fechaInicio") String pFechaInicio, @JsonProperty(value="fechaFin") String pFechaFin, 
+			@JsonProperty(value="valor") Double pValor, @JsonProperty(value="estado") String pEstado)
 	{
 		
 		this.id = pId;
@@ -86,8 +81,8 @@ public class Reservas
 		this.FechaFin = pFechaFin;
 		this.valor = pValor;
 		this.estado = pEstado;
-		this.alojado = null;
-		this.habitacionReservada = null;
+		//this.alojado = null;
+		//this.habitacionReservada = null;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -95,74 +90,90 @@ public class Reservas
 	//----------------------------------------------------------------------------------------------------------------------------------
 
 
-	public int getId() {
+	public long getId() 
+	{
 		return id;
 	}
 
-	public void setId(int id) {
+
+
+	public void setId(long id)
+	{
 		this.id = id;
 	}
 
-	public int getCantPersonas() {
+
+
+	public int getCantPersonas() 
+	{
 		return cantPersonas;
 	}
 
-	public void setCantPersonas(int cantPersonas) {
+
+
+	public void setCantPersonas(int cantPersonas)
+	{
 		this.cantPersonas = cantPersonas;
 	}
 
-	public Date getFechaInicio() {
+
+
+	public String getFechaInicio()
+	{
 		return FechaInicio;
 	}
 
-	public void setFechaInicio(Date fechaInicio) {
+
+
+	public void setFechaInicio(String fechaInicio) 
+	{
 		FechaInicio = fechaInicio;
 	}
 
-	public Date getFechaFin() {
+
+
+	public String getFechaFin() 
+	{
 		return FechaFin;
 	}
 
-	public void setFechaFin(Date fechaFin) {
+
+
+	public void setFechaFin(String fechaFin) 
+	{
 		FechaFin = fechaFin;
 	}
 
-	public Double getValor() {
+
+
+	public Double getValor() 
+	{
 		return valor;
 	}
 
-	public void setValor(Double valor) {
+
+
+	public void setValor(Double valor) 
+	{
 		this.valor = valor;
 	}
 
 
 
-	public Alojado getAlojado() {
-		return alojado;
-	}
-
-	public void setAlojado(Alojado alojado) {
-		this.alojado = alojado;
-	}
-
-	public HabitacionEmp getHabitacionReservada() {
-		return habitacionReservada;
-	}
-
-	public void setHabitacionReservada(HabitacionEmp habitacionReservada) {
-		this.habitacionReservada = habitacionReservada;
-	}
-
-	public boolean isEstado() {
+	public String getEstado() 
+	{
 		return estado;
 	}
 
-	public void setEstado(boolean estado) {
+
+
+	public void setEstado(String estado) 
+	{
 		this.estado = estado;
 	}
-	
-	
-	
 
+
+
+	
 
 }

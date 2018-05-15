@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 
 import tm.AlohAndesTransactionManager;
 import vos.Alojado;
-import vos.Reservas;
+import vos.Reserva;
 
 @Path("reservas")
 public class ReservaService {
@@ -59,7 +59,7 @@ public class ReservaService {
 		try {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
 
-			List<Reservas> Reservas;
+			List<Reserva> Reservas;
 			Reservas= tm.getAllReservass();
 			return Response.status(200).entity(Reservas).build();
 		} 
@@ -76,7 +76,7 @@ public class ReservaService {
 		try{
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager( getPath( ) );
 			
-			Reservas reservas = tm.getReservaById(id);
+			Reserva reservas = tm.getReservaById(id);
 			return Response.status( 200 ).entity( reservas ).build( );			
 		}
 		catch( Exception e )
@@ -94,7 +94,7 @@ public class ReservaService {
 		try {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
 
-			List<Reservas> reservas;
+			List<Reserva> reservas;
 			//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 			reservas = tm.getAllReservassAlojado(idAlojado);
 			return Response.status(200).entity(reservas).build();
@@ -109,7 +109,7 @@ public class ReservaService {
 	
 	@POST 
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response addReservas (Reservas reservas)
+	public Response addReservas (Reserva reservas)
 	{
 		try {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
@@ -125,7 +125,7 @@ public class ReservaService {
 	
 	@PUT
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response udpdateReservas(Reservas reservas)
+	public Response udpdateReservas(Reserva reservas)
 	{
 		try{
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager( getPath( ) );
@@ -142,7 +142,7 @@ public class ReservaService {
 
 	@DELETE 
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response deleteReserva(Reservas reserva)
+	public Response deleteReserva(Reserva reserva)
 	{
 		try{
 			AlohAndesTransactionManager dt = new AlohAndesTransactionManager(getPath());

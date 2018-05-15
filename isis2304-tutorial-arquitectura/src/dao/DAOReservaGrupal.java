@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import vos.ReservaGrupal;
-import vos.Reservas;
+import vos.Reserva;
 
 public class DAOReservaGrupal 
 {

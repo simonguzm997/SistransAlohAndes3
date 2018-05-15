@@ -39,7 +39,7 @@ import vos.Hotel;
 import vos.OperadorEmpresa;
 import vos.OperadorParticular;
 import vos.ReservaGrupal;
-import vos.Reservas;
+import vos.Reserva;
 import vos.ServicioIncluido;
 import vos.Vivienda;
 import vos.ViviendaEsporadica;
@@ -396,7 +396,7 @@ public class AlohAndesTransactionManager
 				this.conn = darConexion();
 				daoAlojado.setConn(conn);
 				alojado = daoAlojado.findAlojadoById(idAlojado);
-				List<Reservas> reservas;
+				List<Reserva> reservas;
 				System.out.println("cree reservas");
 				reservas = getAllReservassAlojado(idAlojado);
 				alojado.setReservas( reservas);
@@ -2264,10 +2264,10 @@ public class AlohAndesTransactionManager
 		// RESERVAS
 		//----------------------------------------------------------------------------------------------------------------------------------
 		
-		public List<Reservas> getAllReservass() throws Exception 
+		public List<Reserva> getAllReservass() throws Exception 
 		{
 			DAOReserva daoReservas = new DAOReserva();
-			List<Reservas> reservass;
+			List<Reserva> reservass;
 			try 
 			{
 				this.conn = darConexion();
@@ -2302,11 +2302,11 @@ public class AlohAndesTransactionManager
 		}
 		
 		
-		public List<Reservas> getAllReservassAlojado(int idAlojado) throws Exception 
+		public List<Reserva> getAllReservassAlojado(int idAlojado) throws Exception 
 		{
 			System.out.println("entre a reservas alojado");
 			DAOReserva daoReservas = new DAOReserva();
-			List<Reservas> reservass;
+			List<Reserva> reservass;
 			try 
 			{
 				this.conn = darConexion();
@@ -2342,7 +2342,7 @@ public class AlohAndesTransactionManager
 		
 		
 		
-		public void addReservas(Reservas reservas) throws Exception 
+		public void addReservas(Reserva reservas) throws Exception 
 		{
 			
 			DAOReserva daoReservas = new DAOReserva();
@@ -2378,10 +2378,10 @@ public class AlohAndesTransactionManager
 			}
 		}
 		
-		public Reservas getReservaById(int id) throws Exception
+		public Reserva getReservaById(int id) throws Exception
 		{
 			DAOReserva daoReserva = new DAOReserva();
-			Reservas reserva = null;
+			Reserva reserva = null;
 			try 
 			{
 				this.conn = darConexion();
@@ -2418,7 +2418,7 @@ public class AlohAndesTransactionManager
 			return reserva;
 		}
 		
-		public void updateReservas(Reservas reservas) throws Exception 
+		public void updateReservas(Reserva reservas) throws Exception 
 		{
 			System.out.println("entre update TM");
 			DAOReserva daoReservas = new DAOReserva();
@@ -2428,7 +2428,7 @@ public class AlohAndesTransactionManager
 				System.out.println("entre al try");
 				this.conn = darConexion();
 				daoReservas.setConn( conn );
-				Reservas pReservas = daoReservas.findReservasById(reservas.getId());
+				Reserva pReservas = daoReservas.findReservasById(reservas.getId());
 				if (pReservas.getFechaFin() == null)
 				{
 					Exception e =new Exception (" El reservas que quiere actualizar no existe en la base de datos");
@@ -2465,7 +2465,7 @@ public class AlohAndesTransactionManager
 			}	
 		}
 				
-		public void deleteReservas(Reservas reservas) throws Exception 
+		public void deleteReservas(Reserva reservas) throws Exception 
 		{
 			DAOReserva daoCliete = new DAOReserva();
 			try

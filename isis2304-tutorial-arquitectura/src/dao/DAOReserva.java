@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import vos.Alojado;
-import vos.Reservas;
+import vos.Reserva;
 
 public class DAOReserva
 {
@@ -62,9 +62,9 @@ public class DAOReserva
 			 * @throws SQLException
 			 * @throws Exception
 			 */
-			public ArrayList<Reservas> getReservas() throws SQLException, Exception 
+			public ArrayList<Reserva> getReservas() throws SQLException, Exception 
 			{
-				ArrayList<Reservas> reservas = new ArrayList<Reservas>();
+				ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 
 				String sql = String.format("SELECT * FROM %1$s.RESERVAS ", USUARIO);
 
@@ -79,9 +79,9 @@ public class DAOReserva
 				return reservas;
 			}
 			
-			public ArrayList<Reservas> getReservasFromAlojado(int idAlojado) throws SQLException, Exception 
+			public ArrayList<Reserva> getReservasFromAlojado(int idAlojado) throws SQLException, Exception 
 			{
-				ArrayList<Reservas> reservas = new ArrayList<Reservas>();
+				ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 
 				String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE ID_ALOJADO = %2$d ", USUARIO, idAlojado);
 
@@ -96,9 +96,9 @@ public class DAOReserva
 				return reservas;
 			}
 			
-			public Reservas findReservasById(int id) throws SQLException, Exception 
+			public Reserva findReservasById(int id) throws SQLException, Exception 
 			{
-				Reservas reservas = null;
+				Reserva reservas = null;
 
 				String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE ID = %2$d ", USUARIO, id); 
 
@@ -119,7 +119,7 @@ public class DAOReserva
 
 			
 			
-			public void addReserva(Reservas res) throws SQLException, Exception 
+			public void addReserva(Reserva res) throws SQLException, Exception 
 			{
 				
 				String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, CANT_PERSONAS, FECHA_INICIO, FECHA_FIN, VALOR, ID_HABITACION, ID_ALOJADO ) "
@@ -140,7 +140,7 @@ public class DAOReserva
 
 			}
 			
-			public void deleteReserva(Reservas res) throws SQLException, Exception {
+			public void deleteReserva(Reserva res) throws SQLException, Exception {
 
 				String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE ID = %2$d", USUARIO, res.getId());
 
@@ -151,7 +151,7 @@ public class DAOReserva
 				prepStmt.executeQuery();
 			}
 			
-			public void updateReserva (Reservas res) throws SQLException, Exception
+			public void updateReserva (Reserva res) throws SQLException, Exception
 			{
 				System.out.println("entre al updateDAO");
 				String pEstado = "T";
@@ -219,7 +219,7 @@ public class DAOReserva
 			 * @return Bebedor cuyos atributos corresponden a los valores asociados a un registro particular de la tabla BEBEDORES.
 			 * @throws SQLException Si existe algun problema al extraer la informacion del ResultSet.
 			 */
-			public Reservas convertResultSetToReserva(ResultSet resultSet) throws SQLException 
+			public Reserva convertResultSetToReserva(ResultSet resultSet) throws SQLException 
 			{
 			
 				
@@ -236,7 +236,7 @@ public class DAOReserva
 				}
 				
 
-				Reservas reserva = new Reservas(pId, pCantPersonas, pFechaInicio, pFechaFin, pValor, pEstado);
+				Reserva reserva = new Reserva(pId, pCantPersonas, pFechaInicio, pFechaFin, pValor, pEstado);
 				
 				return reserva;
 			}

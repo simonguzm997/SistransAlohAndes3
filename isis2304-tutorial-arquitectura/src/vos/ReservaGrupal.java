@@ -72,7 +72,7 @@ public class ReservaGrupal
 		 * habitacion emp de la reserva
 		 */
 		@JsonProperty(value="reservas")
-		private List <Reservas> reservas;
+		private List <Reserva> reservas;
 		
 		
 		//----------------------------------------------------------------------------------------------------------------------------------
@@ -156,11 +156,11 @@ public class ReservaGrupal
 			this.estado = estado;
 		}
 
-		public List<Reservas> getReservas() {
+		public List<Reserva> getReservas() {
 			return reservas;
 		}
 
-		public void setReservas(List<Reservas> reservas) {
+		public void setReservas(List<Reserva> reservas) {
 			this.reservas = reservas;
 		}
 		
