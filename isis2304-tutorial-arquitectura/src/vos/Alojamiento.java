@@ -1,5 +1,6 @@
 package vos;
 
+import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Alojamiento 
@@ -40,7 +41,7 @@ public class Alojamiento
 	 * Calificacion del alojamiento
 	 */
 	@JsonProperty(value="calificacion")
-	private int calificacion;
+	private double calificacion;
 	
 	/**
 	 * Hora de apertura del alojamiento 
@@ -103,16 +104,19 @@ public class Alojamiento
 	@JsonProperty(value="menaje")
 	private String menaje;
 	
+	@JsonProperty(value="idOperador")
+	private Long idOperador;
+	
 	
 	
 	public Alojamiento(@JsonProperty(value="id") long pId, @JsonProperty(value="NIT")long pNIT, 
 			@JsonProperty(value="nombre")String pNombre, @JsonProperty(value="direccion") String pDireccion, 
-			@JsonProperty(value="calificacion")int pCalificacion, @JsonProperty(value="horaApertura") String pHoraApertura,
+			@JsonProperty(value="calificacion")double pCalificacion, @JsonProperty(value="horaApertura") String pHoraApertura,
 			@JsonProperty(value="horaCierre") String pHoraCierre, @JsonProperty(value="capacidad")int pCapacidad,
 			@JsonProperty(value="tipo")String pTipo, @JsonProperty(value="estado")String pEstado,
 			@JsonProperty(value="diasUsados") int pDiasUsados, @JsonProperty(value="descripcionSeguro") String pDescripcionSeguro,
 			@JsonProperty(value="valorSeguro") double pValorSeguro, @JsonProperty(value="numHabitaciones") int pNumHabitaciones, 
-			@JsonProperty(value="menaje") String pMenaje) 
+			@JsonProperty(value="menaje") String pMenaje,@JsonProperty (value="idOperador")Long idOperador) 
 	{
 	
 		this.id = pId;
@@ -190,14 +194,14 @@ public class Alojamiento
 
 
 
-	public int getCalificacion()
+	public double getCalificacion()
 	{
 		return calificacion;
 	}
 
 
 
-	public void setCalificacion(int calificacion) 
+	public void setCalificacion(double calificacion) 
 	{
 		this.calificacion = calificacion;
 	}
@@ -341,7 +345,14 @@ public class Alojamiento
 	{
 		this.menaje = menaje;
 	}
-
+	
+	public Long getIdOperador() {
+		return idOperador;
+	}
+	
+	public void setIdOperador(Long idOperador) {
+		this.idOperador = idOperador;
+	}
 
 
 	
