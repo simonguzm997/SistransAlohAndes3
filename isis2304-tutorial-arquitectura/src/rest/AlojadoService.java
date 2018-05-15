@@ -78,7 +78,12 @@ public class AlojadoService
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager( getPath( ) );
 			
 			Alojado alojado = tm.getAlojadoById(id);
-			return Response.status( 200 ).entity( alojado ).build( );			
+			int a =12;
+			int b =12;
+			
+			Object c = new Object();
+			
+			return Response.status( 200 ).entity( alojado).build( );			
 		}
 		catch( Exception e )
 		{
