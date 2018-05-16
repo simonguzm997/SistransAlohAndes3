@@ -68,21 +68,21 @@ public class Operador
 		// METODO CONSTRUCTOR
 		//----------------------------------------------------------------------------------------------------------------------------------
 		
-		public Operador (@JsonProperty(value="id")long pId,@JsonProperty(value="nombre")String pNombre, 
-				@JsonProperty(value="usuario")String pUsuario, @JsonProperty(value="contrasena")String pContrasena, 
-				@JsonProperty(value="correoElectronico")String pCorreoElectronico, 
-				@JsonProperty(value="numeroContacto")long pNumeroContacto, @JsonProperty(value="dineroAnoActual")double pDineroAnoActual, 
-				@JsonProperty(value="dineroAnoCorrido")double pDineroAnoCorrido, @JsonProperty(value="relacionUniversidad") String pRelacionUniversidad)
+		public Operador (@JsonProperty(value="id")long Id,@JsonProperty(value="nombre")String Nombre, 
+				@JsonProperty(value="usuario")String Usuario, @JsonProperty(value="contrasena")String Contrasena, 
+				@JsonProperty(value="correoElectronico")String CorreoElectronico, 
+				@JsonProperty(value="numeroContacto")long NumeroContacto, @JsonProperty(value="dineroAnoActual")double DineroAnoActual, 
+				@JsonProperty(value="dineroAnoCorrido")double DineroAnoCorrido, @JsonProperty(value="relacionUniversidad") String RelacionUniversidad)
 		{
-			this.id = pId;
-			this.nombre = pNombre;
-			this.usuario = pUsuario;
-			this.contrasena = pContrasena;
-			this.correoElectronico = pCorreoElectronico;
-			this.numeroContacto = pNumeroContacto;
-			this.dineroAnoActual =pDineroAnoActual;
-			this.dineroAnoCorrido = pDineroAnoCorrido;
-			this.relacionUniversidad = pRelacionUniversidad;
+			this.id = Id;
+			this.nombre = Nombre;
+			this.usuario = Usuario;
+			this.contrasena = Contrasena;
+			this.correoElectronico = CorreoElectronico;
+			this.numeroContacto = NumeroContacto;
+			this.dineroAnoActual =DineroAnoActual;
+			this.dineroAnoCorrido = DineroAnoCorrido;
+			this.relacionUniversidad = RelacionUniversidad;
 						
 		}
 
