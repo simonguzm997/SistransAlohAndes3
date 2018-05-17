@@ -90,7 +90,7 @@ public class DAOAlojamiento
 		 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 		 * @throws Exception Si se genera un error dentro del metodo.
 		 */
-		public Alojamiento findBebedorById(Long id) throws SQLException, Exception 
+		public Alojamiento findAlojamientoById(Long id) throws SQLException, Exception 
 		{
 			Alojamiento aloja = null;
 
@@ -114,7 +114,7 @@ public class DAOAlojamiento
 		 */
 		public void addAlojamiento(Alojamiento aloja) throws SQLException, Exception {
 
-			String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, NOMBRE, DIRECCION,CALIFICACION,HORAAPERTURA,HORACIERRE,NIT,CAPACIDAD,TIPO,ESTADO,DIASUSADOS,DESCRIPCIONSEGURO,VALORSEGURO,NUMHABITACIONES,MENAJE,IDOPERADOR) VALUES (%2$s, %3$s, '%4$s', '%5$s',%6$s,'%7$s','%8$s',%9$s,'%10$s','%11$s',%12$s,'%13$s',%14$s,%15$s,'%16$s',%17$s)", 
+			String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, NOMBRE, DIRECCION,CALIFICACION,HORAAPERTURA,HORACIERRE,NIT,CAPACIDAD,TIPO,ESTADO,DIASUSADOS,DESCRIPCIONSEGURO,VALORSEGURO,NUMHABITACIONES,MENAJE,IDOPERADOR) VALUES (%2$s, '%3$s', '%4$s', %5$s,'%6$s','%7$s',%8$s,%9$s,'%10$s','%11$s',%12$s,'%13$s',%14$s,%15$s,'%16$s',%17$s)", 
 										USUARIO,
 										aloja.getId(),
 										aloja.getNombre(),
@@ -150,7 +150,7 @@ public class DAOAlojamiento
 			StringBuilder sql = new StringBuilder();
 			sql.append (String.format ("UPDATE %s.ALOJAMIENTOS ", USUARIO));
 			sql.append (String.format (
-					"SET NOMBRE = '%1$s', DIRECCION = '%2$s', CALIFICACION = %3$s, HORAAPERTURA =  '%4$s',HORACIERRE = '%5$s' , NIT = %6$s , CAPACIDAD = %7$s , TIPO = %8$s , ESTADO  = %9$s , DIASUSADOS = %10$s , DESCRIPCIONSEGURO = '%11$s' , VALORSEGURO =  %12$s, NUMHABITACIONES = %13$s ,  MENAJE = '%14$s'  , IDOPERADOR = %15$s  ",
+					"SET NOMBRE = '%1$s', DIRECCION = '%2$s', CALIFICACION = %3$s, HORAAPERTURA =  '%4$s',HORACIERRE = '%5$s' , NIT = %6$s , CAPACIDAD = %7$s , TIPO = '%8$s' , ESTADO  = '%9$s' , DIASUSADOS = %10$s , DESCRIPCIONSEGURO = '%11$s' , VALORSEGURO =  %12$s, NUMHABITACIONES = %13$s ,  MENAJE = '%14$s'  , IDOPERADOR = %15$s  ",
 					aloja.getNombre(),aloja.getDireccion(),aloja.getCalificacion(),aloja.getHoraApertura(),aloja.getHoraCierre(),aloja.getNIT(),aloja.getCapacidad(),aloja.getTipo(),aloja.getEstado(),aloja.getDiasUsados(),aloja.getDescripcionSeguro(),aloja.getValorSeguro(),aloja.getNumHabitaciones(),aloja.getMenaje(),aloja.getIdOperador()));
 			sql.append ("WHERE ID = " + aloja.getId ());
 			System.out.println(sql);
@@ -167,9 +167,9 @@ public class DAOAlojamiento
 		 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 		 * @throws Exception Si se genera un error dentro del metodo.
 		 */
-		public void deleteBebedor(Alojamiento aloja) throws SQLException, Exception {
+		public void deleteAlojamiento(Alojamiento aloja) throws SQLException, Exception {
 
-			String sql = String.format("DELETE FROM %1$s.AOJAMIENTOS WHERE ID = %2$d", USUARIO, aloja.getId());
+			String sql = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, aloja.getId());
 			System.out.println(sql);
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
@@ -231,7 +231,7 @@ public class DAOAlojamiento
 			double valorSeguro = resultSet.getDouble("VALORSEGURO");
 			int numHabitaciones = resultSet.getInt("NUMHABITACIONES");
 			String menaje = resultSet.getString("MENAJE");
-			Long idOperador = resultSet.getLong("IDOPERADOR");
+			long idOperador = resultSet.getLong("IDOPERADOR");
 		
 			Alojamiento aloja = new Alojamiento(id, NIT, nombre, direccion, calificacion, horaApertura, horaCierre, capacidad, tipo, estado, diasUsados, descripcionSeguro, valorSeguro, numHabitaciones, menaje, idOperador);
 			return aloja;

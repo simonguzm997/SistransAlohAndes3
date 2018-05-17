@@ -105,7 +105,7 @@ public class Alojamiento
 	private String menaje;
 	
 	@JsonProperty(value="idOperador")
-	private Long idOperador;
+	private long idOperador;
 	
 	
 	
@@ -116,7 +116,7 @@ public class Alojamiento
 			@JsonProperty(value="tipo")String pTipo, @JsonProperty(value="estado")String pEstado,
 			@JsonProperty(value="diasUsados") int pDiasUsados, @JsonProperty(value="descripcionSeguro") String pDescripcionSeguro,
 			@JsonProperty(value="valorSeguro") double pValorSeguro, @JsonProperty(value="numHabitaciones") int pNumHabitaciones, 
-			@JsonProperty(value="menaje") String pMenaje,@JsonProperty (value="idOperador")Long idOperador) 
+			@JsonProperty(value="menaje") String pMenaje,@JsonProperty (value="idOperador")long idOperador) 
 	{
 	
 		this.id = pId;
@@ -134,6 +134,7 @@ public class Alojamiento
 		this.valorSeguro = pValorSeguro;
 		this.numHabitaciones = pNumHabitaciones;
 		this.menaje = pMenaje;
+		this.idOperador = idOperador;
 	}
 
 
@@ -350,7 +351,7 @@ public class Alojamiento
 		return idOperador;
 	}
 	
-	public void setIdOperador(Long idOperador) {
+	public void setIdOperador(long idOperador) {
 		this.idOperador = idOperador;
 	}
 
