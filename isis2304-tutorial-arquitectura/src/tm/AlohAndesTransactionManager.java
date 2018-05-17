@@ -150,8 +150,11 @@ public class AlohAndesTransactionManager
 			}
 			return alojamientos;
 		}
+		//-------------------------
 		
 		//OPERADORES
+		
+		//***************************
 		/**
 		 * Metodo que modela la transaccion que retorna todos los bebedores de la base de datos. <br/>
 		 * @return List<Bebedor> - Lista de bebedores que contiene el resultado de la consulta.
@@ -192,6 +195,181 @@ public class AlohAndesTransactionManager
 				}
 			}
 			return operadores;
+		}
+		
+		/**
+		 * Metodo que modela la transaccion que agrega un bebedor a la base de datos. <br/>
+		 * <b> post: </b> se ha agregado el bebedor que entra como parametro <br/>
+		 * @param bebedor - el bebedor a agregar. bebedor != null
+		 * @throws Exception - Cualquier error que se genere agregando el bebedor
+		 */
+		public void addOperador(Operador  operador) throws Exception 
+		{
+			
+			DAOOperador daoOperador = new DAOOperador( );
+			try
+			{
+				//TODO Requerimiento 3D: Obtenga la conexion a la Base de Datos (revise los metodos de la clase)
+				this.conn= darConexion();
+				//TODO Requerimiento 3E: Establezca la conexion en el objeto DAOBebedor (revise los metodos de la clase DAOBebedor)
+				daoOperador.setConn(conn);
+				daoOperador.addOperador(operador);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+		}
+		
+		/**
+		 * Metodo que modela la transaccion que busca el bebedor en la base de datos que tiene el ID dado por parametro. <br/>
+		 * @param name -id del bebedor a buscar. id != null
+		 * @return Bebedor - Bebedor que se obtiene como resultado de la consulta.
+		 * @throws Exception -  cualquier error que se genere durante la transaccion
+		 */
+		public Operador getOperadorById(Long id) throws Exception {
+			DAOOperador daoOperador = new DAOOperador();
+			Operador operador = null;
+			try 
+			{
+				this.conn = darConexion();
+				daoOperador.setConn(conn);
+				operador = daoOperador.findOperadorById(id);
+				if(operador == null)
+				{
+					throw new Exception("El bebedor con el id = " + id + " no se encuentra persistido en la base de datos.");				
+				}
+			} 
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return operador;
+		}
+		
+		/**
+		 * Metodo que modela la transaccion que actualiza en la base de datos al bebedor que entra por parametro.<br/>
+		 * Solamente se actualiza si existe el bebedor en la Base de Datos <br/>
+		 * <b> post: </b> se ha actualizado el bebedor que entra como parametro <br/>
+		 * @param operador - Bebedor a actualizar. bebedor != null
+		 * @throws Exception - Cualquier error que se genere actualizando al bebedor.
+		 */
+		public void updateOperador(Operador operador) throws Exception 
+		{
+			DAOOperador daoOperador = new DAOOperador( );
+			try
+			{
+				this.conn = darConexion();
+				daoOperador.setConn( conn );
+				daoOperador.updateOperador(operador);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+		/**
+		 * Metodo que modela la transaccion que elimina de la base de datos al bebedor que entra por parametro. <br/>
+		 * Solamente se actualiza si existe el bebedor en la Base de Datos <br/>
+		 * <b> post: </b> se ha eliminado el bebedor que entra por parametro <br/>
+		 * @param Bebedor - bebedor a eliminar. bebedor != null
+		 * @throws Exception - Cualquier error que se genere eliminando al bebedor.
+		 */
+		public void deleteOperador(Operador operador) throws Exception 
+		{
+			DAOOperador daoOperador = new DAOOperador( );
+			try
+			{
+				this.conn = darConexion();
+				daoOperador.setConn( conn );
+				//TODO Requerimiento 6D: Utilizando los Metodos de DaoBebedor, verifique que exista el bebedor con el ID dado en el parametro. 
+				//						 Si no existe un bebedor con el ID ingresado, lance una excepcion en donde se explique lo sucedido
+				//						 De lo contrario, se elimina la informacion del bebedor de la Base de Datos
+				daoOperador.deleteOperador(operador);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
 		}
 		
 }

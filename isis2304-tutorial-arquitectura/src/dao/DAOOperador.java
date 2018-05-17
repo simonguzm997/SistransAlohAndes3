@@ -102,7 +102,7 @@ public class DAOOperador
 
 			String sql = String.format("INSERT INTO %1$s.OPERADORES (ID, NOMBRE, USUARIO, CONTRASENA, CORREOELECTRONICO, NUMEROCONTACTO, "
 					+ " RELACIONUNIVERSIDAD, DINEROANOACTUAL, DINEROANOCORRIDO ) "
-					+ " VALUES ( %2$s , '%3$s' , '%4$s' , '%5$s' , '%6$s' , '%7$s' , '%8$s' , '%9$s', '%10$s' ) ", 
+					+ " VALUES ( %2$s , '%3$s' , '%4$s' , '%5$s' , '%6$s' , '%7$s' , '%8$s' , %9$s, %10$s ) ", 
 										USUARIO, 
 										operador.getId(),
 										operador.getNombre(),
@@ -129,7 +129,7 @@ public class DAOOperador
 			
 			sql.append(String.format(" SET NOMBRE = '%1$s' , CONTRASENA = '%2$s', CORREOELECTRONICO = '%3$s' , "
 					+ "NUMEROCONTACTO = '%4$s' , RELACIONUNIVERSIDAD = '%5$s' , "
-					+ "DINEROANOACTUAL = '%6$s' , DINEROANOCORRIDO = '%7$s' ",
+					+ "DINEROANOACTUAL = %6$s , DINEROANOCORRIDO = %7$s ",
 					
 					operador.getNombre(),
 					operador.getContrasena(),
