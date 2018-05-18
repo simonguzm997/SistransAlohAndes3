@@ -82,9 +82,7 @@ public class Cliente
 	public Cliente(@JsonProperty(value="id")long Id,@JsonProperty(value="nombre")String Nombre, 
 			@JsonProperty(value="usuario")String Usuario, @JsonProperty(value="contrasena")String Contrasena, 
 			@JsonProperty(value="correoElectronico")String CorreoElectronico, 
-			@JsonProperty(value="numeroContacto")long NumeroContacto, @JsonProperty(value="relacionUniversidad") String RelacionUniversidad,@JsonProperty(value="diasUsado")
-	 int diasUsado,@JsonProperty(value="dineroPagado")
-	 double dineroPagado) 
+			@JsonProperty(value="numeroContacto")long NumeroContacto, @JsonProperty(value="relacionUniversidad") String RelacionUniversidad) 
 	{
 		
 		this.id = Id;
@@ -94,8 +92,6 @@ public class Cliente
 		this.correoElectronico = CorreoElectronico;
 		this.numeroContacto = NumeroContacto;
 		this.relacionUniversidad = RelacionUniversidad;
-		this.diasUsado=diasUsado;
-		this.dineroPagado = dineroPagado;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------

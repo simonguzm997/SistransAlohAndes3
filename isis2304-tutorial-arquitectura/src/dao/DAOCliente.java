@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import vos.Bebedor;
 import vos.Cliente;
 
 public class DAOCliente {
@@ -69,7 +68,7 @@ public class DAOCliente {
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			clientes.add(convertResultSetToBebedor(rs));
+			clientes.add(convertResultSetToCliente(rs));
 		}
 		return clientes;
 	}
@@ -95,7 +94,7 @@ public class DAOCliente {
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			cliente = convertResultSetToBebedor(rs);
+			cliente = convertResultSetToCliente(rs);
 		}
 
 		return cliente;
@@ -108,14 +107,17 @@ public class DAOCliente {
 	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public void addBebedor(Cliente cliente) throws SQLException, Exception {
+	public void addCliente(Cliente cliente) throws SQLException, Exception {
 
-		String sql = String.format("INSERT INTO %1$s.CLIENTES (ID, NOMBRE, PRESUPUESTO, CIUDAD) VALUES (%2$s, '%3$s', '%4$s', '%5$s')", 
+		String sql = String.format("INSERT INTO %1$s.CLIENTES (ID, NOMBRE, USUARIO, CONTRASENA, CORREOELECTRONICO,NUMEROCONTACTO,RELACIONUNIVERSIDAD) VALUES (%2$s, '%3$s', '%4$s', '%5$s', '%6$s', %7$s ,'%8$s')", 
 									USUARIO, 
 									cliente.getId(), 
 									cliente.getNombre(),
-									cliente.getPresupuesto(), 
-									cliente.getCiudad());
+									cliente.getUsuario(), 
+									cliente.getContrasena(),
+									cliente.getCorreoElectronico(),
+									cliente.getNumeroContacto(),
+									cliente.getRelacionUniversidad());
 		System.out.println(sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -127,19 +129,19 @@ public class DAOCliente {
 	/**
 	 * Metodo que actualiza la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
 	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
-	 * @param bebedor Bebedor que desea actualizar a la Base de Datos
+	 * @param cliente Bebedor que desea actualizar a la Base de Datos
 	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public void updateBebedor(Bebedor bebedor) throws SQLException, Exception {
+	public void updateCliente(Cliente cliente) throws SQLException, Exception {
 
 		StringBuilder sql = new StringBuilder();
-		sql.append (String.format ("UPDATE %s.BEBEDORES ", USUARIO));
+		sql.append (String.format ("UPDATE %s.CLIENTES ", USUARIO));
 		sql.append (String.format (
-				"SET NOMBRE = '%1$s', CIUDAD = '%2$s', PRESUPUESTO = '%3$s' ",
-				bebedor.getNombre (), bebedor.getCiudad (),
-				bebedor.getPresupuesto ()));
-		sql.append ("WHERE ID = " + bebedor.getId ());
+				"SET NOMBRE = '%1$s', USUARIO = '%2$s', CONTRASENA = '%3$s', CORREOELECTRONICO = '%4$s', NUMEROCONTACTO =%5$s,  RELACIONUNIVERSIDAD='%6$s'  ",
+				cliente.getNombre (), cliente.getUsuario(),
+				cliente.getContrasena (), cliente.getCorreoElectronico(), cliente.getNumeroContacto(),cliente.getRelacionUniversidad()));
+		sql.append ("WHERE ID = " + cliente.getId ());
 		System.out.println(sql);
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
@@ -150,48 +152,19 @@ public class DAOCliente {
 	/**
 	 * Metodo que actualiza la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
 	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
-	 * @param bebedor Bebedor que desea actualizar a la Base de Datos
+	 * @param cliente Bebedor que desea actualizar a la Base de Datos
 	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public void deleteBebedor(Bebedor bebedor) throws SQLException, Exception {
+	public void deleteBebedor(Cliente cliente) throws SQLException, Exception {
 
-		String sql = String.format("DELETE FROM %1$s.BEBEDORES WHERE ID = %2$d", USUARIO, bebedor.getId());
+		String sql = String.format("DELETE FROM %1$s.CLIENTES WHERE ID = %2$d", USUARIO, cliente.getId());
 
 		System.out.println(sql);
 		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-	}
-	
-	/**
-	 * Metodo que obtiene la cantidad de bebedores de una ciudad especifica, dada por parametro<br/>
-	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
-	 * @param ciudad ciudad que se desea saber la cantidad de bebedores
-	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
-	 * @throws Exception Si se genera un error dentro del metodo.
-	 */
-	public double getCountBebedoresByCiudad(String ciudad) throws SQLException, Exception
-	{		
-		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("SELECT COUNT(*) AS CANTIDAD_CIUDAD ", USUARIO));
-		sql.append(String.format("FROM %s.BEBEDORES ", USUARIO));
-		sql.append(String.format("WHERE CIUDAD = '%s' ", ciudad));
-		sql.append("GROUP BY CIUDAD");
-		
-		System.out.println(sql.toString());
-		
-		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
-		recursos.add(prepStmt);	
-		ResultSet rs = prepStmt.executeQuery();
-
-		if(rs.next())
-		{
-			return rs.getInt("CANTIDAD_CIUDAD");	
-		}
-		return 0;
-		
 	}
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -228,15 +201,16 @@ public class DAOCliente {
 	 * @return Bebedor cuyos atributos corresponden a los valores asociados a un registro particular de la tabla BEBEDORES.
 	 * @throws SQLException Si existe algun problema al extraer la informacion del ResultSet.
 	 */
-	public Cliente convertResultSetToBebedor(ResultSet resultSet) throws SQLException {
-		//TODO Requerimiento 1G: Complete el metodo con los atributos agregados previamente en la clase Bebedor. 
-		//						 Tenga en cuenta los nombres de las columnas de la Tabla en la Base de Datos (ID, NOMBRE, PRESUPUESTO, CIUDAD)
-
-		long Id = resultSet.getLong("");
-		String Nombre = resultSet.getString("");
-		String Usuario = resultSet.getString("");
-		String Contrasena = resultSet.getString("");
-		String CorreoElectronico = resultSet.getString("");
+	public Cliente convertResultSetToCliente(ResultSet resultSet) throws SQLException {
+		long Id = resultSet.getLong("ID");
+		String Nombre = resultSet.getString("NOMBRE");
+		String Usuario = resultSet.getString("USUARIO");
+		String Contrasena = resultSet.getString("CONTRASENA");
+		String CorreoElectronico = resultSet.getString("CORREOELECTRONICO");
+		long NumeroContacto = resultSet.getLong("NUMEROCONTACTO");
+		String RelacionUniversidad = resultSet.getString("RELACIONUNIVERSIDAD");
 		
+		Cliente cli = new Cliente(Id, Nombre, Usuario, Contrasena, CorreoElectronico, NumeroContacto, RelacionUniversidad);
+		return cli;
 	}
 }
