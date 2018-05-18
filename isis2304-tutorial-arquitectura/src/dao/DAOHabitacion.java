@@ -121,7 +121,7 @@ public class DAOHabitacion
 
 		String sql = String.format("INSERT INTO %1$s.HABITACIONES (ID, TIPO, PRECIOBASEDIA, CAPACIDAD, NUMERO, ESTADO, "
 				+ " IDALOJAMIENTO ) "
-				+ " VALUES ( %2$s , '%3$s' , '%4$s' , '%5$s' , '%6$s' , '%7$s' , '%8$s') ", 
+				+ " VALUES ( %2$s , '%3$s' , %4$s , %5$s , %6$s , '%7$s' , %8$s) ", 
 									USUARIO, 
 									habitacion.getId(),
 									habitacion.getTipo(),
@@ -144,8 +144,8 @@ public class DAOHabitacion
 		StringBuilder sql = new StringBuilder();
 		sql.append(String.format("UPDATE %s.HABITACIONES  ", USUARIO));
 		
-		sql.append(String.format(" SET TIPO = '%1$s' , PRECIOBASEDIA = '%2$s', CAPACIDAD = '%3$s' , "
-				+ "NUMERO = '%4$s' , ESTADO = '%5$s' , "
+		sql.append(String.format(" SET TIPO = '%1$s' , PRECIOBASEDIA = %2$s, CAPACIDAD = %3$s , "
+				+ "NUMERO = %4$s , ESTADO = '%5$s' , "
 				+ "IDALOJAMIENTO = %6$s  ",
 				
 				habitacion.getTipo(),
@@ -178,10 +178,40 @@ public class DAOHabitacion
 	}
 	
 	
-	public List<Habitacion> getHabitacionesTop20()
+	public List<Habitacion> getHabitacionesTop20() throws SQLException, Exception 
 	{
+		ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>();
+
+		String sql = String.format(" select * from habitaciones  " + 
+				"				inner join (select IDHABITACION " + 
+				"				FROM RESERVAS " + 
+				"				GROUP BY IDHABITACION " + 
+				"				ORDER BY COUNT (IDHABITACION) DESC) B " + 
+				"				ON habitaciones.ID = B.IDHABITACION " + 
+				"				WHERE ROWNUM <=20 ", USUARIO);
+	
+			
+//		select * from habitaciones 
+//		inner join (select IDHABITACION
+//		FROM RESERVAS
+//		GROUP BY IDHABITACION
+//		ORDER BY COUNT (IDHABITACION) DESC) B
+//		ON habitaciones.ID = B.IDHABITACION
+//		WHERE ROWNUM <=20;
+
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) 
+		{
+			habitaciones.add(convertResultSetToHabitacion(rs));
+		}
+		return habitaciones;
 		
-		return null;
+		
+		
 	}
 	
 	

@@ -99,7 +99,7 @@ public class HabitacionService
 
 				List<Habitacion> habitacions;
 				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-				habitacions = tm.getAllHabitacionsTop20();
+				habitacions = tm.getAllHabitacionTop20();
 				return Response.status(200).entity(habitacions).build();
 			} 
 			catch (Exception e) {
