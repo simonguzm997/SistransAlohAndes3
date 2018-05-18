@@ -1482,7 +1482,7 @@ public class AlohAndesTransactionManager
 		 * @param bebedor - el operador a agregar. operador != null
 		 * @throws Exception - Cualquier error que se genere agregando el bebedor
 		 */
-		public void addOferta(Cliente cliente) throws Exception 
+		public void addCliente(Cliente cliente) throws Exception 
 		{
 			DAOCliente daoCliente = new DAOCliente();
 			try
