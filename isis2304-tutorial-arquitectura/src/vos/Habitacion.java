@@ -46,6 +46,11 @@ public class Habitacion
 	@JsonProperty(value="estado")
 	private String estado;
 	
+	/**
+	 * Id de la habitacion de emp
+	 */
+	@JsonProperty(value="idAlojamiento")
+	private long idAlojamiento;
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODO CONSTRUCTOR
@@ -55,7 +60,8 @@ public class Habitacion
 
 	public Habitacion(@JsonProperty(value="id")long pId,@JsonProperty(value="tipo")String pTipo,
 			@JsonProperty(value="precioBaseDia")Double pPrecioBaseDia, @JsonProperty(value="capacidad")int pCapacidad,
-			@JsonProperty(value="numero")int pNumero, @JsonProperty(value="estado")String pEstado) 
+			@JsonProperty(value="numero")int pNumero, @JsonProperty(value="estado")String pEstado,
+			@JsonProperty(value="idAlojamiento")long pIdAlojamiento) 
 	{
 		this.id = pId;
 		this.tipo = pTipo;
@@ -63,6 +69,7 @@ public class Habitacion
 		this.capacidad = pCapacidad;
 		this.numero = pNumero;
 		this.estado = pEstado;
+		this.idAlojamiento = pIdAlojamiento;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -138,6 +145,16 @@ public class Habitacion
 	public void setEstado(String estado) 
 	{
 		this.estado = estado;
+	}
+
+	public long getIdAlojamiento() 
+	{
+		return idAlojamiento;
+	}
+
+	public void setIdAlojamiento(long idAlojamiento)
+	{
+		this.idAlojamiento = idAlojamiento;
 	}
 	
 

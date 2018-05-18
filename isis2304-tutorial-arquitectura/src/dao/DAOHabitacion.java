@@ -56,6 +56,113 @@ public class DAOHabitacion
 	// METODOS DE COMUNICACION CON LA BASE DE DATOS
 	//----------------------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * Metodo que obtiene la informacion de todos los clientes en la Base de Datos <br/>
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public ArrayList<Habitacion> getHabitaciones() throws SQLException, Exception 
+	{
+		ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>();
+
+		String sql = String.format("SELECT * FROM %1$s.HABITACIONES ", USUARIO);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			habitaciones.add(convertResultSetToHabitacion(rs));
+		}
+		return habitaciones;
+	}
+	
+	
+	public Habitacion findHabitacionById(long id) throws SQLException, Exception 
+	{
+		Habitacion habitacion = null;
+
+		String sql = String.format("SELECT * FROM %1$s.HABITACIONES WHERE ID = %2$d ", USUARIO, id); 
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if(rs.next()) 
+		{
+			habitacion = convertResultSetToHabitacion(rs);
+		}
+
+		return habitacion;
+	}
+	
+	public void addHabitacion(Habitacion habitacion) throws SQLException, Exception 
+	{
+
+		String sql = String.format("INSERT INTO %1$s.HABITACIONES (ID, TIPO, PRECIOBASEDIA, CAPACIDAD, NUMERO, ESTADO, "
+				+ " IDALOJAMIENTO ) "
+				+ " VALUES ( %2$s , '%3$s' , '%4$s' , '%5$s' , '%6$s' , '%7$s' , '%8$s') ", 
+									USUARIO, 
+									habitacion.getId(),
+									habitacion.getTipo(),
+									habitacion.getPrecioBaseDia(),
+									habitacion.getCapacidad(),
+									habitacion.getNumero(),
+									habitacion.getEstado(),
+									habitacion.getIdAlojamiento());
+		System.out.println(sql);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+
+	}
+	
+	
+	public void updateHabitacion (Habitacion habitacion) throws SQLException, Exception
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append(String.format("UPDATE %s.HABITACIONES  ", USUARIO));
+		
+		sql.append(String.format(" SET TIPO = '%1$s' , PRECIOBASEDIA = '%2$s', CAPACIDAD = '%3$s' , "
+				+ "NUMERO = '%4$s' , ESTADO = '%5$s' , "
+				+ "IDALOJAMIENTO = %6$s  ",
+				
+				habitacion.getTipo(),
+				habitacion.getPrecioBaseDia(),
+				habitacion.getCapacidad(),
+				habitacion.getNumero(),
+				habitacion.getEstado(),
+				habitacion.getIdAlojamiento()));
+		sql.append (" WHERE ID = " + habitacion.getId ());
+		
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+	}
+	
+
+	public void deleteHabitacion(Habitacion habitacion) throws SQLException, Exception
+	{
+
+		String sql = String.format("DELETE FROM %1$s.HABITACIONES WHERE ID = %2$d", USUARIO, habitacion.getId());
+
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -100,10 +207,17 @@ public class DAOHabitacion
 	 */
 	public Habitacion convertResultSetToHabitacion(ResultSet resultSet) throws SQLException 
 	{
-	
 		
 		
-		Habitacion r = null;
+		long pId  = resultSet.getInt("ID");
+		String pTipo = resultSet.getString("TIPO");
+		double pPrecioBaseDia = resultSet.getDouble("PRECIOBASEDIA");
+		int pCapacidad = resultSet.getInt("CAPACIDAD");
+		int pNumero = resultSet.getInt("NUMERO");
+		String pEstado = resultSet.getString("ESTADO");
+		long pIdAlojamiento  = resultSet.getInt("IDALOJAMIENTO");
+		
+		Habitacion r = new Habitacion(pId, pTipo, pPrecioBaseDia, pCapacidad, pNumero, pEstado, pIdAlojamiento);
 		return r;
 	
 	}
