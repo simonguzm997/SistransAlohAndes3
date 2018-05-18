@@ -1,5 +1,7 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Operador 
@@ -62,6 +64,13 @@ public class Operador
 		 */
 		@JsonProperty(value="relacionUniversidad")
 		private String relacionUniversidad;
+		
+		
+		/**
+		 * Habitaciones del alojamiento
+		 */
+		@JsonProperty(value="alojamientos")
+		private List<Alojamiento> alojamientos;
 		
 		
 		//----------------------------------------------------------------------------------------------------------------------------------
@@ -198,6 +207,18 @@ public class Operador
 		{
 			this.relacionUniversidad = relacionUniversidad;
 		}
+
+
+		public List<Alojamiento> getAlojamientos() {
+			return alojamientos;
+		}
+
+
+		public void setAlojamientos(List<Alojamiento> alojamientos) {
+			this.alojamientos = alojamientos;
+		}
+		
+		
 	
 
 }
