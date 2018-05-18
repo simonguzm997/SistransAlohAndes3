@@ -1,5 +1,8 @@
 package vos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Habitacion 
@@ -51,6 +54,12 @@ public class Habitacion
 	 */
 	@JsonProperty(value="idAlojamiento")
 	private long idAlojamiento;
+	
+	/**
+	 * Comodidades extra   de la habitacion 
+	 */
+	@JsonProperty(value="comodidadesExtra")
+	private List<ComodidadExtra> comodidadesExtra;
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODO CONSTRUCTOR
@@ -156,6 +165,16 @@ public class Habitacion
 	{
 		this.idAlojamiento = idAlojamiento;
 	}
+
+	public List<ComodidadExtra> getComodidadesExtra() {
+		return comodidadesExtra;
+	}
+
+	public void setComodidadesExtra(List<ComodidadExtra> comodidadesExtra) {
+		this.comodidadesExtra = comodidadesExtra;
+	}
+	
+	
 	
 
 }

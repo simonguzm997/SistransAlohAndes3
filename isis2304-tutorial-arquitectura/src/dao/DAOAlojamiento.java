@@ -105,19 +105,19 @@ public class DAOAlojamiento
 			return aloja;
 		}
 		
-		public Alojamiento findAlojamientoByIdOperador(Long id) throws SQLException, Exception 
+		public ArrayList<Alojamiento> findAlojamientoByIdOperador(Long id) throws SQLException, Exception 
 		{
-			Alojamiento aloja = null;
+			ArrayList<Alojamiento> alojas = new ArrayList<Alojamiento>();
 
 			String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE IDOPERADOR = %2$d", USUARIO, id); 
 
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
 			ResultSet rs = prepStmt.executeQuery();
-			if(rs.next()) {
-				aloja = convertResultSetToAlojamiento(rs);
+			while (rs.next()) {
+				alojas.add(convertResultSetToAlojamiento(rs));
 			}
-			return aloja;
+			return alojas;
 		}
 		
 		/**

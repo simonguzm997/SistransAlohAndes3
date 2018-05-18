@@ -95,9 +95,9 @@ public class DAOComodidadExtra
 		return comodidadExtra;
 	}
 	
-	public ComodidadExtra findComodidadExtraByIdHabitacion(long id) throws SQLException, Exception 
+	public ArrayList<ComodidadExtra> findComodidadExtraByIdHabitacion(long id) throws SQLException, Exception 
 	{
-		ComodidadExtra comodidadExtra = null;
+		ArrayList<ComodidadExtra> comodidadExtraes = new ArrayList<ComodidadExtra>();
 
 		String sql = String.format("SELECT * FROM %1$s.COMODIDADESEXTRA WHERE IDHABITACION = %2$d ", USUARIO, id); 
 
@@ -105,12 +105,10 @@ public class DAOComodidadExtra
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
-		if(rs.next()) 
-		{
-			comodidadExtra = convertResultSetToComodidadExtra(rs);
+		while (rs.next()) {
+			comodidadExtraes.add(convertResultSetToComodidadExtra(rs));
 		}
-
-		return comodidadExtra;
+		return comodidadExtraes;
 	}
 	
 	

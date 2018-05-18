@@ -97,6 +97,24 @@ public class DAOHabitacion
 		return habitacion;
 	}
 	
+	
+	public ArrayList<Habitacion> getHabitacionesByIdAlojamiento(long id) throws SQLException, Exception 
+	{
+		ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>();
+
+		String sql = String.format("SELECT * FROM %1$s.HABITACIONES WHERE ID = %2$d ", USUARIO, id); 
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			habitaciones.add(convertResultSetToHabitacion(rs));
+		}
+		return habitaciones;
+	}
+	
+	
 	public void addHabitacion(Habitacion habitacion) throws SQLException, Exception 
 	{
 

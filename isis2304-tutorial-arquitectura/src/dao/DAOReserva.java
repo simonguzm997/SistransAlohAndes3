@@ -95,9 +95,10 @@ public class DAOReserva
 		}
 		
 		
-		public Reserva findReservaByIdHabitacion(long id) throws SQLException, Exception 
+		public ArrayList<Reserva> findReservaByIdHabitacion(long id) throws SQLException, Exception 
 		{
-			Reserva reserva = null;
+			
+			ArrayList<Reserva> reservaes = new ArrayList<Reserva>();
 
 			String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE IDHABITACION = %2$d ", USUARIO, id); 
 
@@ -105,17 +106,16 @@ public class DAOReserva
 			recursos.add(prepStmt);
 			ResultSet rs = prepStmt.executeQuery();
 
-			if(rs.next()) 
-			{
-				reserva = convertResultSetToReserva(rs);
+			while (rs.next()) {
+				reservaes.add(convertResultSetToReserva(rs));
 			}
 
-			return reserva;
+			return reservaes;
 		}
 		
-		public Reserva findReservaByIdCliente(long id) throws SQLException, Exception 
+		public ArrayList<Reserva> findReservaByIdCliente(long id) throws SQLException, Exception 
 		{
-			Reserva reserva = null;
+			ArrayList<Reserva> reservaes = new ArrayList<Reserva>();
 
 			String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE IDCLIENTE = %2$d ", USUARIO, id); 
 
@@ -123,12 +123,11 @@ public class DAOReserva
 			recursos.add(prepStmt);
 			ResultSet rs = prepStmt.executeQuery();
 
-			if(rs.next()) 
-			{
-				reserva = convertResultSetToReserva(rs);
+			while (rs.next()) {
+				reservaes.add(convertResultSetToReserva(rs));
 			}
 
-			return reserva;
+			return reservaes;
 		}
 		
 		
