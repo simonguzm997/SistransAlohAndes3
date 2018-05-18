@@ -105,6 +105,21 @@ public class DAOAlojamiento
 			return aloja;
 		}
 		
+		public ArrayList<Alojamiento> findAlojamientoByIdOperador(Long id) throws SQLException, Exception 
+		{
+			ArrayList<Alojamiento> alojas = new ArrayList<Alojamiento>();
+
+			String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE IDOPERADOR = %2$d", USUARIO, id); 
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			while (rs.next()) {
+				alojas.add(convertResultSetToAlojamiento(rs));
+			}
+			return alojas;
+		}
+		
 		/**
 		 * Metodo que agregar la informacion de un nuevo bebedor en la Base de Datos a partir del parametro ingresado<br/>
 		 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  

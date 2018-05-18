@@ -1,5 +1,7 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Cliente 
@@ -63,6 +65,13 @@ public class Cliente
 	 */
 	@JsonProperty(value="dineroPagado")
 	private double dineroPagado;
+	
+	/**
+	 *Reservas del cliente
+	 */
+	@JsonProperty(value="reservas")
+	private List<Reserva> reservas;
+	
 	
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -199,18 +208,17 @@ public class Cliente
 	{
 		this.dineroPagado = dineroPagado;
 	}
-	
-	
-	
+
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
+	}
 	
 	
 	
 
-	
-	
-	
-	
-	
-	
 	
 }

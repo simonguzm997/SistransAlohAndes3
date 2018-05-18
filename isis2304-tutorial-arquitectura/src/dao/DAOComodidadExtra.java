@@ -54,7 +54,121 @@ public class DAOComodidadExtra
 	// METODOS DE COMUNICACION CON LA BASE DE DATOS
 	//----------------------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * Metodo que obtiene la informacion de todos los clientes en la Base de Datos <br/>
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public ArrayList<ComodidadExtra> getComodidadExtraes() throws SQLException, Exception 
+	{
+		ArrayList<ComodidadExtra> comodidadExtraes = new ArrayList<ComodidadExtra>();
+
+		String sql = String.format("SELECT * FROM %1$s.COMODIDADESEXTRA ", USUARIO);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			comodidadExtraes.add(convertResultSetToComodidadExtra(rs));
+		}
+		return comodidadExtraes;
+	}
 	
+	
+	public ComodidadExtra findComodidadExtraById(long id) throws SQLException, Exception 
+	{
+		ComodidadExtra comodidadExtra = null;
+
+		String sql = String.format("SELECT * FROM %1$s.COMODIDADESEXTRA WHERE ID = %2$d ", USUARIO, id); 
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if(rs.next()) 
+		{
+			comodidadExtra = convertResultSetToComodidadExtra(rs);
+		}
+
+		return comodidadExtra;
+	}
+	
+	public ArrayList<ComodidadExtra> findComodidadExtraByIdHabitacion(long id) throws SQLException, Exception 
+	{
+		ArrayList<ComodidadExtra> comodidadExtraes = new ArrayList<ComodidadExtra>();
+
+		String sql = String.format("SELECT * FROM %1$s.COMODIDADESEXTRA WHERE IDHABITACION = %2$d ", USUARIO, id); 
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			comodidadExtraes.add(convertResultSetToComodidadExtra(rs));
+		}
+		return comodidadExtraes;
+	}
+	
+	
+	public void addComodidadExtra(ComodidadExtra comodidadExtra) throws SQLException, Exception 
+	{
+
+		String sql = String.format("INSERT INTO %1$s.COMODIDADESEXTRA (ID, NOMBRE, COSTO, DESCRIPCION, IDHABITACION ) "
+				+ " VALUES ( %2$s , '%3$s' , '%4$s' , '%5$s' , '%6$s' ) ", 
+									USUARIO, 
+									comodidadExtra.getId(),
+									comodidadExtra.getNombre(),
+									comodidadExtra.getCosto(),
+									comodidadExtra.getDescripcion(),
+									comodidadExtra.getIdHabitacion());
+		System.out.println(sql);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+
+	}
+	
+	
+	public void updateComodidadExtra (ComodidadExtra comodidadExtra) throws SQLException, Exception
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append(String.format("UPDATE %s.COMODIDADESEXTRA  ", USUARIO));
+		
+		sql.append(String.format(" SET NOMBRE = '%1$s' , COSTO = '%2$s', DESCRIPCION = '%3$s' , "
+				+ "NUMERO = '%4$s' , ESTADO = '%5$s' , "
+				+ "IDHABITACION = %6$s  ",
+								
+				comodidadExtra.getNombre(),
+				comodidadExtra.getCosto(),
+				comodidadExtra.getDescripcion(),
+				comodidadExtra.getIdHabitacion()));
+		sql.append (" WHERE ID = " + comodidadExtra.getId ());
+		
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+	}
+	
+
+	public void deleteComodidadExtra(ComodidadExtra comodidadExtra) throws SQLException, Exception
+	{
+
+		String sql = String.format("DELETE FROM %1$s.COMODIDADESEXTRA WHERE ID = %2$d", USUARIO, comodidadExtra.getId());
+
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	
+
 	
 	
 	
@@ -99,9 +213,13 @@ public class DAOComodidadExtra
 	public ComodidadExtra convertResultSetToComodidadExtra(ResultSet resultSet) throws SQLException 
 	{
 	
+		long pId  = resultSet.getInt("ID");
+		String pNombre = resultSet.getString("NOMBRE");
+		double pPrecioBaseDia = resultSet.getDouble("COSTO");
+		String pDescripcion = resultSet.getString("DESCRIPCION");
+		long pIdHabitacion  = resultSet.getInt("IDHABITACION");
 		
-		
-		ComodidadExtra r = null;
+		ComodidadExtra r = new ComodidadExtra(pId, pNombre, pPrecioBaseDia, pDescripcion, pIdHabitacion);
 		return r;
 	
 	}

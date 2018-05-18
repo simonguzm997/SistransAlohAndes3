@@ -33,7 +33,13 @@ public class ComodidadExtra
 	 */
 	@JsonProperty(value="descripcion")
 	private String descripcion;
-	
+
+	/**
+	 * Id de la comodidad extra
+	 */
+	@JsonProperty(value="idHabitacion")
+	private long idHabitacion;
+
 	
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -41,12 +47,14 @@ public class ComodidadExtra
 	//----------------------------------------------------------------------------------------------------------------------------------
 	
 	public ComodidadExtra (@JsonProperty(value="id")long pId, @JsonProperty(value="nombre")String pNombre,
-			@JsonProperty(value="costo")Double pCosto, @JsonProperty(value="descripcion")String pDescripcion)
+			@JsonProperty(value="costo")Double pCosto, @JsonProperty(value="descripcion")String pDescripcion,
+			@JsonProperty(value="idHabitacion")long pIdHabitacion)
 	{
 		this.id = pId;
 		this.nombre = pNombre;
 		this.costo = pCosto;
 		this.descripcion = pDescripcion;
+		this.idHabitacion = pIdHabitacion;
 	}
 
 	
@@ -110,5 +118,18 @@ public class ComodidadExtra
 		this.descripcion = descripcion;
 	}
 
+
+	public long getIdHabitacion() {
+		return idHabitacion;
+	}
+
+
+	public void setIdHabitacion(long idHabitacion) 
+	{
+		this.idHabitacion = idHabitacion;
+	}
+
+	
+	
 
 }

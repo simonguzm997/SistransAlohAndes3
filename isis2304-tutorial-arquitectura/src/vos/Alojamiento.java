@@ -1,5 +1,7 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -106,6 +108,13 @@ public class Alojamiento
 	
 	@JsonProperty(value="idOperador")
 	private long idOperador;
+	
+	
+	/**
+	 * Habitaciones del alojamiento
+	 */
+	@JsonProperty(value="habitaciones")
+	private List<Habitacion> habitaciones;
 	
 	
 	
@@ -354,6 +363,23 @@ public class Alojamiento
 	public void setIdOperador(long idOperador) {
 		this.idOperador = idOperador;
 	}
+
+
+
+	public List<Habitacion> getHabitaciones() {
+		return habitaciones;
+	}
+
+
+
+	public void setHabitaciones(List<Habitacion> habitaciones) {
+		this.habitaciones = habitaciones;
+	}
+
+
+
+	
+	
 
 
 	

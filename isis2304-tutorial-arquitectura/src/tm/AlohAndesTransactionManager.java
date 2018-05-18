@@ -6,13 +6,20 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import dao.DAOAlojamiento;
+import dao.DAOComodidadExtra;
+import dao.DAOHabitacion;
 import dao.DAOOperador;
+import dao.DAOReserva;
 import vos.Alojamiento;
+import vos.ComodidadExtra;
+import vos.Habitacion;
 import vos.Operador;
+import vos.Reserva;
 
 public class AlohAndesTransactionManager 
 {
@@ -548,6 +555,803 @@ public class AlohAndesTransactionManager
 				}
 			}	
 		}
+		
+		
+		
+		
+		
+		
+		//----------------------------------------------------------------------------------------------------------------------------------
+		// HABITACION 
+		//----------------------------------------------------------------------------------------------------------------------------------
+
+		public List<Habitacion> getAllHabitacions() throws Exception 
+		{
+			
+			
+			DAOHabitacion daoHabitacion = new DAOHabitacion();
+			List<Habitacion> habitacions;
+			try 
+			{
+				this.conn = darConexion();
+				daoHabitacion.setConn(conn);
+				
+				habitacions = daoHabitacion.getHabitaciones();
+				int i = 0;
+				while (i<habitacions.size())
+				{
+					Habitacion temp = habitacions.get(i);
+					
+					temp.setComodidadesExtra(getAllComodidadExtrasByIdHabitacion(temp.getId()));
+				}
+				
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoHabitacion.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			System.out.println("------SALGO  A GET ALL TM");
+			
+			return habitacions;
+		}
+		
+		public Habitacion getHabitacionById(int id) throws Exception
+		{
+			DAOHabitacion daoHabitacion = new DAOHabitacion();
+			Habitacion habitacion = null;
+			try 
+			{
+				this.conn = darConexion();
+				daoHabitacion.setConn(conn);
+				habitacion = daoHabitacion.findHabitacionById(id);
+				if(habitacion == null)
+				{
+					throw new Exception("El habitacion con el id = " + id + " no se encuentra persistido en la base de datos.");				
+				}
+				else 
+				{
+					
+					habitacion.setComodidadesExtra(getAllComodidadExtrasByIdHabitacion(id));
+				}
+				
+			} 
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoHabitacion.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return habitacion;
+		}
+		
+		public void addHabitacion(Habitacion habitacion) throws Exception 
+		{
+			
+			DAOHabitacion daoHabitacion = new DAOHabitacion();
+			try
+			{
+				this.conn = darConexion();
+				daoHabitacion.setConn(conn);
+				daoHabitacion.addHabitacion(habitacion);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoHabitacion.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+		}
+		
+		public void updateHabitacion(Habitacion habitacion) throws Exception 
+		{
+			DAOHabitacion daoHabitacion = new DAOHabitacion();
+			
+			try
+			{
+				this.conn = darConexion();
+				daoHabitacion.setConn( conn );
+				Habitacion pHabitacion = daoHabitacion.findHabitacionById(habitacion.getId());
+				if (pHabitacion == null)
+				{
+					Exception e =new Exception (" El habitacion que quiere actualizar no existe en la base de datos");
+					throw e;
+				}
+				else
+				{
+					daoHabitacion.updateHabitacion(habitacion);
+				}
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoHabitacion.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+				
+		public void deleteHabitacion(Habitacion habitacion) throws Exception 
+		{
+			DAOHabitacion daoHabitacion = new DAOHabitacion();
+			try
+			{
+				this.conn = darConexion();
+				daoHabitacion.setConn( conn );
+				daoHabitacion.deleteHabitacion(habitacion);
+			
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoHabitacion.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+		
+		
+		
+		public List<Habitacion> getAllHabitacionsByIdAlojamiento(long id) throws Exception 
+		{
+			
+			
+			DAOHabitacion daoHabitacion = new DAOHabitacion();
+			List<Habitacion> habitacions;
+			try 
+			{
+				this.conn = darConexion();
+				daoHabitacion.setConn(conn);
+				
+				habitacions = daoHabitacion.getHabitacionesByIdAlojamiento(id);
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoHabitacion.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+			
+			return habitacions;
+		}
+		
+		
+		//----------------------------------------------------------------------------------------------------------------------------------
+		// COMODIDAD EXTRA
+		//----------------------------------------------------------------------------------------------------------------------------------
+
+		
+		public List<ComodidadExtra> getAllComodidadExtras() throws Exception 
+		{
+			
+			
+			DAOComodidadExtra daoComodidadExtra = new DAOComodidadExtra();
+			List<ComodidadExtra> comodidadExtras;
+			try 
+			{
+				this.conn = darConexion();
+				daoComodidadExtra.setConn(conn);
+				
+				comodidadExtras = daoComodidadExtra.getComodidadExtraes();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoComodidadExtra.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+			
+			return comodidadExtras;
+		}
+		
+		public ComodidadExtra getComodidadExtraById(int id) throws Exception
+		{
+			DAOComodidadExtra daoComodidadExtra = new DAOComodidadExtra();
+			ComodidadExtra comodidadExtra = null;
+			try 
+			{
+				this.conn = darConexion();
+				daoComodidadExtra.setConn(conn);
+				comodidadExtra = daoComodidadExtra.findComodidadExtraById(id);
+				if(comodidadExtra == null)
+				{
+					throw new Exception("El comodidadExtra con el id = " + id + " no se encuentra persistido en la base de datos.");				
+				}
+			} 
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoComodidadExtra.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return comodidadExtra;
+		}
+		
+		public void addComodidadExtra(ComodidadExtra comodidadExtra) throws Exception 
+		{
+			
+			DAOComodidadExtra daoComodidadExtra = new DAOComodidadExtra();
+			try
+			{
+				this.conn = darConexion();
+				daoComodidadExtra.setConn(conn);
+				daoComodidadExtra.addComodidadExtra(comodidadExtra);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoComodidadExtra.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+		}
+		
+		public void updateComodidadExtra(ComodidadExtra comodidadExtra) throws Exception 
+		{
+			DAOComodidadExtra daoComodidadExtra = new DAOComodidadExtra();
+			
+			try
+			{
+				this.conn = darConexion();
+				daoComodidadExtra.setConn( conn );
+				ComodidadExtra pComodidadExtra = daoComodidadExtra.findComodidadExtraById(comodidadExtra.getId());
+				if (pComodidadExtra.getNombre() == null)
+				{
+					Exception e =new Exception (" El comodidadExtra que quiere actualizar no existe en la base de datos");
+					throw e;
+				}
+				else
+				{
+					daoComodidadExtra.updateComodidadExtra(comodidadExtra);
+				}
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoComodidadExtra.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+				
+		public void deleteComodidadExtra(ComodidadExtra comodidadExtra) throws Exception 
+		{
+			DAOComodidadExtra daoCliete = new DAOComodidadExtra();
+			try
+			{
+				this.conn = darConexion();
+				daoCliete.setConn( conn );
+				daoCliete.deleteComodidadExtra(comodidadExtra);
+			
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoCliete.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+		
+		public List<ComodidadExtra> getAllComodidadExtrasByIdHabitacion(long id) throws Exception 
+		{
+			
+			
+			DAOComodidadExtra daoComodidadExtra = new DAOComodidadExtra();
+			List<ComodidadExtra> comodidadExtras;
+			try 
+			{
+				this.conn = darConexion();
+				daoComodidadExtra.setConn(conn);
+				
+				comodidadExtras = daoComodidadExtra.findComodidadExtraByIdHabitacion(id);
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoComodidadExtra.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+			
+			return comodidadExtras;
+		}
+		
+		
+		
+		
+		//----------------------------------------------------------------------------------------------------------------------------------
+		// RESERVAS
+		//----------------------------------------------------------------------------------------------------------------------------------
+
+		public List<Reserva> getAllReservas() throws Exception 
+		{
+			
+			
+			DAOReserva daoReserva = new DAOReserva();
+			List<Reserva> reservas;
+			try 
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				
+				reservas = daoReserva.getReservaes();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+			
+			return reservas;
+		}
+		
+		public Reserva getReservaById(int id) throws Exception
+		{
+			DAOReserva daoReserva = new DAOReserva();
+			Reserva reserva = null;
+			try 
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				reserva = daoReserva.findReservaById(id);
+				if(reserva == null)
+				{
+					throw new Exception("El reserva con el id = " + id + " no se encuentra persistido en la base de datos.");				
+				}
+			} 
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return reserva;
+		}
+		
+		public void addReserva(Reserva reserva) throws Exception 
+		{
+			
+			DAOReserva daoReserva = new DAOReserva();
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				daoReserva.addReserva(reserva);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+		}
+		
+		public void updateReserva(Reserva reserva) throws Exception 
+		{
+			DAOReserva daoReserva = new DAOReserva();
+			
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn( conn );
+				Reserva pReserva = daoReserva.findReservaById(reserva.getId());
+				if (pReserva == null)
+				{
+					Exception e =new Exception (" El reserva que quiere actualizar no existe en la base de datos");
+					throw e;
+				}
+				else
+				{
+					daoReserva.updateReserva(reserva);
+				}
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+				
+		public void deleteReserva(Reserva reserva) throws Exception 
+		{
+			DAOReserva daoCliete = new DAOReserva();
+			try
+			{
+				this.conn = darConexion();
+				daoCliete.setConn( conn );
+				daoCliete.deleteReserva(reserva);
+			
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoCliete.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+		
+		
+		public List<Reserva> getAllReservasByIdHabitacion(long id) throws Exception 
+		{
+			
+			
+			DAOReserva daoReserva = new DAOReserva();
+			List<Reserva> reservas;
+			try 
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				
+				reservas = daoReserva.findReservaByIdHabitacion(id);
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+			
+			return reservas;
+		}
+		
+		
+		public List<Reserva> getAllReservasByIdCliente(long id) throws Exception 
+		{
+			
+			
+			DAOReserva daoReserva = new DAOReserva();
+			List<Reserva> reservas;
+			try 
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				
+				reservas = daoReserva.findReservaByIdCliente(id);
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+			
+			return reservas;
+		}
+		
+		
 		
 		
 }

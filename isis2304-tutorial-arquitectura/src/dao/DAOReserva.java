@@ -53,12 +53,152 @@ public class DAOReserva
 		//----------------------------------------------------------------------------------------------------------------------------------
 		// METODOS DE COMUNICACION CON LA BASE DE DATOS
 		//----------------------------------------------------------------------------------------------------------------------------------
+		/**
+		 * Metodo que obtiene la informacion de todos los clientes en la Base de Datos <br/>
+		 * @return
+		 * @throws SQLException
+		 * @throws Exception
+		 */
+		public ArrayList<Reserva> getReservaes() throws SQLException, Exception 
+		{
+			ArrayList<Reserva> reservaes = new ArrayList<Reserva>();
 
+			String sql = String.format("SELECT * FROM %1$s.RESERVAS ", USUARIO);
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				reservaes.add(convertResultSetToReserva(rs));
+			}
+			return reservaes;
+		}
+		
+		
+		public Reserva findReservaById(long id) throws SQLException, Exception 
+		{
+			Reserva reserva = null;
+
+			String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE ID = %2$d ", USUARIO, id); 
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			if(rs.next()) 
+			{
+				reserva = convertResultSetToReserva(rs);
+			}
+
+			return reserva;
+		}
+		
+		
+		public ArrayList<Reserva> findReservaByIdHabitacion(long id) throws SQLException, Exception 
+		{
+			
+			ArrayList<Reserva> reservaes = new ArrayList<Reserva>();
+
+			String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE IDHABITACION = %2$d ", USUARIO, id); 
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				reservaes.add(convertResultSetToReserva(rs));
+			}
+
+			return reservaes;
+		}
+		
+		public ArrayList<Reserva> findReservaByIdCliente(long id) throws SQLException, Exception 
+		{
+			ArrayList<Reserva> reservaes = new ArrayList<Reserva>();
+
+			String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE IDCLIENTE = %2$d ", USUARIO, id); 
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				reservaes.add(convertResultSetToReserva(rs));
+			}
+
+			return reservaes;
+		}
 		
 		
 		
+		public void addReserva(Reserva reserva) throws SQLException, Exception 
+		{
+
+			String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, CANTPERSONAS, FECHAINICIO, FECHAFIN, VALOR, ESTADO, "
+					+ " IDHABITACION, IDCLIENTE ) "
+					+ " VALUES ( %2$s , '%3$s' , '%4$s' , '%5$s' , '%6$s' , '%7$s' , '%8$s' , '%9$s' ) ", 
+										USUARIO, 
+										reserva.getId(),
+										reserva.getCantPersonas(),
+										reserva.getFechaInicio(),
+										reserva.getFechaFin(),
+										reserva.getValor(),
+										reserva.getEstado(),
+										reserva.getIdHabitacion(),
+										reserva.getIdCliente());
+			System.out.println(sql);
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			prepStmt.executeQuery();
+
+		}
 		
 		
+		public void updateReserva (Reserva reserva) throws SQLException, Exception
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.append(String.format("UPDATE %s.RESERVAS  ", USUARIO));
+			
+			sql.append(String.format(" SET CANTPERSONAS = '%1$s' , FECHAINICIO = '%2$s', FECHAFIN = '%3$s' , "
+					+ "VALOR = '%4$s' , ESTADO = '%5$s' IDHABITACION = '%6$s' , IDCLIENTE = '%7$s' "
+					+ "IDALOJAMIENTO = %6$s  ",
+					
+					reserva.getCantPersonas(),
+					reserva.getFechaInicio(),
+					reserva.getFechaFin(),
+					reserva.getValor(),
+					reserva.getEstado(),
+					reserva.getIdHabitacion(),
+					reserva.getIdCliente()));
+			
+			sql.append (" WHERE ID = " + reserva.getId ());
+			
+			System.out.println(sql);
+			
+			PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+			recursos.add(prepStmt);
+			prepStmt.executeQuery();
+			
+		}
+		
+
+		public void deleteReserva(Reserva reserva) throws SQLException, Exception
+		{
+
+			String sql = String.format("DELETE FROM %1$s.RESERVAS WHERE ID = %2$d", USUARIO, reserva.getId());
+
+			System.out.println(sql);
+			
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			prepStmt.executeQuery();
+		}
+		
+		
+		
+
 		
 		//----------------------------------------------------------------------------------------------------------------------------------
 		// METODOS AUXILIARES
@@ -100,8 +240,17 @@ public class DAOReserva
 		{
 		
 			
+			long pId  = resultSet.getInt("ID");
+			int pCantPersonas = resultSet.getInt("CANTPERSONAS");
+			String pFechaInicio = resultSet.getString("FECHAINICIO");
+			String pFechaFin = resultSet.getString("FECHAFIN");
+			double pValor = resultSet.getDouble("VALOR");
+			String pEstado = resultSet.getString("ESTADO");
+			long pIdHabitacion  = resultSet.getInt("IDHABITACION");
+			long pIdCliente  = resultSet.getInt("IDCLIENTE");
 			
-			Reserva r = null;
+			
+			Reserva r = new Reserva(pId, pCantPersonas, pFechaInicio, pFechaFin, pValor, pEstado, pIdHabitacion, pIdCliente);
 			return r;
 		
 		}

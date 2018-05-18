@@ -1,6 +1,7 @@
 package vos;
 
-import org.codehaus.jackson.annotate.JsonCreator;
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Habitacion 
@@ -53,6 +54,17 @@ public class Habitacion
 	@JsonProperty(value="idHabitacion")
 	private long idHabitacion;
 	
+	/**
+	 * Id de la habitacion de emp
+	 */
+	@JsonProperty(value="idAlojamiento")
+	private long idAlojamiento;
+	
+	/**
+	 * Comodidades extra   de la habitacion 
+	 */
+	@JsonProperty(value="comodidadesExtra")
+	private List<ComodidadExtra> comodidadesExtra;
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODO CONSTRUCTOR
@@ -62,7 +74,8 @@ public class Habitacion
 
 	public Habitacion(@JsonProperty(value="id")long pId,@JsonProperty(value="tipo")String pTipo,
 			@JsonProperty(value="precioBaseDia")Double pPrecioBaseDia, @JsonProperty(value="capacidad")int pCapacidad,
-			@JsonProperty(value="numero")int pNumero, @JsonProperty(value="estado")String pEstado) 
+			@JsonProperty(value="numero")int pNumero, @JsonProperty(value="estado")String pEstado,
+			@JsonProperty(value="idAlojamiento")long pIdAlojamiento) 
 	{
 		this.id = pId;
 		this.tipo = pTipo;
@@ -70,6 +83,7 @@ public class Habitacion
 		this.capacidad = pCapacidad;
 		this.numero = pNumero;
 		this.estado = pEstado;
+		this.idAlojamiento = pIdAlojamiento;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -146,6 +160,26 @@ public class Habitacion
 	{
 		this.estado = estado;
 	}
+
+	public long getIdAlojamiento() 
+	{
+		return idAlojamiento;
+	}
+
+	public void setIdAlojamiento(long idAlojamiento)
+	{
+		this.idAlojamiento = idAlojamiento;
+	}
+
+	public List<ComodidadExtra> getComodidadesExtra() {
+		return comodidadesExtra;
+	}
+
+	public void setComodidadesExtra(List<ComodidadExtra> comodidadesExtra) {
+		this.comodidadesExtra = comodidadesExtra;
+	}
+	
+	
 	
 
 }
