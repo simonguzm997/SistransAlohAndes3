@@ -118,7 +118,7 @@ public class DAOComodidadExtra
 	public void updateComodidadExtra (ComodidadExtra comodidadExtra) throws SQLException, Exception
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append(String.format("UPDATE %s.HABITACIONES  ", USUARIO));
+		sql.append(String.format("UPDATE %s.COMODIDADESEXTRA  ", USUARIO));
 		
 		sql.append(String.format(" SET NOMBRE = '%1$s' , COSTO = '%2$s', DESCRIPCION = '%3$s' , "
 				+ "NUMERO = '%4$s' , ESTADO = '%5$s' , "
@@ -142,7 +142,7 @@ public class DAOComodidadExtra
 	public void deleteComodidadExtra(ComodidadExtra comodidadExtra) throws SQLException, Exception
 	{
 
-		String sql = String.format("DELETE FROM %1$s.HABITACIONES WHERE ID = %2$d", USUARIO, comodidadExtra.getId());
+		String sql = String.format("DELETE FROM %1$s.COMODIDADESEXTRA WHERE ID = %2$d", USUARIO, comodidadExtra.getId());
 
 		System.out.println(sql);
 		

@@ -52,19 +52,19 @@ public class Reserva
 	private String estado;
 	
 	
+	/**
+	 * Id de la habitacion de la reserva
+	 */
+	@JsonProperty(value="idHabitacion")
+	private long idHabitacion;
 	
-//	/**
-//	 * Alojado de la reserva
-//	 */
-//	@JsonProperty(value="alojado")
-//	private Alojado alojado;
-//	
-//	/**
-//	 * habitacion emp de la reserva
-//	 */
-//	@JsonProperty(value="habitacionReservada")
-//	private HabitacionEmp habitacionReservada;
-//	
+	/**
+	 * Id del cliente de la  reserva
+	 */
+	@JsonProperty(value="idCliente")
+	private long idCliente;
+
+
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
 	// METODO CONSTRUCTOR
@@ -72,7 +72,8 @@ public class Reserva
 		
 	public Reserva(@JsonProperty(value="id")long pId, @JsonProperty(value="cantPersonas") int pCantPersonas, 
 			@JsonProperty(value="fechaInicio") String pFechaInicio, @JsonProperty(value="fechaFin") String pFechaFin, 
-			@JsonProperty(value="valor") Double pValor, @JsonProperty(value="estado") String pEstado)
+			@JsonProperty(value="valor") Double pValor, @JsonProperty(value="estado") String pEstado,
+			@JsonProperty(value="idHabitacion")long pIdHabitacion, @JsonProperty(value="idCliente")long pIdCliente )
 	{
 		
 		this.id = pId;
@@ -81,8 +82,9 @@ public class Reserva
 		this.FechaFin = pFechaFin;
 		this.valor = pValor;
 		this.estado = pEstado;
-		//this.alojado = null;
-		//this.habitacionReservada = null;
+		this.idHabitacion = pIdHabitacion;
+		this.idCliente = pIdCliente;
+		
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -171,6 +173,28 @@ public class Reserva
 	{
 		this.estado = estado;
 	}
+
+	public long getIdHabitacion() 
+	{
+		return idHabitacion;
+	}
+
+	public void setIdHabitacion(long idHabitacion) 
+	{
+		this.idHabitacion = idHabitacion;
+	}
+
+	public long getIdCliente()
+	{
+		return idCliente;
+	}
+
+	public void setIdCliente(long idCliente) 
+	{
+		this.idCliente = idCliente;
+	}
+	
+	
 
 
 
