@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import vos.Habitacion;
 
@@ -177,7 +178,11 @@ public class DAOHabitacion
 	}
 	
 	
-	
+	public List<Habitacion> getHabitacionesTop20()
+	{
+		
+		return null;
+	}
 	
 	
 	
@@ -239,6 +244,8 @@ public class DAOHabitacion
 		return r;
 	
 	}
+
+
 	
 	
 }

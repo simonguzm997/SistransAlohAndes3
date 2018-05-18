@@ -820,6 +820,48 @@ public class AlohAndesTransactionManager
 		}
 		
 		
+		
+		
+		
+		
+		public List<Habitacion> getAllHabitacionTop20() throws Exception 
+		{
+			DAOHabitacion daoHabitacion = new DAOHabitacion();
+			List<Habitacion> habitaciones;
+			try 
+			{
+				this.conn = darConexion();
+				daoHabitacion.setConn(conn);
+				
+				habitaciones = daoHabitacion.getHabitacionesTop20();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoHabitacion.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return habitaciones;
+		}
+		
+		
 		//----------------------------------------------------------------------------------------------------------------------------------
 		// COMODIDAD EXTRA
 		//----------------------------------------------------------------------------------------------------------------------------------
