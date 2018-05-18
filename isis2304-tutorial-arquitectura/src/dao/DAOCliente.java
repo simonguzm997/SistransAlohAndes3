@@ -18,7 +18,7 @@ public class DAOCliente {
 	 * Constante para indicar el usuario Oracle del estudiante
 	 */
 	//TODO Requerimiento 1H: Modifique la constante, reemplazando al ususario PARRANDEROS por su ususario de Oracle
-	public final static String USUARIO = "ISIS2304A061810";
+	public final static String USUARIO = "ISIS2304A111810";
 	
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ public class DAOCliente {
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
 		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-		String sql = String.format("SELECT * FROM %1$s.CLIENTES WHERE ROWNUM <= 50", USUARIO);
+		String sql = String.format("SELECT * FROM CLIENTES WHERE ROWNUM <= 50", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
