@@ -95,6 +95,25 @@ public class DAOComodidadExtra
 		return comodidadExtra;
 	}
 	
+	public ComodidadExtra findComodidadExtraByIdHabitacion(long id) throws SQLException, Exception 
+	{
+		ComodidadExtra comodidadExtra = null;
+
+		String sql = String.format("SELECT * FROM %1$s.COMODIDADESEXTRA WHERE IDHABITACION = %2$d ", USUARIO, id); 
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if(rs.next()) 
+		{
+			comodidadExtra = convertResultSetToComodidadExtra(rs);
+		}
+
+		return comodidadExtra;
+	}
+	
+	
 	public void addComodidadExtra(ComodidadExtra comodidadExtra) throws SQLException, Exception 
 	{
 
