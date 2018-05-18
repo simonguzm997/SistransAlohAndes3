@@ -61,7 +61,7 @@ public class DAOCliente {
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
 		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-		String sql = String.format("SELECT * FROM %1$s.BEBEDORES WHERE ROWNUM <= 50", USUARIO);
+		String sql = String.format("SELECT * FROM %1$s.CLIENTES WHERE ROWNUM <= 50", USUARIO);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -83,7 +83,7 @@ public class DAOCliente {
 	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public Cliente findBebedorById(Long id) throws SQLException, Exception 
+	public Cliente findClienteById(Long id) throws SQLException, Exception 
 	{
 		Cliente cliente = null;
 
@@ -156,7 +156,7 @@ public class DAOCliente {
 	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public void deleteBebedor(Cliente cliente) throws SQLException, Exception {
+	public void deleteCliente(Cliente cliente) throws SQLException, Exception {
 
 		String sql = String.format("DELETE FROM %1$s.CLIENTES WHERE ID = %2$d", USUARIO, cliente.getId());
 
