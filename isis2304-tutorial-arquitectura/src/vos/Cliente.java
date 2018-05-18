@@ -70,19 +70,23 @@ public class Cliente
 	//----------------------------------------------------------------------------------------------------------------------------------
 	
 	
-	public Cliente(@JsonProperty(value="id")long pId,@JsonProperty(value="nombre")String pNombre, 
-			@JsonProperty(value="usuario")String pUsuario, @JsonProperty(value="contrasena")String pContrasena, 
-			@JsonProperty(value="correoElectronico")String pCorreoElectronico, 
-			@JsonProperty(value="numeroContacto")long pNumeroContacto, @JsonProperty(value="relacionUniversidad") String pRelacionUniversidad) 
+	public Cliente(@JsonProperty(value="id")long Id,@JsonProperty(value="nombre")String Nombre, 
+			@JsonProperty(value="usuario")String Usuario, @JsonProperty(value="contrasena")String Contrasena, 
+			@JsonProperty(value="correoElectronico")String CorreoElectronico, 
+			@JsonProperty(value="numeroContacto")long NumeroContacto, @JsonProperty(value="relacionUniversidad") String RelacionUniversidad,@JsonProperty(value="diasUsado")
+	 int diasUsado,@JsonProperty(value="dineroPagado")
+	 double dineroPagado) 
 	{
 		
-		this.id = pId;
-		this.nombre = pNombre;
-		this.usuario = pUsuario;
-		this.contrasena = pContrasena;
-		this.correoElectronico = pCorreoElectronico;
-		this.numeroContacto = pNumeroContacto;
-		this.relacionUniversidad = pRelacionUniversidad;
+		this.id = Id;
+		this.nombre = Nombre;
+		this.usuario = Usuario;
+		this.contrasena = Contrasena;
+		this.correoElectronico = CorreoElectronico;
+		this.numeroContacto = NumeroContacto;
+		this.relacionUniversidad = RelacionUniversidad;
+		this.diasUsado=diasUsado;
+		this.dineroPagado = dineroPagado;
 	}
 
 	//----------------------------------------------------------------------------------------------------------------------------------

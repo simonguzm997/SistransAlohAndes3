@@ -1,5 +1,6 @@
 package vos;
 
+import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Habitacion 
@@ -45,6 +46,12 @@ public class Habitacion
 	 */
 	@JsonProperty(value="estado")
 	private String estado;
+	
+	/**
+	 * ID del alojamiento donde se encuentra la habitacion
+	 */
+	@JsonProperty(value="idHabitacion")
+	private long idHabitacion;
 	
 	
 	//----------------------------------------------------------------------------------------------------------------------------------
