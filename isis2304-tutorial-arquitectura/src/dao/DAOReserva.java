@@ -94,6 +94,45 @@ public class DAOReserva
 			return reserva;
 		}
 		
+		
+		public Reserva findReservaByIdHabitacion(long id) throws SQLException, Exception 
+		{
+			Reserva reserva = null;
+
+			String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE IDHABITACION = %2$d ", USUARIO, id); 
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			if(rs.next()) 
+			{
+				reserva = convertResultSetToReserva(rs);
+			}
+
+			return reserva;
+		}
+		
+		public Reserva findReservaByIdCliente(long id) throws SQLException, Exception 
+		{
+			Reserva reserva = null;
+
+			String sql = String.format("SELECT * FROM %1$s.RESERVAS WHERE IDCLIENTE = %2$d ", USUARIO, id); 
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			if(rs.next()) 
+			{
+				reserva = convertResultSetToReserva(rs);
+			}
+
+			return reserva;
+		}
+		
+		
+		
 		public void addReserva(Reserva reserva) throws SQLException, Exception 
 		{
 
