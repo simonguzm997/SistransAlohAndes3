@@ -990,6 +990,57 @@ public class AlohAndesTransactionManager
 		}
 		
 		
+		public List<Habitacion> getAllHabitacionesRFC4(String f1, String f2, String r1, String r2) throws Exception 
+		{
+			
+			
+			DAOHabitacion daoHabitacion = new DAOHabitacion();
+			List<Habitacion> habitacions;
+			try 
+			{
+				this.conn = darConexion();
+				daoHabitacion.setConn(conn);
+				
+				habitacions = daoHabitacion.getHabitacionesRFC4(f1, f2, r1, r2);
+//				int i = 0;
+//				while (i<habitacions.size())
+//				{
+//					Habitacion temp = habitacions.get(i);
+//					
+//					temp.setComodidadesExtra(getAllComodidadExtrasByIdHabitacion(temp.getId()));
+//				}
+				
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoHabitacion.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			System.out.println("------SALGO  A GET ALL TM");
+			
+			return habitacions;
+		}
+
+		
+		
 		//----------------------------------------------------------------------------------------------------------------------------------
 		// COMODIDAD EXTRA
 		//----------------------------------------------------------------------------------------------------------------------------------

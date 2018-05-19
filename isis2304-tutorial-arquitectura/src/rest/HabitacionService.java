@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -162,6 +163,24 @@ public class HabitacionService
 			catch( Exception e )
 			{
 				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+			}
+		}
+		
+		@GET
+		@Path( "/filterRFC4" )
+		@Produces({ MediaType.APPLICATION_JSON })
+		public Response getHabitacionIntTiempo(@QueryParam("Inicio")String f1, @QueryParam("Fin")String f2,
+				@QueryParam("Req1")String r1, @QueryParam("Req2")String r2) 
+		{
+			try {
+				AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+
+				List<Habitacion> habitaciones;
+				habitaciones = tm.getAllHabitacionesRFC4(f1, f2, r1, r2);
+				return Response.status(200).entity(habitaciones).build();
+			} 
+			catch (Exception e) {
+				return Response.status(500).entity(doErrorMessage(e)).build();
 			}
 		}
 		

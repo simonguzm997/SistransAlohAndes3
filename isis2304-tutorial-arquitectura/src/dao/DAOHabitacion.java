@@ -234,9 +234,45 @@ public class DAOHabitacion
 			habitaciones.add(convertResultSetToHabitacion(rs));
 		}
 		return habitaciones;
+
 		
+	}
+	
+	public ArrayList<Habitacion> getHabitacionesRFC4(String f1, String f2, String r1, String r2) throws SQLException, Exception 
+	{
+		ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>();
+
 		
+		String sql = String.format(" select * from (SELECT * FROM %1$s.HABITACIONES  "
+				+ " WHERE ID NOT IN (SELECT IDHABITACION FROM %1$s.RESERVAS "
+				+ " WHERE FECHAINICIO > to_date('%2$s','DD-MON-YY') "
+				+ "AND FECHAFIN < to_date('%3$s','DD-MON-YY'))  "
+				+ "AND ESTADO = 'DISPONIBLE') A inner join "
+				+ "(select idhabitacion "
+				+ "from %1$s.comodidadesextra "
+				+ "where nombre in ( '%4$s', '%5$s')) B "
+				+ "on A.ID = B.idhabitacion ", 
+				USUARIO, f1, f2, r1, r2 );
 		
+//				select * from (SELECT * FROM HABITACIONES
+//				WHERE ID NOT IN (SELECT IDHABITACION FROM RESERVAS
+//				WHERE FECHAINICIO > to_date('10-JAN-16','DD-MON-YY')
+//				AND FECHAFIN < to_date('10-FEB-16','DD-MON-YY'))
+//				AND ESTADO = 'DISPONIBLE') A inner join
+//				(select idhabitacion 
+//				from comodidadesextra
+//				where nombre in ( 'Parqueadero', 'Internet')) B
+//				on A.ID = B.idhabitacion
+		
+	
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			habitaciones.add(convertResultSetToHabitacion(rs));
+		}
+		return habitaciones;
 	}
 	
 	

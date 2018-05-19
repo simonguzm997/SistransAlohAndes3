@@ -61,7 +61,7 @@ public class AlojamientoService {
 	 */			
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getBebedores() {
+	public Response getAlojamientos() {
 
 		try {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
@@ -86,7 +86,7 @@ public class AlojamientoService {
 	@GET
 	@Path( "{id: \\d+}" )
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getBebedorById( @PathParam( "id" ) Long id )
+	public Response getAlojamientosById( @PathParam( "id" ) Long id )
 	{
 		try{
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager( getPath( ) );
@@ -190,7 +190,7 @@ public class AlojamientoService {
 	@Path( "agregarAlojamiento" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addBebedor(Alojamiento aloja) {
+	public Response addAlojamiento(Alojamiento aloja) {
 
 		//TODO Requerimiento 3C: Implemente el metodo a partir de los ejemplos anteriores y utilizando el Transaction Manager de Parranderos 
 		try {
@@ -220,7 +220,7 @@ public class AlojamientoService {
 	@Path ("updateAlojamiento")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateBebedor(Alojamiento aloja) {
+	public Response updateAlojamiento(Alojamiento aloja) {
 		//TODO Requerimiento 5B: Implemente el metodo a partir de los ejemplos anteriores y utilizando el Transaction Manager de Parranderos 
 		try {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());

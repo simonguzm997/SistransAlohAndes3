@@ -48,11 +48,6 @@ public class Habitacion
 	@JsonProperty(value="estado")
 	private String estado;
 	
-	/**
-	 * ID del alojamiento donde se encuentra la habitacion
-	 */
-	@JsonProperty(value="idHabitacion")
-	private long idHabitacion;
 	
 	/**
 	 * Id de la habitacion de emp
