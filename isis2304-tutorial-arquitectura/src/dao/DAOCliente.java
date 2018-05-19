@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.codehaus.jackson.node.ArrayNode;
+
 import vos.Cliente;
 
 public class DAOCliente {
@@ -97,6 +99,7 @@ public class DAOCliente {
 			cliente = convertResultSetToCliente(rs);
 		}
 
+
 		return cliente;
 	}
 	
@@ -134,6 +137,29 @@ public class DAOCliente {
 			ClientesFrecuentes.add(convertResultSetToCliente(rs));
 		}
 		return ClientesFrecuentes;
+	}
+	
+	/**
+	 * Metodo que obtiene la informacion de todos los bebedores en la Base de Datos <br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>
+	 * @return	lista con la informacion de todos los bebedores que se encuentran en la Base de Datos
+	 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public Cliente getDineroCliente(Cliente cli) throws SQLException, Exception {
+		String sql1 = " SELECT SUM (FECHA) AS NOCHESQUEDADAS FROM ( " +
+				" SELECT (to_date(FECHAFIN, 'dd/mm/yyyy') - to_date(FECHAINICIO, 'dd/mm/yyyy') ) AS FECHA,IDCLIENTE "  +
+				"     FROM RESERVAS where RESERVAS.IDCLIENTE= "+cli.getId()+ " ) ";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql1);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+		while(rs.next()) {
+			cli.setDiasUsado(rs.getInt("NOCHESQUEDADAS"));
+
+		}
+		return cli;
 	}
 	
 	/**

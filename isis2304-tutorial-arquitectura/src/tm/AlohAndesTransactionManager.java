@@ -266,6 +266,7 @@ public class AlohAndesTransactionManager
 				//TODO Requerimiento 3D: Obtenga la conexion a la Base de Datos (revise los metodos de la clase)
 				this.conn= darConexion();
 				//TODO Requerimiento 3E: Establezca la conexion en el objeto DAOBebedor (revise los metodos de la clase DAOBebedor)
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				daoAlojamiento.setConn(conn);
 				daoAlojamiento.addAlojamiento(aloja);
 
@@ -483,6 +484,7 @@ public class AlohAndesTransactionManager
 				this.conn= darConexion();
 				//TODO Requerimiento 3E: Establezca la conexion en el objeto DAOBebedor (revise los metodos de la clase DAOBebedor)
 				daoOperador.setConn(conn);
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				daoOperador.addOperador(operador);
 
 			}
@@ -755,6 +757,7 @@ public class AlohAndesTransactionManager
 			{
 				this.conn = darConexion();
 				daoHabitacion.setConn(conn);
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				daoHabitacion.addHabitacion(habitacion);
 
 			}
@@ -1149,6 +1152,7 @@ public class AlohAndesTransactionManager
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				sqlException.printStackTrace();
 				throw sqlException;
 			} 
@@ -1391,6 +1395,7 @@ public class AlohAndesTransactionManager
 			{
 				this.conn = darConexion();
 				daoReserva.setConn(conn);
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				daoReserva.addReserva(reserva);
 
 			}
@@ -1638,6 +1643,7 @@ public class AlohAndesTransactionManager
 				conn.setReadOnly(true);
 				daoCliente.setConn(conn);
 				cliente = daoCliente.findClienteById(id);
+				cliente = daoCliente.getDineroCliente(cliente);
 				if(cliente == null)
 				{
 					throw new Exception("El bebedor con el id = " + id + " no se encuentra persistido en la base de datos.");				
@@ -1721,6 +1727,7 @@ public class AlohAndesTransactionManager
 			{
 				this.conn= darConexion();
 				daoCliente.setConn(conn);
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				daoCliente.addCliente(cliente);
 			}
 			catch (SQLException sqlException) {
@@ -1936,6 +1943,38 @@ public class AlohAndesTransactionManager
 			}
 			return fechas;
 		}
+		
+		public Cliente getClienteDiasUsados (Cliente cli) throws Exception
+		{
+			DAOCliente daoCliente = new DAOCliente();
+			Cliente cliente;
+			try {
+				this.conn = darConexion();
+				conn.setReadOnly(true);
+				daoCliente.setConn(conn);
+				cliente = daoCliente.getDineroCliente(cli);
+				
+			}catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoCliente.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return cliente;
+		}
+		
 		
 		
 		
