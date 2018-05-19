@@ -206,6 +206,48 @@ public class AlohAndesTransactionManager
 		}
 		
 		/**
+		 * Metodo que modela la transaccion que retorna todos los bebedores de la base de datos. <br/>
+		 * @return List<Bebedor> - Lista de bebedores que contiene el resultado de la consulta.
+		 * @throws Exception -  Cualquier error que se genere durante la transaccion
+		 */
+		public List<Operador> getOperadoresByDinero() throws Exception {
+			DAOOperador daoOperador = new DAOOperador();
+			List<Operador> operadores;
+			try 
+			{
+				this.conn = darConexion();
+				daoOperador.setConn(conn);
+				
+				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+				operadores = daoOperador.getOperadores();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return operadores;
+		}
+		
+		/**
 		 * Metodo que modela la transaccion que agrega un bebedor a la base de datos. <br/>
 		 * <b> post: </b> se ha agregado el bebedor que entra como parametro <br/>
 		 * @param bebedor - el bebedor a agregar. bebedor != null
