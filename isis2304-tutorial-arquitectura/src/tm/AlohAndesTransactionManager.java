@@ -130,6 +130,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoAloja.setConn(conn);
 				
 				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
@@ -175,6 +176,7 @@ public class AlohAndesTransactionManager
 			List<Operador> operadores;
 			try 
 			{
+				conn.setReadOnly(true);
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
 				
@@ -305,6 +307,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoAlojamiento.setConn(conn);
 				aloja7 = daoAlojamiento.findAlojamientoById(id);
 				if(aloja7 == null)
@@ -657,6 +660,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoHabitacion.setConn(conn);
 				
 				habitacions = daoHabitacion.getHabitaciones();
@@ -915,6 +919,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoHabitacion.setConn(conn);
 				
 				habitacions = daoHabitacion.getHabitacionesByIdAlojamiento(id);
@@ -959,6 +964,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoHabitacion.setConn(conn);
 				
 				habitaciones = daoHabitacion.getHabitacionesTop20();
@@ -999,6 +1005,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoHabitacion.setConn(conn);
 				
 				habitacions = daoHabitacion.getHabitacionesRFC4(f1, f2, r1, r2);
@@ -1055,6 +1062,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoComodidadExtra.setConn(conn);
 				
 				comodidadExtras = daoComodidadExtra.getComodidadExtraes();
@@ -1094,6 +1102,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoComodidadExtra.setConn(conn);
 				comodidadExtra = daoComodidadExtra.findComodidadExtraById(id);
 				if(comodidadExtra == null)
@@ -1252,6 +1261,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoComodidadExtra.setConn(conn);
 				
 				comodidadExtras = daoComodidadExtra.findComodidadExtraByIdHabitacion(id);
@@ -1300,6 +1310,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoReserva.setConn(conn);
 				
 				reservas = daoReserva.getReservaes();
@@ -1498,6 +1509,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoReserva.setConn(conn);
 				
 				reservas = daoReserva.findReservaByIdHabitacion(id);
@@ -1540,6 +1552,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoReserva.setConn(conn);
 				
 				reservas = daoReserva.findReservaByIdCliente(id);
@@ -1585,6 +1598,7 @@ public class AlohAndesTransactionManager
 			List<Cliente> ofertas;
 			try {
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoCliente.setConn(conn);
 				ofertas = daoCliente.getClientes();
 				
@@ -1621,6 +1635,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoCliente.setConn(conn);
 				cliente = daoCliente.findClienteById(id);
 				if(cliente == null)
@@ -1668,6 +1683,7 @@ public class AlohAndesTransactionManager
 			List<Cliente> ofertas;
 			try {
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoCliente.setConn(conn);
 				ofertas = daoCliente.getClientesFrecuentes();
 				
@@ -1823,6 +1839,7 @@ public class AlohAndesTransactionManager
 			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
 			ArrayNode fechas;
 			try {
+				conn.setReadOnly(true);
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
 				fechas = daoAlojamiento.getFechaMayorRecaudacion();
@@ -1859,6 +1876,7 @@ public class AlohAndesTransactionManager
 			ArrayNode fechas;
 			try {
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoAlojamiento.setConn(conn);
 				fechas = daoAlojamiento.getFechaMayorDemanda();
 				
@@ -1894,6 +1912,7 @@ public class AlohAndesTransactionManager
 			ArrayNode fechas;
 			try {
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoAlojamiento.setConn(conn);
 				fechas = daoAlojamiento.getFechaMenorDemanda();
 				
