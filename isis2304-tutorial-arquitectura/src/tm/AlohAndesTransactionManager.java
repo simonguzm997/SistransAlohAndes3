@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -1599,6 +1600,44 @@ public class AlohAndesTransactionManager
 				}
 			}
 			return cliente;
+		}
+		/**
+		 * Metodo que optiene los operadores de la base de datos
+		 * @return la lista de los operadores en Formato Json de la base de datos
+		 * @throws Exception Si hay algun error
+		 */
+		public ArrayList<Cliente> getClientesFrecuentes () throws Exception
+		{
+			DAOCliente daoCliente = new DAOCliente();
+			ArrayList<Cliente> clientes = new ArrayList<Cliente>();;
+			List<Long> idClientesFrecuentes;
+			try {
+				this.conn = darConexion();
+				daoCliente.setConn(conn);
+				idClientesFrecuentes=daoCliente.getClientesFrecuentes();
+				for (Long integer : idClientesFrecuentes) {
+					clientes.add(getClienteById(integer));
+				}
+				
+			}catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoCliente.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return clientes;
 		}
 		
 		/**

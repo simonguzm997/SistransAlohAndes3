@@ -101,6 +101,51 @@ public class DAOCliente {
 	}
 	
 	/**
+	 * Metodo que obtiene la informacion de todos los bebedores en la Base de Datos <br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>
+	 * @return	lista con la informacion de todos los bebedores que se encuentran en la Base de Datos
+	 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public ArrayList<Long> getClientesFrecuentes() throws SQLException, Exception {
+		ArrayList<Long> idClientesFrecuentes = new ArrayList<Long>();
+
+		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+		/*StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT DISTINCT (IDCLIENTE) FROM ( \n");
+		sql.append(" SELECT COUNT(IDCLIENTE) AS VECESRESERVADAS,IDCLIENTE,FECHA \n");
+		sql.append(" FROM \n");
+		sql.append(" (select HABITACIONES.IDALOJAMIENTO, HABITACIONES.ID,RESERVAS.IDCLIENTE /n");
+		sql.append(" FROM habitaciones /n");
+		sql.append(" JOIN RESERVAS /n");
+		sql.append(" ON HABITACIONES.ID = RESERVAS.IDHABITACION), /n");
+		sql.append(" (SELECT (to_date(FECHAFIN, 'dd/mm/yyyy') - to_date(FECHAINICIO, 'dd/mm/yyyy') ) AS FECHA /n");
+		sql.append(" FROM RESERVAS) /n");
+		sql.append(" GROUP BY IDCLIENTE, IDALOJAMIENTO,FECHA) /n");
+		sql.append(" WHERE VECESRESERVADAS>=3 OR FECHA >=16; ");*/
+		String sql = "SELECT DISTINCT ( IDCLIENTE ) FROM ( " +
+				" SELECT COUNT(IDCLIENTE) AS VECESRESERVADAS,IDCLIENTE,FECHA " +
+				" FROM " +
+				" (select HABITACIONES.IDALOJAMIENTO, HABITACIONES.ID,RESERVAS.IDCLIENTE " +
+				" FROM habitaciones " +
+				" JOIN RESERVAS " +
+				" ON HABITACIONES.ID = RESERVAS.IDHABITACION ), " +
+				" ( SELECT ( to_date( FECHAFIN, 'dd/mm/yyyy' ) - to_date( FECHAINICIO, 'dd/mm/yyyy' ) ) AS FECHA " +
+				"      FROM RESERVAS ) " +
+				" GROUP BY IDCLIENTE, IDALOJAMIENTO,FECHA ) " +
+				" WHERE VECESRESERVADAS>=3 OR FECHA >=16 ";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			idClientesFrecuentes.add(rs.getLong("IDCLIENTE"));
+		}
+		return idClientesFrecuentes;
+	}
+	
+	/**
 	 * Metodo que agregar la informacion de un nuevo bebedor en la Base de Datos a partir del parametro ingresado<br/>
 	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
 	 * @param cliente Bebedor que desea agregar a la Base de Datos
