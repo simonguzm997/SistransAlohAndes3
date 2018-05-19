@@ -164,6 +164,31 @@ public class DAOHabitacion
 		
 	}
 	
+	public void habilitarHabitacion (Habitacion habitacion) throws SQLException, Exception
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append(String.format("UPDATE %s.HABITACIONES  ", USUARIO));
+		
+		sql.append(String.format(" SET TIPO = '%1$s' , PRECIOBASEDIA = %2$s, CAPACIDAD = %3$s , "
+				+ "NUMERO = %4$s , ESTADO = 'DISPONIBLE' , "
+				+ "IDALOJAMIENTO = %6$s  ",
+				
+				habitacion.getTipo(),
+				habitacion.getPrecioBaseDia(),
+				habitacion.getCapacidad(),
+				habitacion.getNumero(),
+				habitacion.getEstado(),
+				habitacion.getIdAlojamiento()));
+		sql.append (" WHERE ID = " + habitacion.getId ());
+		
+		System.out.println(sql);
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+	}
+	
 
 	public void deleteHabitacion(Habitacion habitacion) throws SQLException, Exception
 	{

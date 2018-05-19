@@ -98,6 +98,24 @@ public class ClienteService {
 			}
 		}
 		
+		@GET
+		@Path("clientesFrecuentes")
+		@Produces({ MediaType.APPLICATION_JSON })
+		public Response getClientesFrecuentes() {
+			
+			try {
+				AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+				
+				List<Cliente> clientes;
+				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+				clientes = tm.getClientesFrecuentes();
+				return Response.status(200).entity(clientes).build();
+			} 
+			catch (Exception e) {
+				return Response.status(500).entity(doErrorMessage(e)).build();
+			}
+		}
+		
 		/**
 		 * Metodo que recibe un bebedor en formato JSON y lo agrega a la Base de Datos <br/>
 		 * <b>Precondicion: </b> El archivo <em>'conectionData'</em> ha sido inicializado con las credenciales del usuario <br/>

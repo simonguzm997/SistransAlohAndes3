@@ -1,5 +1,6 @@
 package rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -15,6 +16,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+
+import jdk.nashorn.internal.ir.ObjectNode;
 import tm.AlohAndesTransactionManager;
 import vos.Operador;
 
@@ -98,6 +103,45 @@ public class OperadorService {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
+	
+	/**
+	 * Metodo GET que trae a todos los bebedores en la Base de datos. <br/>
+	 * <b>Precondicion: </b> el archivo <em>'conectionData'</em> ha sido inicializado con las credenciales del usuario <br/>
+	 * <b>URL: </b> http://localhost:8080/TutorialParranderos/rest/bebedores <br/>
+	 * @return	<b>Response Status 200</b> - JSON que contiene a todos los bebedores que estan en la Base de Datos <br/>
+	 * 			<b>Response Status 500</b> - Excepcion durante el transcurso de la transaccion
+	 */			
+	@GET
+	@Path("getOperadoresByDinero")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getOperadoresByDinero() {
+		
+		try {
+			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+			ObjectMapper mapper = new ObjectMapper();
+			ArrayNode arrayNode = mapper.createArrayNode();
+			List<Operador> operadores;
+			operadores = tm.getAllOperadores();
+			for (Operador op : operadores) {
+				long idOperador = op.getId();
+				String Nombre = op.getNombre();
+				double DineroActual = op.getDineroAnoActual();
+				double DineroRecorrido = op.getDineroAnoCorrido();
+				org.codehaus.jackson.node.ObjectNode obj1 = mapper.createObjectNode();
+				obj1.put("id", idOperador);
+				obj1.put("nombre", Nombre);
+				obj1.put("dineroAnoActual", DineroActual);
+				obj1.put("dineroRecorrido", DineroRecorrido);
+				arrayNode.add(obj1);
+			}
+			
+			return Response.status(200).entity(arrayNode).build();
+		} 
+		catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+	
 	
 	/**
 	 * Metodo que recibe un bebedor en formato JSON y lo agrega a la Base de Datos <br/>

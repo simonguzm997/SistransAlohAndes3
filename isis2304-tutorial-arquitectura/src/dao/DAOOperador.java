@@ -97,6 +97,23 @@ public class DAOOperador
 			return operador;
 		}
 		
+		public ArrayList<Operador> getOperadoresByDinero () throws SQLException
+		{
+
+			ArrayList<Operador> operadores = new ArrayList<Operador>();
+
+			String sql = String.format("SELECT ID,NOMBRE,DINEROANOACTUAL,DINEROANORECORRIDO FROM %1$s.OPERADORES WHERE ROWNUM <= 50 ORDER BY DESC DINEROCORRIDO ", USUARIO);
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				operadores.add(convertResultSetToOperador(rs));
+			}
+			return operadores;
+		}
+		
 		public void addOperador(Operador operador) throws SQLException, Exception 
 		{
 

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -206,6 +207,48 @@ public class AlohAndesTransactionManager
 		}
 		
 		/**
+		 * Metodo que modela la transaccion que retorna todos los bebedores de la base de datos. <br/>
+		 * @return List<Bebedor> - Lista de bebedores que contiene el resultado de la consulta.
+		 * @throws Exception -  Cualquier error que se genere durante la transaccion
+		 */
+		public List<Operador> getOperadoresByDinero() throws Exception {
+			DAOOperador daoOperador = new DAOOperador();
+			List<Operador> operadores;
+			try 
+			{
+				this.conn = darConexion();
+				daoOperador.setConn(conn);
+				
+				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+				operadores = daoOperador.getOperadores();
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return operadores;
+		}
+		
+		/**
 		 * Metodo que modela la transaccion que agrega un bebedor a la base de datos. <br/>
 		 * <b> post: </b> se ha agregado el bebedor que entra como parametro <br/>
 		 * @param bebedor - el bebedor a agregar. bebedor != null
@@ -335,6 +378,44 @@ public class AlohAndesTransactionManager
 				}
 			}	
 		}
+		public void updateAlojamientoHabilitar(Alojamiento aloja) throws Exception 
+		{
+			DAOAlojamiento daoAlojamiento = new DAOAlojamiento( );
+			try
+			{
+				this.conn = darConexion();
+				daoAlojamiento.setConn( conn );
+				//TODO Requerimiento 5C: Utilizando los Metodos de DaoBebedor, verifique que exista el bebedor con el ID dado en el parametro. 
+				//						 Si no existe un bebedor con el ID ingresado, lance una excepcion en donde se explique lo sucedido
+				//						 De lo contrario, se actualiza la informacion del bebedor de la Base de Datos
+				daoAlojamiento.habilitarAlojamiento(aloja);
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoAlojamiento.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+		
 		/**
 		 * Metodo que modela la transaccion que elimina de la base de datos al bebedor que entra por parametro. <br/>
 		 * Solamente se actualiza si existe el bebedor en la Base de Datos <br/>
@@ -714,6 +795,51 @@ public class AlohAndesTransactionManager
 				else
 				{
 					daoHabitacion.updateHabitacion(habitacion);
+				}
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoHabitacion.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+		
+		public void updateHabitacionHabilitar(Habitacion habitacion) throws Exception 
+		{
+			DAOHabitacion daoHabitacion = new DAOHabitacion();
+			
+			try
+			{
+				this.conn = darConexion();
+				daoHabitacion.setConn( conn );
+				Habitacion pHabitacion = daoHabitacion.findHabitacionById(habitacion.getId());
+				if (pHabitacion == null)
+				{
+					Exception e =new Exception (" El habitacion que quiere actualizar no existe en la base de datos");
+					throw e;
+				}
+				else
+				{
+					daoHabitacion.habilitarHabitacion(habitacion);
 				}
 
 			}
@@ -1477,6 +1603,44 @@ public class AlohAndesTransactionManager
 				}
 			}
 			return cliente;
+		}
+		/**
+		 * Metodo que optiene los operadores de la base de datos
+		 * @return la lista de los operadores en Formato Json de la base de datos
+		 * @throws Exception Si hay algun error
+		 */
+		public ArrayList<Cliente> getClientesFrecuentes () throws Exception
+		{
+			DAOCliente daoCliente = new DAOCliente();
+			ArrayList<Cliente> clientes = new ArrayList<Cliente>();;
+			List<Long> idClientesFrecuentes;
+			try {
+				this.conn = darConexion();
+				daoCliente.setConn(conn);
+				idClientesFrecuentes=daoCliente.getClientesFrecuentes();
+				for (Long integer : idClientesFrecuentes) {
+					clientes.add(getClienteById(integer));
+				}
+				
+			}catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoCliente.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return clientes;
 		}
 		
 		/**
