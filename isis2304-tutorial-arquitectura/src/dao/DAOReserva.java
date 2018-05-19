@@ -162,9 +162,7 @@ public class DAOReserva
 			sql.append(String.format("UPDATE %s.RESERVAS  ", USUARIO));
 			
 			sql.append(String.format(" SET CANTPERSONAS = %1$s , FECHAINICIO = '%2$s', FECHAFIN = '%3$s' , "
-					+ "VALOR = %4$s , ESTADO = '%5$s' IDHABITACION = %6$s , IDCLIENTE = %7$s "
-					+ "IDALOJAMIENTO = %6$s  ",
-					
+					+ "VALOR = %4$s , ESTADO = '%5$s' IDHABITACION = %6$s , IDCLIENTE = %7$s ",
 					reserva.getCantPersonas(),
 					reserva.getFechaInicio(),
 					reserva.getFechaFin(),
