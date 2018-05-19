@@ -659,13 +659,13 @@ public class AlohAndesTransactionManager
 				daoHabitacion.setConn(conn);
 				
 				habitacions = daoHabitacion.getHabitaciones();
-				int i = 0;
-				while (i<habitacions.size())
-				{
-					Habitacion temp = habitacions.get(i);
-					
-					temp.setComodidadesExtra(getAllComodidadExtrasByIdHabitacion(temp.getId()));
-				}
+//				int i = 0;
+//				while (i<habitacions.size())
+//				{
+//					Habitacion temp = habitacions.get(i);
+//					
+//					temp.setComodidadesExtra(getAllComodidadExtrasByIdHabitacion(temp.getId()));
+//				}
 				
 			}
 			catch (SQLException sqlException) {
@@ -1574,6 +1574,9 @@ public class AlohAndesTransactionManager
 				if(cliente == null)
 				{
 					throw new Exception("El bebedor con el id = " + id + " no se encuentra persistido en la base de datos.");				
+				}
+				else {
+					cliente.setReservas(getAllReservasByIdCliente(id));
 				}
 			} 
 			catch (SQLException sqlException) {
