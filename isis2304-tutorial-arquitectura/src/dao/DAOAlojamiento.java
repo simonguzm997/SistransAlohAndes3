@@ -6,274 +6,377 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+
+import jdk.nashorn.internal.ir.ObjectNode;
 import vos.Alojamiento;
 
 public class DAOAlojamiento 
 {
 	//----------------------------------------------------------------------------------------------------------------------------------
-		// CONSTANTES
-		//----------------------------------------------------------------------------------------------------------------------------------
-		
-		/**
-		 * Constante para indicar el usuario Oracle del estudiante
-		 */
-		//TODO Requerimiento 1H: Modifique la constante, reemplazando al ususario PARRANDEROS por su ususario de Oracle
-		public final static String USUARIO = "ISIS2304A111810";
-		
-		//----------------------------------------------------------------------------------------------------------------------------------
-		// ATRIBUTOS
-		//----------------------------------------------------------------------------------------------------------------------------------
+	// CONSTANTES
+	//----------------------------------------------------------------------------------------------------------------------------------
 
-		/**
-		 * Arraylits de recursos que se usan para la ejecucion de sentencias SQL
-		 */
-		private ArrayList<Object> recursos;
+	/**
+	 * Constante para indicar el usuario Oracle del estudiante
+	 */
+	//TODO Requerimiento 1H: Modifique la constante, reemplazando al ususario PARRANDEROS por su ususario de Oracle
+	public final static String USUARIO = "ISIS2304A111810";
 
-		/**
-		 * Atributo que genera la conexion a la base de datos
-		 */
-		private Connection conn;
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// ATRIBUTOS
+	//----------------------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Arraylits de recursos que se usan para la ejecucion de sentencias SQL
+	 */
+	private ArrayList<Object> recursos;
+
+	/**
+	 * Atributo que genera la conexion a la base de datos
+	 */
+	private Connection conn;
 
 
-		
-		//----------------------------------------------------------------------------------------------------------------------------------
-		// METODOS DE INICIALIZACION
-		//----------------------------------------------------------------------------------------------------------------------------------
-		
-		/**
-		 * Metodo constructor de la clase DAOCliente <br/>
-		*/
-		
-		public DAOAlojamiento() 
-		{
-			
-			recursos = new ArrayList<Object>();
+
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// METODOS DE INICIALIZACION
+	//----------------------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Metodo constructor de la clase DAOCliente <br/>
+	 */
+
+	public DAOAlojamiento() 
+	{
+
+		recursos = new ArrayList<Object>();
+	}
+
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// METODOS DE COMUNICACION CON LA BASE DE DATOS
+	//----------------------------------------------------------------------------------------------------------------------------------
+
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// METODOS DE COMUNICACION CON LA BASE DE DATOS
+	//----------------------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Metodo que obtiene la informacion de todos los bebedores en la Base de Datos <br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>
+	 * @return	lista con la informacion de todos los bebedores que se encuentran en la Base de Datos
+	 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public ArrayList<Alojamiento> getAlojamientos() throws SQLException, Exception {
+		ArrayList<Alojamiento> alojas = new ArrayList<Alojamiento>();
+
+		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+		String sql = String.format("SELECT * FROM ALOJAMIENTOS WHERE ROWNUM <= 50");
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			alojas.add(convertResultSetToAlojamiento(rs));
 		}
+		return alojas;
+	}
 
-		//----------------------------------------------------------------------------------------------------------------------------------
-		// METODOS DE COMUNICACION CON LA BASE DE DATOS
-		//----------------------------------------------------------------------------------------------------------------------------------
+	/**
+	 * Metodo que obtiene la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/> 
+	 * @param id el identificador del bebedor
+	 * @return la informacion del bebedor que cumple con los criterios de la sentecia SQL
+	 * 			Null si no existe el bebedor conlos criterios establecidos
+	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public Alojamiento findAlojamientoById(Long id) throws SQLException, Exception 
+	{
+		Alojamiento aloja = null;
 
-		//----------------------------------------------------------------------------------------------------------------------------------
-		// METODOS DE COMUNICACION CON LA BASE DE DATOS
-		//----------------------------------------------------------------------------------------------------------------------------------
+		String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, id); 
 
-		/**
-		 * Metodo que obtiene la informacion de todos los bebedores en la Base de Datos <br/>
-		 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>
-		 * @return	lista con la informacion de todos los bebedores que se encuentran en la Base de Datos
-		 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
-		 * @throws Exception Si se genera un error dentro del metodo.
-		 */
-		public ArrayList<Alojamiento> getAlojamientos() throws SQLException, Exception {
-			ArrayList<Alojamiento> alojas = new ArrayList<Alojamiento>();
-
-			//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-			String sql = String.format("SELECT * FROM ALOJAMIENTOS WHERE ROWNUM <= 50");
-
-			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			recursos.add(prepStmt);
-			ResultSet rs = prepStmt.executeQuery();
-
-			while (rs.next()) {
-				alojas.add(convertResultSetToAlojamiento(rs));
-			}
-			return alojas;
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		if(rs.next()) {
+			aloja = convertResultSetToAlojamiento(rs);
 		}
-		
-		/**
-		 * Metodo que obtiene la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
-		 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/> 
-		 * @param id el identificador del bebedor
-		 * @return la informacion del bebedor que cumple con los criterios de la sentecia SQL
-		 * 			Null si no existe el bebedor conlos criterios establecidos
-		 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
-		 * @throws Exception Si se genera un error dentro del metodo.
-		 */
-		public Alojamiento findAlojamientoById(Long id) throws SQLException, Exception 
-		{
-			Alojamiento aloja = null;
+		return aloja;
+	}
 
-			String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, id); 
+	public ArrayList<Alojamiento> findAlojamientoByIdOperador(Long id) throws SQLException, Exception 
+	{
+		ArrayList<Alojamiento> alojas = new ArrayList<Alojamiento>();
 
-			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			recursos.add(prepStmt);
-			ResultSet rs = prepStmt.executeQuery();
-			if(rs.next()) {
-				aloja = convertResultSetToAlojamiento(rs);
-			}
-			return aloja;
+		String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE IDOPERADOR = %2$d", USUARIO, id); 
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		while (rs.next()) {
+			alojas.add(convertResultSetToAlojamiento(rs));
 		}
-		
-		public ArrayList<Alojamiento> findAlojamientoByIdOperador(Long id) throws SQLException, Exception 
-		{
-			ArrayList<Alojamiento> alojas = new ArrayList<Alojamiento>();
+		return alojas;
+	}
 
-			String sql = String.format("SELECT * FROM %1$s.ALOJAMIENTOS WHERE IDOPERADOR = %2$d", USUARIO, id); 
+	/**
+	 * Metodo que obtiene la informacion de todos los bebedores en la Base de Datos <br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>
+	 * @return	lista con la informacion de todos los bebedores que se encuentran en la Base de Datos
+	 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public ArrayNode getFechaMayorRecaudacion() throws SQLException, Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayNode arrayNode = mapper.createArrayNode();
 
-			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			recursos.add(prepStmt);
-			ResultSet rs = prepStmt.executeQuery();
-			while (rs.next()) {
-				alojas.add(convertResultSetToAlojamiento(rs));
-			}
-			return alojas;
-		}
-		
-		/**
-		 * Metodo que agregar la informacion de un nuevo bebedor en la Base de Datos a partir del parametro ingresado<br/>
-		 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
-		 * @param bebedor Bebedor que desea agregar a la Base de Datos
-		 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
-		 * @throws Exception Si se genera un error dentro del metodo.
-		 */
-		public void addAlojamiento(Alojamiento aloja) throws SQLException, Exception {
+		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+		String sql = 
+				" select to_char(FECHAINICIO, 'MM')  mes,to_char(FECHAINICIO, 'YY') YEAR, sum(habitacionES.PRECIOBASEDIA) ENTRADAS  from " +
+						" RESERVAS join habitacionES on RESERVAS.IDHABITACION = HABITACIONES.ID " +
+						" group by  to_char(FECHAINICIO, 'MM'), to_char(FECHAINICIO, 'YY') " +
+						" ORDER BY  ENTRADAS DESC ";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
 
-			String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, NOMBRE, DIRECCION,CALIFICACION,HORAAPERTURA,HORACIERRE,NIT,CAPACIDAD,TIPO,ESTADO,DIASUSADOS,DESCRIPCIONSEGURO,VALORSEGURO,NUMHABITACIONES,MENAJE,IDOPERADOR) VALUES (%2$s, '%3$s', '%4$s', %5$s,'%6$s','%7$s',%8$s,%9$s,'%10$s','%11$s',%12$s,'%13$s',%14$s,%15$s,'%16$s',%17$s)", 
-										USUARIO,
-										aloja.getId(),
-										aloja.getNombre(),
-										aloja.getDireccion(),
-										aloja.getCalificacion(),
-										aloja.getHoraApertura(),
-										aloja.getHoraCierre(),
-										aloja.getNIT(),
-										aloja.getCapacidad(),
-										aloja.getTipo(),
-										aloja.getEstado(),
-										aloja.getDiasUsados(),
-										aloja.getDescripcionSeguro(),
-										aloja.getValorSeguro(),
-										aloja.getNumHabitaciones(),
-										aloja.getMenaje(),
-										aloja.getIdOperador());			
-			System.out.println(sql);
-			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			recursos.add(prepStmt);
-			prepStmt.executeQuery();
+		while (rs.next()) {
+			org.codehaus.jackson.node.ObjectNode obj1 = mapper.createObjectNode();
+			obj1.put("MES", rs.getInt("MES"));
+			obj1.put("YEAR", rs.getInt("YEAR"));
+			obj1.put("ENTRADAS", rs.getLong("ENTRADAS"));
+			arrayNode.add(obj1);
+		}
+		return arrayNode;
+	}
 
-		}
-		/**
-		 * Metodo que actualiza la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
-		 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
-		 * @param bebedor Bebedor que desea actualizar a la Base de Datos
-		 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
-		 * @throws Exception Si se genera un error dentro del metodo.
-		 */
-		public void updateAlojamiento(Alojamiento aloja) throws SQLException, Exception {
+	/**
+	 * Metodo que obtiene la informacion de todos los bebedores en la Base de Datos <br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>
+	 * @return	lista con la informacion de todos los bebedores que se encuentran en la Base de Datos
+	 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public ArrayNode getFechaMayorDemanda() throws SQLException, Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayNode arrayNode = mapper.createArrayNode();
+		String sql = " select * from " +
+				" (select count(*) Numero_alojamientos, to_char(FECHAINICIO, 'MM')  mes,to_char(FECHAINICIO, 'YY') YEAR " +
+				" from habitaciones " +
+				" join RESERVAS " +
+				" on " +
+				" HABITACIONES.ID = RESERVAS.IDHABITACION " +
+				" group by to_char(FECHAINICIO, 'MM'), to_char(FECHAINICIO, 'YY') " +
+				" order by NUMero_alojamientos desc) " +
+				" where rownum <= 3 ";
 
-			StringBuilder sql = new StringBuilder();
-			sql.append (String.format ("UPDATE %s.ALOJAMIENTOS ", USUARIO));
-			sql.append (String.format (
-					"SET NOMBRE = '%1$s', DIRECCION = '%2$s', CALIFICACION = %3$s, HORAAPERTURA =  '%4$s',HORACIERRE = '%5$s' , NIT = %6$s , CAPACIDAD = %7$s , TIPO = '%8$s' , ESTADO  = '%9$s' , DIASUSADOS = %10$s , DESCRIPCIONSEGURO = '%11$s' , VALORSEGURO =  %12$s, NUMHABITACIONES = %13$s ,  MENAJE = '%14$s'  , IDOPERADOR = %15$s  ",
-					aloja.getNombre(),aloja.getDireccion(),aloja.getCalificacion(),aloja.getHoraApertura(),aloja.getHoraCierre(),aloja.getNIT(),aloja.getCapacidad(),aloja.getTipo(),aloja.getEstado(),aloja.getDiasUsados(),aloja.getDescripcionSeguro(),aloja.getValorSeguro(),aloja.getNumHabitaciones(),aloja.getMenaje(),aloja.getIdOperador()));
-			sql.append ("WHERE ID = " + aloja.getId ());
-			System.out.println(sql);
-			PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
-			recursos.add(prepStmt);
-			prepStmt.executeQuery();
-		}
-		/**
-		 * Metodo que actualiza la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
-		 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
-		 * @param bebedor Bebedor que desea actualizar a la Base de Datos
-		 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
-		 * @throws Exception Si se genera un error dentro del metodo.
-		 */
-		public void habilitarAlojamiento(Alojamiento aloja) throws SQLException, Exception {
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
 
-			StringBuilder sql = new StringBuilder();
-			sql.append (String.format ("UPDATE %s.ALOJAMIENTOS ", USUARIO));
-			sql.append (String.format (
-					"SET NOMBRE = '%1$s', DIRECCION = '%2$s', CALIFICACION = %3$s, HORAAPERTURA =  '%4$s',HORACIERRE = '%5$s' , NIT = %6$s , CAPACIDAD = %7$s , TIPO = '%8$s' , ESTADO  = 'DISPONIBLE', DIASUSADOS = %10$s , DESCRIPCIONSEGURO = '%11$s' , VALORSEGURO =  %12$s, NUMHABITACIONES = %13$s ,  MENAJE = '%14$s'  , IDOPERADOR = %15$s  ",
-					aloja.getNombre(),aloja.getDireccion(),aloja.getCalificacion(),aloja.getHoraApertura(),aloja.getHoraCierre(),aloja.getNIT(),aloja.getCapacidad(),aloja.getTipo(),aloja.getEstado(),aloja.getDiasUsados(),aloja.getDescripcionSeguro(),aloja.getValorSeguro(),aloja.getNumHabitaciones(),aloja.getMenaje(),aloja.getIdOperador()));
-			sql.append ("WHERE ID = " + aloja.getId ());
-			System.out.println(sql);
-			PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
-			recursos.add(prepStmt);
-			prepStmt.executeQuery();
+		while (rs.next()) {
+			org.codehaus.jackson.node.ObjectNode obj1 = mapper.createObjectNode();
+			obj1.put("NUMERO_ALOJAMIENTOS", rs.getInt("NUMERO_ALOJAMIENTOS"));
+			obj1.put("MES", rs.getInt("MES"));
+			obj1.put("YEAR", rs.getLong("YEAR"));
+			arrayNode.add(obj1);
 		}
+		return arrayNode;
+	}
 
+	/**
+	 * Metodo que obtiene la informacion de todos los bebedores en la Base de Datos <br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>
+	 * @return	lista con la informacion de todos los bebedores que se encuentran en la Base de Datos
+	 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public ArrayNode getFechaMenorDemanda() throws SQLException, Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		ArrayNode arrayNode = mapper.createArrayNode();
+		String sql = " select *from " +
+				" (select count(*) Numero_alojamientos, to_char(FECHAINICIO, 'MM')  mes,to_char(FECHAINICIO, 'YY') YEAR " +
+				" from habitaciones " +
+				" join RESERVAS " +
+				" on " +
+				" HABITACIONES.ID = RESERVAS.IDHABITACION " +
+				" group by to_char(FECHAINICIO, 'MM'), to_char(FECHAINICIO, 'YY') " +
+				" order by NUMero_alojamientos asc) " +
+				" where rownum <= 3 ";
 		
-		/**
-		 * Metodo que actualiza la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
-		 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
-		 * @param bebedor Bebedor que desea actualizar a la Base de Datos
-		 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
-		 * @throws Exception Si se genera un error dentro del metodo.
-		 */
-		public void deleteAlojamiento(Alojamiento aloja) throws SQLException, Exception {
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
 
-			String sql = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, aloja.getId());
-			System.out.println(sql);
-			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			recursos.add(prepStmt);
-			prepStmt.executeQuery();
+		while (rs.next()) {
+			org.codehaus.jackson.node.ObjectNode obj1 = mapper.createObjectNode();
+			obj1.put("NUMERO_ALOJAMIENTOS", rs.getInt("NUMERO_ALOJAMIENTOS"));
+			obj1.put("MES", rs.getInt("MES"));
+			obj1.put("YEAR", rs.getLong("YEAR"));
+			arrayNode.add(obj1);
 		}
-		
-		
-		
-		//----------------------------------------------------------------------------------------------------------------------------------
-		// METODOS AUXILIARES
-		//----------------------------------------------------------------------------------------------------------------------------------
-		
-		/**
-		 * Metodo encargado de inicializar la conexion del DAO a la Base de Datos a partir del parametro <br/>
-		 * <b>Postcondicion: </b> el atributo conn es inicializado <br/>
-		 * @param connection la conexion generada en el TransactionManager para la comunicacion con la Base de Datos
-		 */
-		public void setConn(Connection connection)
-		{
-			this.conn = connection;
+		return arrayNode;
+	}
+
+	/**
+	 * Metodo que agregar la informacion de un nuevo bebedor en la Base de Datos a partir del parametro ingresado<br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
+	 * @param bebedor Bebedor que desea agregar a la Base de Datos
+	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public void addAlojamiento(Alojamiento aloja) throws SQLException, Exception {
+
+		String sql = String.format("INSERT INTO %1$s.ALOJAMIENTOS (ID, NOMBRE, DIRECCION,CALIFICACION,HORAAPERTURA,HORACIERRE,NIT,CAPACIDAD,TIPO,ESTADO,DIASUSADOS,DESCRIPCIONSEGURO,VALORSEGURO,NUMHABITACIONES,MENAJE,IDOPERADOR) VALUES (%2$s, '%3$s', '%4$s', %5$s,'%6$s','%7$s',%8$s,%9$s,'%10$s','%11$s',%12$s,'%13$s',%14$s,%15$s,'%16$s',%17$s)", 
+				USUARIO,
+				aloja.getId(),
+				aloja.getNombre(),
+				aloja.getDireccion(),
+				aloja.getCalificacion(),
+				aloja.getHoraApertura(),
+				aloja.getHoraCierre(),
+				aloja.getNIT(),
+				aloja.getCapacidad(),
+				aloja.getTipo(),
+				aloja.getEstado(),
+				aloja.getDiasUsados(),
+				aloja.getDescripcionSeguro(),
+				aloja.getValorSeguro(),
+				aloja.getNumHabitaciones(),
+				aloja.getMenaje(),
+				aloja.getIdOperador());			
+		System.out.println(sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+
+	}
+	/**
+	 * Metodo que actualiza la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
+	 * @param bebedor Bebedor que desea actualizar a la Base de Datos
+	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public void updateAlojamiento(Alojamiento aloja) throws SQLException, Exception {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append (String.format ("UPDATE %s.ALOJAMIENTOS ", USUARIO));
+		sql.append (String.format (
+				"SET NOMBRE = '%1$s', DIRECCION = '%2$s', CALIFICACION = %3$s, HORAAPERTURA =  '%4$s',HORACIERRE = '%5$s' , NIT = %6$s , CAPACIDAD = %7$s , TIPO = '%8$s' , ESTADO  = '%9$s' , DIASUSADOS = %10$s , DESCRIPCIONSEGURO = '%11$s' , VALORSEGURO =  %12$s, NUMHABITACIONES = %13$s ,  MENAJE = '%14$s'  , IDOPERADOR = %15$s  ",
+				aloja.getNombre(),aloja.getDireccion(),aloja.getCalificacion(),aloja.getHoraApertura(),aloja.getHoraCierre(),aloja.getNIT(),aloja.getCapacidad(),aloja.getTipo(),aloja.getEstado(),aloja.getDiasUsados(),aloja.getDescripcionSeguro(),aloja.getValorSeguro(),aloja.getNumHabitaciones(),aloja.getMenaje(),aloja.getIdOperador()));
+		sql.append ("WHERE ID = " + aloja.getId ());
+		System.out.println(sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	/**
+	 * Metodo que actualiza la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
+	 * @param bebedor Bebedor que desea actualizar a la Base de Datos
+	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public void habilitarAlojamiento(Alojamiento aloja) throws SQLException, Exception {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append (String.format ("UPDATE %s.ALOJAMIENTOS ", USUARIO));
+		sql.append (String.format (
+				"SET NOMBRE = '%1$s', DIRECCION = '%2$s', CALIFICACION = %3$s, HORAAPERTURA =  '%4$s',HORACIERRE = '%5$s' , NIT = %6$s , CAPACIDAD = %7$s , TIPO = '%8$s' , ESTADO  = 'DISPONIBLE', DIASUSADOS = %10$s , DESCRIPCIONSEGURO = '%11$s' , VALORSEGURO =  %12$s, NUMHABITACIONES = %13$s ,  MENAJE = '%14$s'  , IDOPERADOR = %15$s  ",
+				aloja.getNombre(),aloja.getDireccion(),aloja.getCalificacion(),aloja.getHoraApertura(),aloja.getHoraCierre(),aloja.getNIT(),aloja.getCapacidad(),aloja.getTipo(),aloja.getEstado(),aloja.getDiasUsados(),aloja.getDescripcionSeguro(),aloja.getValorSeguro(),aloja.getNumHabitaciones(),aloja.getMenaje(),aloja.getIdOperador()));
+		sql.append ("WHERE ID = " + aloja.getId ());
+		System.out.println(sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+
+
+	/**
+	 * Metodo que actualiza la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
+	 * @param bebedor Bebedor que desea actualizar a la Base de Datos
+	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public void deleteAlojamiento(Alojamiento aloja) throws SQLException, Exception {
+
+		String sql = String.format("DELETE FROM %1$s.ALOJAMIENTOS WHERE ID = %2$d", USUARIO, aloja.getId());
+		System.out.println(sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+
+
+
+	//----------------------------------------------------------------------------------------------------------------------------------
+	// METODOS AUXILIARES
+	//----------------------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Metodo encargado de inicializar la conexion del DAO a la Base de Datos a partir del parametro <br/>
+	 * <b>Postcondicion: </b> el atributo conn es inicializado <br/>
+	 * @param connection la conexion generada en el TransactionManager para la comunicacion con la Base de Datos
+	 */
+	public void setConn(Connection connection)
+	{
+		this.conn = connection;
+	}
+
+	/**
+	 * Metodo que cierra todos los recursos que se encuentran en el arreglo de recursos<br/>
+	 * <b>Postcondicion: </b> Todos los recurso del arreglo de recursos han sido cerrados.
+	 */
+	public void cerrarRecursos() 
+	{
+		for(Object ob : recursos){
+			if(ob instanceof PreparedStatement)
+				try {
+					((PreparedStatement) ob).close();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 		}
-		
-		/**
-		 * Metodo que cierra todos los recursos que se encuentran en el arreglo de recursos<br/>
-		 * <b>Postcondicion: </b> Todos los recurso del arreglo de recursos han sido cerrados.
-		 */
-		public void cerrarRecursos() 
-		{
-			for(Object ob : recursos){
-				if(ob instanceof PreparedStatement)
-					try {
-						((PreparedStatement) ob).close();
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-			}
-		}
-		
-		/**
-		 * Metodo que transforma el resultado obtenido de una consulta SQL (sobre la tabla CLIENTE) en una instancia de la clase Bebedor.
-		 * @param resultSet ResultSet con la informacion de un bebedor que se obtuvo de la base de datos.
-		 * @return Bebedor cuyos atributos corresponden a los valores asociados a un registro particular de la tabla BEBEDORES.
-		 * @throws SQLException Si existe algun problema al extraer la informacion del ResultSet.
-		 */
-		public Alojamiento convertResultSetToAlojamiento(ResultSet resultSet) throws SQLException 
-		{
-			int id = resultSet.getInt("ID");
-			long NIT = resultSet.getLong("NIT");
-			String nombre = resultSet.getString("NOMBRE");
-			String direccion = resultSet.getString("DIRECCION");
-			double calificacion = resultSet.getDouble("CALIFICACION");
-			String horaApertura = resultSet.getString("HORAAPERTURA");
-			String horaCierre = resultSet.getString("HORACIERRE");
-			String tipo = resultSet.getString("TIPO");
-			int capacidad  = resultSet.getInt("CAPACIDAD");
-			String estado = resultSet.getString("ESTADO");
-			int diasUsados = resultSet.getInt("DIASUSADOS");
-			String descripcionSeguro = resultSet.getString("DESCRIPCIONSEGURO");
-			double valorSeguro = resultSet.getDouble("VALORSEGURO");
-			int numHabitaciones = resultSet.getInt("NUMHABITACIONES");
-			String menaje = resultSet.getString("MENAJE");
-			long idOperador = resultSet.getLong("IDOPERADOR");
-		
-			Alojamiento aloja = new Alojamiento(id, NIT, nombre, direccion, calificacion, horaApertura, horaCierre, capacidad, tipo, estado, diasUsados, descripcionSeguro, valorSeguro, numHabitaciones, menaje, idOperador);
-			return aloja;
-		
-		}
-		
-		
-		
+	}
+
+	/**
+	 * Metodo que transforma el resultado obtenido de una consulta SQL (sobre la tabla CLIENTE) en una instancia de la clase Bebedor.
+	 * @param resultSet ResultSet con la informacion de un bebedor que se obtuvo de la base de datos.
+	 * @return Bebedor cuyos atributos corresponden a los valores asociados a un registro particular de la tabla BEBEDORES.
+	 * @throws SQLException Si existe algun problema al extraer la informacion del ResultSet.
+	 */
+	public Alojamiento convertResultSetToAlojamiento(ResultSet resultSet) throws SQLException 
+	{
+		int id = resultSet.getInt("ID");
+		long NIT = resultSet.getLong("NIT");
+		String nombre = resultSet.getString("NOMBRE");
+		String direccion = resultSet.getString("DIRECCION");
+		double calificacion = resultSet.getDouble("CALIFICACION");
+		String horaApertura = resultSet.getString("HORAAPERTURA");
+		String horaCierre = resultSet.getString("HORACIERRE");
+		String tipo = resultSet.getString("TIPO");
+		int capacidad  = resultSet.getInt("CAPACIDAD");
+		String estado = resultSet.getString("ESTADO");
+		int diasUsados = resultSet.getInt("DIASUSADOS");
+		String descripcionSeguro = resultSet.getString("DESCRIPCIONSEGURO");
+		double valorSeguro = resultSet.getDouble("VALORSEGURO");
+		int numHabitaciones = resultSet.getInt("NUMHABITACIONES");
+		String menaje = resultSet.getString("MENAJE");
+		long idOperador = resultSet.getLong("IDOPERADOR");
+
+		Alojamiento aloja = new Alojamiento(id, NIT, nombre, direccion, calificacion, horaApertura, horaCierre, capacidad, tipo, estado, diasUsados, descripcionSeguro, valorSeguro, numHabitaciones, menaje, idOperador);
+		return aloja;
+
+	}
+
+
+
 
 }

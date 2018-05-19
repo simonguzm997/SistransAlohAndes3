@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import org.codehaus.jackson.node.ArrayNode;
 
 import dao.DAOAlojamiento;
 import dao.DAOCliente;
@@ -1761,20 +1762,112 @@ public class AlohAndesTransactionManager
 			}	
 		}
 		
+		/**
+		 * Metodo que optiene los operadores de la base de datos
+		 * @return la lista de los operadores en Formato Json de la base de datos
+		 * @throws Exception Si hay algun error
+		 */
+		public ArrayNode getFechasMayorIngreso () throws Exception
+		{
+			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+			ArrayNode fechas;
+			try {
+				this.conn = darConexion();
+				daoAlojamiento.setConn(conn);
+				fechas = daoAlojamiento.getFechaMayorRecaudacion();
+				
+			}catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoAlojamiento.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return fechas;
+		}
+		
+		/**
+		 * Metodo que optiene los operadores de la base de datos
+		 * @return la lista de los operadores en Formato Json de la base de datos
+		 * @throws Exception Si hay algun error
+		 */
+		public ArrayNode getFechasMayorDemanda () throws Exception
+		{
+			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+			ArrayNode fechas;
+			try {
+				this.conn = darConexion();
+				daoAlojamiento.setConn(conn);
+				fechas = daoAlojamiento.getFechaMayorDemanda();
+				
+			}catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoAlojamiento.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return fechas;
+		}
+		
+		/**
+		 * Metodo que optiene los operadores de la base de datos
+		 * @return la lista de los operadores en Formato Json de la base de datos
+		 * @throws Exception Si hay algun error
+		 */
+		public ArrayNode getFechasMenorDemanda () throws Exception
+		{
+			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+			ArrayNode fechas;
+			try {
+				this.conn = darConexion();
+				daoAlojamiento.setConn(conn);
+				fechas = daoAlojamiento.getFechaMenorDemanda();
+				
+			}catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoAlojamiento.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return fechas;
+		}
+		
 		
 		
 		
 }
-
-		
-		
-		
-		
-		
-		
-   
-   
-
-		
-
-
