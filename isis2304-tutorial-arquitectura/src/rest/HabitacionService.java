@@ -141,6 +141,30 @@ public class HabitacionService
 		}
 
 		
+		@PUT
+		@Path("habilitarHabitacion"+"/{id: \\d+}" )
+		@Produces({MediaType.APPLICATION_JSON})
+		public Response habilitarHabitacion(@PathParam ("id") int id)
+		{
+			try{
+				AlohAndesTransactionManager tm = new AlohAndesTransactionManager( getPath( ) );
+				Habitacion hab = tm.getHabitacionById(id);
+				if (hab.getEstado().equals("DISPONIBLE")) {
+					Exception e1 = new Exception("La habitación ya se encuentra disponible");
+					throw e1;
+				}else
+				{
+					tm.updateHabitacionHabilitar(hab);
+
+				}
+				return Response.status( 200 ).entity( hab).build( );			
+			}
+			catch( Exception e )
+			{
+				return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+			}
+		}
+		
 		
 		
 		
