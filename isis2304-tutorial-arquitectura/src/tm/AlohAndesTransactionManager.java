@@ -1347,7 +1347,7 @@ public class AlohAndesTransactionManager
 			return reservas;
 		}
 		
-		public Reserva getReservaById(int id) throws Exception
+		public Reserva getReservaById(Long id) throws Exception
 		{
 			DAOReserva daoReserva = new DAOReserva();
 			Reserva reserva = null;
@@ -1973,6 +1973,51 @@ public class AlohAndesTransactionManager
 				}
 			}
 			return cliente;
+		}
+		
+		public void cancelarReserva(Reserva reserva) throws Exception 
+		{
+			DAOReserva daoReserva = new DAOReserva();
+			
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn( conn );
+				Reserva reservas = daoReserva.findReservaById(reserva.getId());
+				if (reservas == null)
+				{
+					Exception e =new Exception (" El habitacion que quiere actualizar no existe en la base de datos");
+					throw e;
+				}
+				else
+				{
+					daoReserva.cancelarReserva(reserva);
+				}
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
 		}
 		
 		
