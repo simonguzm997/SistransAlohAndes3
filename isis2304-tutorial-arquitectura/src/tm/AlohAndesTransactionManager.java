@@ -1601,23 +1601,20 @@ public class AlohAndesTransactionManager
 			}
 			return cliente;
 		}
+		
 		/**
 		 * Metodo que optiene los operadores de la base de datos
 		 * @return la lista de los operadores en Formato Json de la base de datos
 		 * @throws Exception Si hay algun error
 		 */
-		public ArrayList<Cliente> getClientesFrecuentes () throws Exception
+		public List<Cliente> getClientesFrecuentes () throws Exception
 		{
 			DAOCliente daoCliente = new DAOCliente();
-			ArrayList<Cliente> clientes = new ArrayList<Cliente>();;
-			List<Long> idClientesFrecuentes;
+			List<Cliente> ofertas;
 			try {
 				this.conn = darConexion();
 				daoCliente.setConn(conn);
-				idClientesFrecuentes=daoCliente.getClientesFrecuentes();
-				for (Long integer : idClientesFrecuentes) {
-					clientes.add(getClienteById(integer));
-				}
+				ofertas = daoCliente.getClientesFrecuentes();
 				
 			}catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
@@ -1637,7 +1634,7 @@ public class AlohAndesTransactionManager
 					throw exception;
 				}
 			}
-			return clientes;
+			return ofertas;
 		}
 		
 		/**

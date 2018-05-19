@@ -99,7 +99,7 @@ public class ClienteService {
 		}
 		
 		@GET
-		@Path("clientesFrecuentes")
+		@Path("Frecuentes")
 		@Produces({ MediaType.APPLICATION_JSON })
 		public Response getClientesFrecuentes() {
 			

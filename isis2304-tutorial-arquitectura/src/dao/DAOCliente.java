@@ -107,42 +107,33 @@ public class DAOCliente {
 	 * @throws SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
 	 * @throws Exception Si se genera un error dentro del metodo.
 	 */
-	public ArrayList<Long> getClientesFrecuentes() throws SQLException, Exception {
-		ArrayList<Long> idClientesFrecuentes = new ArrayList<Long>();
+	public ArrayList<Cliente> getClientesFrecuentes() throws SQLException, Exception {
+		ArrayList<Cliente> ClientesFrecuentes = new ArrayList<Cliente>();
 
-		//Aclaracion: Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
-		/*StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT DISTINCT (IDCLIENTE) FROM ( \n");
-		sql.append(" SELECT COUNT(IDCLIENTE) AS VECESRESERVADAS,IDCLIENTE,FECHA \n");
-		sql.append(" FROM \n");
-		sql.append(" (select HABITACIONES.IDALOJAMIENTO, HABITACIONES.ID,RESERVAS.IDCLIENTE /n");
-		sql.append(" FROM habitaciones /n");
-		sql.append(" JOIN RESERVAS /n");
-		sql.append(" ON HABITACIONES.ID = RESERVAS.IDHABITACION), /n");
-		sql.append(" (SELECT (to_date(FECHAFIN, 'dd/mm/yyyy') - to_date(FECHAINICIO, 'dd/mm/yyyy') ) AS FECHA /n");
-		sql.append(" FROM RESERVAS) /n");
-		sql.append(" GROUP BY IDCLIENTE, IDALOJAMIENTO,FECHA) /n");
-		sql.append(" WHERE VECESRESERVADAS>=3 OR FECHA >=16; ");*/
-		String sql = "SELECT DISTINCT ( IDCLIENTE ) FROM ( " +
-				" SELECT COUNT(IDCLIENTE) AS VECESRESERVADAS,IDCLIENTE,FECHA " +
-				" FROM " +
-				" (select HABITACIONES.IDALOJAMIENTO, HABITACIONES.ID,RESERVAS.IDCLIENTE " +
-				" FROM habitaciones " +
-				" JOIN RESERVAS " +
-				" ON HABITACIONES.ID = RESERVAS.IDHABITACION ), " +
-				" ( SELECT ( to_date( FECHAFIN, 'dd/mm/yyyy' ) - to_date( FECHAINICIO, 'dd/mm/yyyy' ) ) AS FECHA " +
-				"      FROM RESERVAS ) " +
-				" GROUP BY IDCLIENTE, IDALOJAMIENTO,FECHA ) " +
-				" WHERE VECESRESERVADAS>=3 OR FECHA >=16 ";
+		String sql = " SELECT * FROM " +
+				" (select a.IDcliente from " +
+				" (select IDCliente , count (idAlojamiento) as cantidad from " +
+				" (select IdCliente, IDHABITACION " +
+				" from reservas " +
+				" group by  (IDCLIENTE, IDHABITACION) " +
+				" ) inner join " +
+				" habitaciones on habitaciones.id = idhabitacion " +
+				" group by idCliente) A inner join " +
+				" (select MAX (fecha) as Max, idcliente from " +
+				" (SELECT (to_date(FECHAFIN, 'dd/mm/yyyy') - to_date(FECHAINICIO, 'dd/mm/yyyy') ) AS FECHA, idcliente " +
+				"     FROM RESERVAS) " +
+				"     group by idcliente) B " +
+				"     on A.IDcliente = B.Idcliente) C INNER JOIN CLIENTES " +
+				"     ON C.IDCLIENTE = CLIENTES.ID ";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			idClientesFrecuentes.add(rs.getLong("IDCLIENTE"));
+			ClientesFrecuentes.add(convertResultSetToCliente(rs));
 		}
-		return idClientesFrecuentes;
+		return ClientesFrecuentes;
 	}
 	
 	/**
