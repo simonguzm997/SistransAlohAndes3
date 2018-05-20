@@ -2150,9 +2150,10 @@ public class AlohAndesTransactionManager
 			return cliente;
 		}
 		
-		public void cancelarReserva(Reserva reserva) throws Exception 
+		public double cancelarReserva(Reserva reserva) throws Exception 
 		{
 			DAOReserva daoReserva = new DAOReserva();
+			double multa = 0;
 			
 			try
 			{
@@ -2166,7 +2167,7 @@ public class AlohAndesTransactionManager
 				}
 				else
 				{
-					daoReserva.cancelarReserva(reserva);
+					multa =daoReserva.cancelarReserva(reserva);
 				}
 
 			}
@@ -2193,9 +2194,59 @@ public class AlohAndesTransactionManager
 					throw exception;
 				}
 			}	
+			return multa;
 		}
 		
-		
+		public double cancelarReservaGrupal(long id) throws Exception 
+		{
+			DAOReserva daoReserva = new DAOReserva();
+			double multa = 0;
+			ArrayList<Reserva>reservas = new ArrayList<Reserva>();
+			
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn( conn );
+				reservas = daoReserva.findReservasDeGrupal(id);
+				if (reservas.isEmpty())
+				{
+					Exception e =new Exception ("La reserva grupal quiere actualizar no existe en la base de datos");
+					throw e;
+				}
+				else
+				{
+					for (int i=0; i<reservas.size();i++)
+					{
+						multa += cancelarReserva(reservas.get(i));
+					}
+				}
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+			return multa;
+		}
 		
 		
 		

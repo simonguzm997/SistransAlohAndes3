@@ -285,21 +285,15 @@ public class DAOReserva
 			
 		}
 		
-		public void cancelarReserva (Reserva reserva) throws SQLException, Exception
+		public double cancelarReserva (Reserva reserva) throws SQLException, Exception
 		{
 			StringBuilder sql = new StringBuilder();
 			sql.append(String.format("UPDATE %s.RESERVAS  ", USUARIO));
 			double nuevoValor = (reserva.getValor()/100)*30;
-			sql.append(String.format(" SET CANTPERSONAS = '%1$s' , FECHAINICIO = '%2$s', FECHAFIN = '%3$s' , "
-					+ "VALOR = '%4$s' , ESTADO = 'Cancelada', IDHABITACION = '%6$s' , IDCLIENTE = '%7$s' ",
+			sql.append(String.format(" SET VALOR = '%1$s' , ESTADO = 'Cancelada' ",
 					
-					reserva.getCantPersonas(),
-					reserva.getFechaInicio(),
-					reserva.getFechaFin(),
-					nuevoValor,
-					reserva.getEstado(),
-					reserva.getIdHabitacion(),
-					reserva.getIdCliente()));
+					
+					nuevoValor));
 			
 			sql.append (" WHERE ID = " + reserva.getId ());
 			
@@ -308,7 +302,7 @@ public class DAOReserva
 			PreparedStatement prepStmt = conn.prepareStatement(sql.toString());
 			recursos.add(prepStmt);
 			prepStmt.executeQuery();
-			
+			return nuevoValor;
 		}
 		
 

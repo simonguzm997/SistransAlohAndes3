@@ -15,6 +15,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+
 import tm.AlohAndesTransactionManager;
 import vos.Reserva;
 
@@ -158,8 +161,17 @@ public class ReservasService
 		{
 			try {
 				AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
-				tm.cancelarReserva(reserva);
-				return Response.status(200).entity(reserva).build();
+				
+				ObjectMapper mapper = new ObjectMapper();
+				ArrayNode arrayNode = mapper.createArrayNode();
+				double multa =tm.cancelarReserva(reserva);
+				
+				org.codehaus.jackson.node.ObjectNode obj1 = mapper.createObjectNode();
+				obj1.put("El valor de su multa es de: ", multa);
+				arrayNode.add(obj1);
+				
+				
+				return Response.status(200).entity(arrayNode).build();
 			} catch (Exception e) {
 				return Response.status(500).entity(doErrorMessage(e)).build();
 			}

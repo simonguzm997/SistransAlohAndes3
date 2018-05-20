@@ -3,6 +3,7 @@ package rest;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,8 +16,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+
 import tm.AlohAndesTransactionManager;
 import vos.Habitacion;
+import vos.Reserva;
 import vos.ReservaGrupal;
 @Path("reservaGrupal")
 public class ReservaGrupalService 
@@ -93,18 +98,28 @@ public class ReservaGrupalService
 	}
 	
 	
-	@POST 
-	@Produces({MediaType.APPLICATION_JSON})
-	public Response addHabitacion (Habitacion apto)
+	
+	
+	
+	@PUT
+	@Path ("/cancelarReservaGrupal")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response cancelarReserva(@QueryParam("IdGrup")long idGrup) 
 	{
 		try {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
-
-
-			tm.addHabitacion(apto);
-			return Response.status(200).entity(apto).build();
-		} 
-		catch (Exception e) {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			ArrayNode arrayNode = mapper.createArrayNode();
+			double multa =tm.cancelarReservaGrupal(idGrup);
+			
+			org.codehaus.jackson.node.ObjectNode obj1 = mapper.createObjectNode();
+			obj1.put("El valor de su multa es de: ", multa);
+			arrayNode.add(obj1);
+			
+			
+			return Response.status(200).entity(arrayNode).build();
+		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 	}
