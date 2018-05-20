@@ -1796,9 +1796,11 @@ public class AlohAndesTransactionManager
 				{
 					throw new Exception("El bebedor con el id = " + id + " no se encuentra persistido en la base de datos.");				
 				}
-//				else {
-//					cliente.setReservas(getAllReservasByIdCliente(id));
-//				}
+				else {
+					
+					cliente.setReservas(getAllReservasByIdCliente(id));
+					cliente.setDineroPagado(cliente.calcularDinero());
+				}
 			} 
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
