@@ -97,6 +97,38 @@ public class DAOOperador
 			return operador;
 		}
 		
+		public Operador findMejorOperadorPorSemana() throws SQLException, Exception 
+		{
+			Operador operador = null;
+			String sql = " SELECT * FROM OPERADORES WHERE ID=( " +
+					" SELECT IDOPERADOR FROM ( " +
+					" SELECT MAX (OCUPACION) MAXIMO, IDOPERADOR FROM( " +
+					" SELECT COUNT (IDOPERADOR) OCUPACION, IDOPERADOR  FROM ( " +
+					" select to_char(FECHAINICIO, 'WW')semana , RESERVAS.ID IDRESERVA ,VALOR, IDHABITACION IDHABITACION,ALOJAMIENTOS.IDOPERADOR IDOPERADOR " +
+					" from RESERVAS " +
+					" INNER JOIN HABITACIONES " +
+					" ON HABITACIONES.ID=reservas.IDHABITACION " +
+					" INNER JOIN ALOJAMIENTOS " +
+					" ON ALOJAMIENTOS.ID=HABITACIONES.IDALOJAMIENTO) " +
+					" WHERE SEMANA = 1" +
+					" group by IDOPERADOR ORDER BY OCUPACION DESC) " +
+					" group by IDOPERADOR " +
+					" ORDER BY MAXIMO DESC) " +
+					" WHERE ROWNUM <=1) ";
+							
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			if(rs.next()) 
+			{
+				operador = convertResultSetToOperador(rs);
+			}
+
+			return operador;
+		}
+		
+		
 		public ArrayList<Operador> getOperadoresByDinero () throws SQLException
 		{
 

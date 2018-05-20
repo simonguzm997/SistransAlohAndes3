@@ -142,6 +142,30 @@ public class OperadorService {
 		}
 	}
 	
+	/**
+	 * Metodo GET que trae a todos los bebedores en la Base de datos. <br/>
+	 * <b>Precondicion: </b> el archivo <em>'conectionData'</em> ha sido inicializado con las credenciales del usuario <br/>
+	 * <b>URL: </b> http://localhost:8080/TutorialParranderos/rest/bebedores <br/>
+	 * @return	<b>Response Status 200</b> - JSON que contiene a todos los bebedores que estan en la Base de Datos <br/>
+	 * 			<b>Response Status 500</b> - Excepcion durante el transcurso de la transaccion
+	 */			
+	@GET
+	@Path("porSemana")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getMejoresOperadoresPorSemana() {
+		
+		try {
+			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+			
+			Operador operador = tm.getOperadorMejorPorSemana();
+			//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+			return Response.status(200).entity(operador).build();
+		} 
+		catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+	
 	
 	/**
 	 * Metodo que recibe un bebedor en formato JSON y lo agrega a la Base de Datos <br/>
