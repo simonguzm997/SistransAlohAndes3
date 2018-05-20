@@ -200,7 +200,84 @@ public class DAOCliente {
 		return clientes;
 	}
 	
+	public ArrayList<Cliente> getClientesBuenos1(int precioAlto, int Anio) throws SQLException, Exception {
+		
+		System.out.println("entre a buenos1");
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+
+		System.out.println( precioAlto+" ----- "+ Anio);
+		String sql = String.format(" SELECT CLIENTES.* FROM %1$s.CLIENTES " + 
+				"INNER JOIN (SELECT IDCLIENTE FROM %1$s.RESERVAS " + 
+				"INNER JOIN (SELECT ID " + 
+				"FROM %1$s.HABITACIONES " + 
+				"WHERE TIPO = 'SUITE'  " + 
+				"OR PRECIOBASEDIA > 200000 " + 
+				"GROUP BY ID) A " + 
+				"ON %1$s.RESERVAS.IDHABITACION = A.ID " + 
+				"WHERE FECHAINICIO LIKE ('%-16') " + 
+				"GROUP BY IDCLIENTE) B " + 
+				"ON %1$s.CLIENTES.ID=B.IDCLIENTE ",
+				
+				
+				USUARIO);
+		
+		System.out.println(sql);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			clientes.add(convertResultSetToCliente(rs));
+		}
+		return clientes;
+	}
 	
+	public ArrayList<Cliente> getClientesBuenos2(int precioAlto, String Anio) throws SQLException, Exception {
+		System.out.println("entre a buenos 2"
+				+ "");
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+
+		String sql = String.format("SELECT CLIENTES.* FROM %1$s.CLIENTES " + 
+				"INNER JOIN ( select IDCliente, Count (idCliente) VECES " + 
+				"from %1$s.reservas " + 
+				"where (FECHAINICIO like ('%-JAN-%3$s') " + 
+				"or FECHAINICIO like ('%-FEB-%3$s') " + 
+				"or FECHAINICIO like ('%-MAR-%3$s') " + 
+				"or FECHAINICIO like ('%-APR-%3$s') " + 
+				"or FECHAINICIO like ('%-MAY-%3$s') " + 
+				"or FECHAINICIO like ('%-JUN-%3$s') " + 
+				"or FECHAINICIO like ('%-JUL-%3$s') " + 
+				"or FECHAINICIO like ('%-AUG-%3$s') " + 
+				"or FECHAINICIO like ('%-SEP-%3$s') " + 
+				"or FECHAINICIO like ('%-OCT-%3$s') " + 
+				"or FECHAINICIO like ('%-NOV-%3$s') " + 
+				"or FECHAINICIO like ('%-DEC-%3$s')) " + 
+				"group by IdCliente) A " + 
+				"ON %1$s.CLIENTES.ID = A.IDCLIENTE " + 
+				"WHERE  A.VECES >11 " + 
+				"and ID not in (SELECT IDCLIENTE as ID FROM %1$s.RESERVAS " + 
+				"INNER JOIN (SELECT ID " + 
+				"FROM %1$s.HABITACIONES " + 
+				"WHERE TIPO = 'SUITE'  " + 
+				"OR PRECIOBASEDIA >%2$d " + 
+				"GROUP BY ID) A " + 
+				"ON %1$s.RESERVAS.IDHABITACION = A.ID " + 
+				"WHERE FECHAINICIO LIKE ('%-%3$s') " + 
+				"GROUP BY IDCLIENTE) ",				
+				USUARIO, precioAlto, Anio);
+		
+		System.out.println(sql);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			clientes.add(convertResultSetToCliente(rs));
+		}
+		return clientes;
+	}
 	
 	
 	
