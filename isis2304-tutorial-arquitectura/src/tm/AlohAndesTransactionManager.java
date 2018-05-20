@@ -1934,7 +1934,16 @@ public class AlohAndesTransactionManager
 				conn.setReadOnly(true);
 				daoCliente.setConn(conn);
 				clientes = daoCliente.getClientesBuenos1(precioAlto, Anio);
-				//clientes.addAll(daoCliente.getClientesBuenos2(precioAlto, Anio));
+				clientes.addAll(daoCliente.getClientesBuenos2(precioAlto, Anio));
+				
+				
+				for (int i=0; i<clientes.size(); i++)
+				{
+					List<Reserva> resTemp;
+					resTemp = getAllReservasByIdCliente(clientes.get(i).getId());
+					clientes.get(i).setReservas(resTemp);
+				}
+				
 				
 			}catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
@@ -2355,4 +2364,6 @@ public class AlohAndesTransactionManager
 			}
 			return operadores;
 		}
+		
+
 }
