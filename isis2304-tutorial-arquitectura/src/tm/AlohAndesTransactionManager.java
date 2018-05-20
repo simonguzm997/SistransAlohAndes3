@@ -1934,7 +1934,7 @@ public class AlohAndesTransactionManager
 				conn.setReadOnly(true);
 				daoCliente.setConn(conn);
 				clientes = daoCliente.getClientesBuenos1(precioAlto, Anio);
-				//clientes.addAll(daoCliente.getClientesBuenos2(precioAlto, Anio));
+				clientes.addAll(daoCliente.getClientesBuenos2(precioAlto, Anio));
 				
 			}catch (Exception exception) {
 				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());

@@ -206,24 +206,44 @@ public class DAOCliente {
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
 		System.out.println( precioAlto+" ----- "+ Anio);
-		String sql = String.format(" SELECT CLIENTES.* FROM %1$s.CLIENTES " + 
-				"INNER JOIN (SELECT IDCLIENTE FROM %1$s.RESERVAS " + 
-				"INNER JOIN (SELECT ID " + 
-				"FROM %1$s.HABITACIONES " + 
-				"WHERE TIPO = 'SUITE'  " + 
-				"OR PRECIOBASEDIA > 200000 " + 
-				"GROUP BY ID) A " + 
-				"ON %1$s.RESERVAS.IDHABITACION = A.ID " + 
-				"WHERE FECHAINICIO LIKE ('%-16') " + 
-				"GROUP BY IDCLIENTE) B " + 
-				"ON %1$s.CLIENTES.ID=B.IDCLIENTE ",
-				
-				
-				USUARIO);
+		String pfecha = "%-"+Anio;
+		String sql2 = String.format( " SELECT CLIENTES.* FROM ISIS2304A111810.CLIENTES  "
+					+ " INNER JOIN (SELECT IDCLIENTE FROM ISIS2304A111810.RESERVAS "
+					+ " INNER JOIN (SELECT ID FROM ISIS2304A111810.HABITACIONES WHERE TIPO = 'SUITE' "
+					+ " OR PRECIOBASEDIA >%1$d GROUP BY ID) A "
+					+ " ON ISIS2304A111810.RESERVAS.IDHABITACION = A.ID WHERE FECHAINICIO LIKE ('%2$s') "
+					+ " GROUP BY IDCLIENTE) B ON CLIENTES.ID=B.IDCLIENTE " ,precioAlto ,pfecha) ;
 		
-		System.out.println(sql);
+		System.out.println(sql2);
+		
+//		String sql = String.format(" SELECT CLIENTES.* FROM %1$s.CLIENTES "
+//				+ " INNER JOIN (SELECT IDCLIENTE FROM %1$s.RESERVAS "
+//				+ "INNER JOIN (SELECT ID "
+//				+ "FROM %1$s.HABITACIONES "
+//				+ "WHERE TIPO = 'SUITE' " + 
+//			       "OR PRECIOBASEDIA >200000 "
+//				+ "GROUP BY ID) A "
+//				+ "ON %1$s.RESERVAS.IDHABITACION = A.ID "
+//				+ "WHERE FECHAINICIO LIKE ('%-16') "
+//				+ "GROUP BY IDCLIENTE) B "
+//				+ "ON %1$s.CLIENTES.ID=B.IDCLIENTE " ,				
+//				USUARIO);
+		
+		//System.out.println(sql);
+//		
+//		(" SELECT CLIENTES.* FROM %1$s.CLIENTES " + 
+//				"INNER JOIN (SELECT IDCLIENTE FROM %1$s.RESERVAS " + 
+//				"INNER JOIN (SELECT ID " + 
+//				"FROM %1$s.HABITACIONES " + 
+//				"WHERE TIPO = 'SUITE'  " + 
+//				"OR PRECIOBASEDIA > 200000 " + 
+//				"GROUP BY ID) A " + 
+//				"ON %1$s.RESERVAS.IDHABITACION = A.ID " + 
+//				"WHERE FECHAINICIO LIKE ('%-16') " + 
+//				"GROUP BY IDCLIENTE) B " + 
+//				"ON %1$s.CLIENTES.ID=B.IDCLIENTE ",
 
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sql2);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
@@ -233,26 +253,39 @@ public class DAOCliente {
 		return clientes;
 	}
 	
-	public ArrayList<Cliente> getClientesBuenos2(int precioAlto, String Anio) throws SQLException, Exception {
+	public ArrayList<Cliente> getClientesBuenos2(int precioAlto, int Anio) throws SQLException, Exception {
 		System.out.println("entre a buenos 2"
 				+ "");
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-
+		String pfecha0 = "%-"+Anio;
+		String pfecha = "%-JAN-"+Anio;
+		String pfecha1 = "%-FEB-"+Anio;
+		String pfecha2 = "%-MAR-"+Anio;
+		String pfecha3 = "%-APR-"+Anio;
+		String pfecha4 = "%-MAY-"+Anio;
+		String pfecha5 = "%-JUN-"+Anio;
+		String pfecha6 = "%-JUL-"+Anio;
+		String pfecha7 = "%-AUG-"+Anio;
+		String pfecha8 = "%-SEP-"+Anio;
+		String pfecha9 = "%-OCT-"+Anio;
+		String pfecha10 = "%-NOV-"+Anio;
+		String pfecha11 = "%-DEC-"+Anio;
+		
 		String sql = String.format("SELECT CLIENTES.* FROM %1$s.CLIENTES " + 
 				"INNER JOIN ( select IDCliente, Count (idCliente) VECES " + 
 				"from %1$s.reservas " + 
-				"where (FECHAINICIO like ('%-JAN-%3$s') " + 
-				"or FECHAINICIO like ('%-FEB-%3$s') " + 
-				"or FECHAINICIO like ('%-MAR-%3$s') " + 
-				"or FECHAINICIO like ('%-APR-%3$s') " + 
-				"or FECHAINICIO like ('%-MAY-%3$s') " + 
-				"or FECHAINICIO like ('%-JUN-%3$s') " + 
-				"or FECHAINICIO like ('%-JUL-%3$s') " + 
-				"or FECHAINICIO like ('%-AUG-%3$s') " + 
-				"or FECHAINICIO like ('%-SEP-%3$s') " + 
-				"or FECHAINICIO like ('%-OCT-%3$s') " + 
-				"or FECHAINICIO like ('%-NOV-%3$s') " + 
-				"or FECHAINICIO like ('%-DEC-%3$s')) " + 
+				"where (FECHAINICIO like ('%2$s') " + 
+				"or FECHAINICIO like ('%3$s') " + 
+				"or FECHAINICIO like ('%4$s') " + 
+				"or FECHAINICIO like ('%5$s') " + 
+				"or FECHAINICIO like ('%6$s') " + 
+				"or FECHAINICIO like ('%7$s') " + 
+				"or FECHAINICIO like ('%8$s') " + 
+				"or FECHAINICIO like ('%9$s') " + 
+				"or FECHAINICIO like ('%10$s') " + 
+				"or FECHAINICIO like ('%11$s') " + 
+				"or FECHAINICIO like ('%12$s') " + 
+				"or FECHAINICIO like ('%13$s')) " + 
 				"group by IdCliente) A " + 
 				"ON %1$s.CLIENTES.ID = A.IDCLIENTE " + 
 				"WHERE  A.VECES >11 " + 
@@ -260,12 +293,13 @@ public class DAOCliente {
 				"INNER JOIN (SELECT ID " + 
 				"FROM %1$s.HABITACIONES " + 
 				"WHERE TIPO = 'SUITE'  " + 
-				"OR PRECIOBASEDIA >%2$d " + 
+				"OR PRECIOBASEDIA > %14$d " + 
 				"GROUP BY ID) A " + 
 				"ON %1$s.RESERVAS.IDHABITACION = A.ID " + 
-				"WHERE FECHAINICIO LIKE ('%-%3$s') " + 
+				"WHERE FECHAINICIO LIKE ('%15$s') " + 
 				"GROUP BY IDCLIENTE) ",				
-				USUARIO, precioAlto, Anio);
+				USUARIO, pfecha , pfecha1, pfecha2, pfecha3, pfecha4, pfecha5, pfecha6,
+				pfecha7, pfecha8, pfecha9, pfecha10, pfecha11, precioAlto, pfecha0);
 		
 		System.out.println(sql);
 
