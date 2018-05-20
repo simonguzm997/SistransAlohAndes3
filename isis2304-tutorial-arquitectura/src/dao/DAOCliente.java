@@ -114,7 +114,7 @@ public class DAOCliente {
 		ArrayList<Cliente> ClientesFrecuentes = new ArrayList<Cliente>();
 
 		String sql = " SELECT * FROM " +
-				" (select a.IDcliente from " +
+				" (select a.IDcliente,cantidad from " +
 				" (select IDCliente , count (idAlojamiento) as cantidad from " +
 				" (select IdCliente, IDHABITACION " +
 				" from reservas " +
@@ -127,7 +127,7 @@ public class DAOCliente {
 				"     FROM RESERVAS) " +
 				"     group by idcliente) B " +
 				"     on A.IDcliente = B.Idcliente) C INNER JOIN CLIENTES " +
-				"     ON C.IDCLIENTE = CLIENTES.ID ";
+				"     ON C.IDCLIENTE = CLIENTES.ID where cantidad>=3";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
