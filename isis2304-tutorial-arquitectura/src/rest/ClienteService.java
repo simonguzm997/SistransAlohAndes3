@@ -139,6 +139,27 @@ public class ClienteService {
 			}
 		}
 		
+		@GET
+		@Path ("/RFC11")
+		@Produces({ MediaType.APPLICATION_JSON })
+		public Response getClientesRFC11(@QueryParam("IdAlojamiento")long idAlojamiento, 
+				@QueryParam("FechaInicio")String fecha1, 
+				@QueryParam("FechaFin")String fecha2, @QueryParam("OrderBy")String orderby ) 
+		{
+			
+			try {
+				AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+				List<Cliente> clientes;
+				clientes = tm.getClientesRFC11(idAlojamiento, fecha1, fecha2, orderby);
+				
+				
+				return Response.status(200).entity(clientes).build();
+			} 
+			catch (Exception e) {
+				return Response.status(500).entity(doErrorMessage(e)).build();
+			}
+		}
+		
 		
 		/**
 		 * Metodo que recibe un bebedor en formato JSON y lo agrega a la Base de Datos <br/>
