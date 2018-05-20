@@ -1,0 +1,687 @@
+{
+	"variables": [],
+	"info": {
+		"name": "PostMan Iter 3",
+		"_postman_id": "8129c865-4ca5-5323-cdf3-80927d19be5c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GETOperadoresRFC1",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadores",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "RFC1"
+			},
+			"response": []
+		},
+		{
+			"name": "GETOperadoresDineroRFC1",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadores/getOperadoresByDinero",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "RFC1"
+			},
+			"response": []
+		},
+		{
+			"name": "GETOfertasTop20RFC2",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/habitaciones/top20",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "RFC2"
+			},
+			"response": []
+		},
+		{
+			"name": "GETAlojamientosRFC3",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojamientos",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "RFC3"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all HabEmpresaIntervaloTiempoRFC4",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/Iter1_Alohandes/rest/habitaciones/filterRFC4?Inicio=10-JAN-16&Fin=10-FEB-16&Req1=Parqueadero&Req2=Internet",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Iter1_Alohandes",
+						"rest",
+						"habitaciones",
+						"filterRFC4"
+					],
+					"query": [
+						{
+							"key": "Inicio",
+							"value": "10-JAN-16",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "Fin",
+							"value": "10-FEB-16",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "Req1",
+							"value": "Parqueadero",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "Req2",
+							"value": "Internet",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"sedesa111\", \"direccion\": \"calle 1\"}"
+				},
+				"description": "RFC4"
+			},
+			"response": []
+		},
+		{
+			"name": "GETUsoByClienteRFC6",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/clientes/51",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETAlojamientosMayorIngresoRFC7.1",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojamientos/MayorIngreso",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETAlojamientosMayorDemandaRFC7.2",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojamientos/MayorDemanda",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETAlojamientosMenorDemandaRFC7.3",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojamientos/MenorDemanda",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETClientesFrecuentesRFC8",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/clientes/Frecuentes",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETClientesRFC10",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/Iter1_Alohandes/rest/clientes/RFC10?IdAlojamiento=1&FechaInicio=01-MAR-16&FechaFin=30-DEC-16&OrderBy=NOMBRE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Iter1_Alohandes",
+						"rest",
+						"clientes",
+						"RFC10"
+					],
+					"query": [
+						{
+							"key": "IdAlojamiento",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "FechaInicio",
+							"value": "01-MAR-16",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "FechaFin",
+							"value": "30-DEC-16",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "OrderBy",
+							"value": "NOMBRE",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": ""
+					}
+				},
+				"description": "RFC10"
+			},
+			"response": []
+		},
+		{
+			"name": "GETClientesRFC11",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/Iter1_Alohandes/rest/clientes/RFC11?IdAlojamiento=1&FechaInicio=01-MAR-16&FechaFin=30-DEC-16&OrderBy=NOMBRE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Iter1_Alohandes",
+						"rest",
+						"clientes",
+						"RFC11"
+					],
+					"query": [
+						{
+							"key": "IdAlojamiento",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "FechaInicio",
+							"value": "01-MAR-16",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "FechaFin",
+							"value": "30-DEC-16",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "OrderBy",
+							"value": "NOMBRE",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": ""
+					}
+				},
+				"description": "RFC11"
+			},
+			"response": []
+		},
+		{
+			"name": "GETPeoresAlojamientosPorSemanaRFC12.1",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojamientos/PeoresAlojamientosPorSemana",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETMejoresAlojamientosPorSemanaRFC12.2",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojamientos/MejoresAlojamientosPorSemana",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETMejorPorSemanaRFC12.3",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadores/MejorPorSemana",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETPeorPorSemanaRFC12.4",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadores/PeorPorSemana",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETClientesRFC13",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/Iter1_Alohandes/rest/clientes/RFC13?Precio=200000&Anio=16",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Iter1_Alohandes",
+						"rest",
+						"clientes",
+						"RFC13"
+					],
+					"query": [
+						{
+							"key": "Precio",
+							"value": "200000",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "Anio",
+							"value": "16",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": ""
+					}
+				},
+				"description": "RFC13"
+			},
+			"response": []
+		},
+		{
+			"name": "POSTOperadorRF1",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadores/agregarOperador",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"id\": 1048537238,\n        \"nombre\": \"Andres\",\n        \"usuario\": \"Andresito\",\n        \"contrasena\": \"Wkna5d\",\n        \"correoElectronico\": \"andBur@hotmail.com\",\n        \"numeroContacto\": 3137309811,\n        \"dineroAnoActual\": 173337200,\n        \"dineroAnoCorrido\": 49756410,\n        \"relacionUniversidad\": \"EGRESADO\",\n        \"alojamientos\": null\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETOperadorById",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadores/1048537238",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETEOperador",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/operadores/deleteOperador",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\n        \"id\": 1048537238,\n        \"nombre\": \"Andres\",\n        \"usuario\": \"Andresito\",\n        \"contrasena\": \"Wkna5d\",\n        \"correoElectronico\": \"andBur@hotmail.com\",\n        \"numeroContacto\": 3137309811,\n        \"dineroAnoActual\": 173337200,\n        \"dineroAnoCorrido\": 49756410,\n        \"relacionUniversidad\": \"EGRESADO\",\n        \"alojamientos\": null\n        }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POSTAlojamientoRF2",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojamientos/agregarAlojamiento",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"id\": 50000,\n        \"NIT\": 109832912,\n        \"nombre\": \"Hotel Azo\",\n        \"direccion\": \"Calle 13 con 21\",\n        \"calificacion\": 4,\n        \"horaApertura\": \"8:00\",\n        \"horaCierre\": \"21:00\",\n        \"capacidad\": 200,\n        \"tipo\": \"HOTEL\",\n        \"estado\": \"DISPONIBLE\",\n        \"diasUsados\": 210,\n        \"descripcionSeguro\": \"Miu caro\",\n        \"valorSeguro\": 720046,\n        \"numHabitaciones\": 40,\n        \"menaje\": \"Televisores, Muebles, Ventiladores\",\n        \"idOperador\": 598,\n        \"nit\": 109832912,\n        \"habitaciones\": null\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETAlojamientoByID",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojamientos/50000",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETEAlojamientoRF6",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojamientos/deleteAlojamiento",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 50000,\n    \"NIT\": 109832912,\n    \"nombre\": \"Hotel Azo\",\n    \"direccion\": \"Calle 13 con 21\",\n    \"calificacion\": 4,\n    \"horaApertura\": \"8:00\",\n    \"horaCierre\": \"21:00\",\n    \"capacidad\": 200,\n    \"tipo\": \"HOTEL\",\n    \"estado\": \"DISPONIBLE\",\n    \"diasUsados\": 210,\n    \"descripcionSeguro\": \"Miu caro\",\n    \"valorSeguro\": 720046,\n    \"numHabitaciones\": 40,\n    \"menaje\": \"Televisores, Muebles, Ventiladores\",\n    \"idOperador\": 598,\n    \"nit\": 109832912,\n    \"habitaciones\": null\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETReservas",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/reservas",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POSTReservaRF4",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/reservas/agregarReserva",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"id\": 1466,\n        \"cantPersonas\": 1,\n        \"fechaInicio\": \"10-OCT-16\",\n        \"fechaFin\": \"20-OCT-16\",\n        \"valor\": 230035,\n        \"estado\": \"Activa\",\n        \"idHabitacion\": 1438,\n        \"idCliente\": 2000\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GETReservaById",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/reservas/1723",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PUTReservaCancelarRF5",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/reservas/cancelarReserva",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"id\": 1466,\n        \"cantPersonas\": 1,\n        \"fechaInicio\": \"10-JAN-16\",\n        \"fechaFin\": \"20-JAN-16\",\n        \"valor\": 1110035,\n        \"estado\": \"Activa\",\n        \"idHabitacion\": 1438,\n        \"idCliente\": 1\n    }"
+				},
+				"description": "RF5 cancelar"
+			},
+			"response": []
+		},
+		{
+			"name": "GET ReservaGrupalById",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/reservaGrupal/10",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POSTReservaGrupalRF7",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/Iter1_Alohandes/rest/reservaGrupal/RF7?IdGrup=11&Cantidad=3&TipoHab=PRIVADA&FechaInicio=10-JAN-16&FechaFin=20-JAN-16&iDCliente=1&dias=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Iter1_Alohandes",
+						"rest",
+						"reservaGrupal",
+						"RF7"
+					],
+					"query": [
+						{
+							"key": "IdGrup",
+							"value": "11",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "Cantidad",
+							"value": "3",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "TipoHab",
+							"value": "PRIVADA",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "FechaInicio",
+							"value": "10-JAN-16",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "FechaFin",
+							"value": "20-JAN-16",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "iDCliente",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "dias",
+							"value": "10",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POSTReservaGrupalCancelarRF8",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/Iter1_Alohandes/rest/reservaGrupal/cancelarReservaGrupal?IdGrup=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Iter1_Alohandes",
+						"rest",
+						"reservaGrupal",
+						"cancelarReservaGrupal"
+					],
+					"query": [
+						{
+							"key": "IdGrup",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": ""
+					}
+				},
+				"description": "RF8 cancelar grupal"
+			},
+			"response": []
+		},
+		{
+			"name": "PUTAlojamientoRF10",
+			"request": {
+				"url": "http://localhost:8080/Iter1_Alohandes/rest/alojamientos/habilitarAlojamiento/902",
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
