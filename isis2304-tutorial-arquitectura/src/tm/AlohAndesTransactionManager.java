@@ -6,8 +6,14 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Properties;
+
+import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import org.codehaus.jackson.node.ArrayNode;
 
@@ -17,12 +23,14 @@ import dao.DAOComodidadExtra;
 import dao.DAOHabitacion;
 import dao.DAOOperador;
 import dao.DAOReserva;
+import dao.DAOReservaGrupal;
 import vos.Alojamiento;
 import vos.Cliente;
 import vos.ComodidadExtra;
 import vos.Habitacion;
 import vos.Operador;
 import vos.Reserva;
+import vos.ReservaGrupal;
 
 public class AlohAndesTransactionManager 
 {
@@ -955,6 +963,51 @@ public class AlohAndesTransactionManager
 			return habitacions;
 		}
 		
+		public List<Habitacion> getAllHabitacionsByTipo(String tipo) throws Exception 
+		{
+			System.out.println("entre a getallHabByTipo   "+ tipo);
+			
+			DAOHabitacion daoHabitacion = new DAOHabitacion();
+			List<Habitacion> habitacions;
+			try 
+			{
+				System.out.println("entre a try");
+				this.conn = darConexion();
+				conn.setReadOnly(true);
+				daoHabitacion.setConn(conn);
+				System.out.println("antes del getHabByTipo");
+				habitacions = daoHabitacion.getHabitacionesByTipo(tipo);
+				
+				System.out.println("fin del try");
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoHabitacion.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			
+			
+			return habitacions;
+		}
+		
 		
 		
 		
@@ -1423,6 +1476,128 @@ public class AlohAndesTransactionManager
 				}
 			}
 		}
+		
+		public void addReservaGrupal (long idGrup, int cantRes, String tipoHab, String fInicio, String fFin, long idCliente, int dias ) throws Exception 
+		{
+			
+			List <Habitacion> habitaciones = getAllHabitacionsByTipo(tipoHab);
+			
+			ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+			ArrayList<Integer> idsUni = new ArrayList<Integer>();
+			ReservaGrupal resGrupal = new ReservaGrupal(idGrup);
+			System.out.println("cree resGrupalVacia");
+			int habActual = 0;
+			while (cantRes >0)
+			{
+				System.out.println("entre a while cantRes");
+				Habitacion tempHab = habitaciones.get(habActual);
+				Reserva temp = new Reserva(1, 1, fInicio, fFin, tempHab.getPrecioBaseDia() * dias, "Activa", tempHab.getId(), idCliente);
+				reservas.add(temp);
+				cantRes --;
+			}
+			System.out.println("sali del while");
+			DAOReserva daoReserva = new DAOReserva();
+			System.out.println("cree daoReserva");
+			DAOReservaGrupal daoReservaGrupal = new DAOReservaGrupal();
+			System.out.println("cree daoResGrupal");
+			try
+			{
+				System.out.println("entre a try");
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				System.out.println("setConReserva");
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
+				System.out.println("antes del for");
+				for (int i=0; i < reservas.size(); i++)
+				{
+					System.out.println("en el for wooo");
+					idsUni.add(daoReserva.addReservaDeGrupal(reservas.get(i))) ;
+					System.out.println("fin in for");
+
+				}
+				System.out.println("sali del for");
+				daoReservaGrupal.setConn(conn);
+				System.out.println( "setConResGrupal");
+				for (int j = 0; j<idsUni.size(); j++)
+				{
+					daoReservaGrupal.addReservaGrupal(resGrupal, idsUni.get(j));
+
+				}
+						
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+		}
+		
+		public ReservaGrupal getReservaGrupalById(Long id) throws Exception
+		{
+			DAOReserva daoReserva = new DAOReserva();
+			ArrayList<Reserva> reservas = null;
+			ReservaGrupal resGrup = new ReservaGrupal(id);
+			try 
+			{
+				this.conn = darConexion();
+				daoReserva.setConn(conn);
+				reservas = daoReserva.findReservasDeGrupal(id);
+				if(reservas.isEmpty())
+				{
+					throw new Exception("La reserva grupal con el id = " + id + " no se encuentra persistido en la base de datos.");				
+				}
+				else 
+				{
+					resGrup.setReservas(reservas);
+				}
+			} 
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return resGrup;
+		}
+		
+		
+		
 		
 		public void updateReserva(Reserva reserva) throws Exception 
 		{

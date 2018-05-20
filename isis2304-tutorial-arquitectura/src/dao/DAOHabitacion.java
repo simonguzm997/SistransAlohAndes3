@@ -115,6 +115,27 @@ public class DAOHabitacion
 		return habitaciones;
 	}
 	
+	public ArrayList<Habitacion> getHabitacionesByTipo(String tipo) throws SQLException, Exception 
+	{
+		
+		ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>();
+       
+        
+		String sql = String.format("SELECT * FROM %1$s.HABITACIONES "
+				+ "WHERE TIPO = '%2$s' "
+				+ " AND ESTADO = 'DISPONIBLE' ", USUARIO, tipo); 
+		
+		System.out.println(sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			habitaciones.add(convertResultSetToHabitacion(rs));
+		}
+		return habitaciones;
+	}
+	
 	
 	public void addHabitacion(Habitacion habitacion) throws SQLException, Exception 
 	{

@@ -132,7 +132,25 @@ public class DAOReserva
 			return reservaes;
 		}
 		
-		
+		public ArrayList<Reserva> findReservasDeGrupal(long id) throws SQLException, Exception 
+		{
+			ArrayList<Reserva> reservaes = new ArrayList<Reserva>();
+
+			String sql = String.format("SELECT %1$s.RESERVAS.* FROM %1$s.RESERVAS "
+					+ " INNER JOIN %1$s.RESERVAGRUPAL "
+					+ " ON %1$s.RESERVAS.ID = %1$s.RESERVAGRUPAL.IDRESUNITARIA"
+					+ " WHERE %1$s.RESERVAGRUPAL.ID = %2$s. ", USUARIO, id); 
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			while (rs.next()) {
+				reservaes.add(convertResultSetToReserva(rs));
+			}
+
+			return reservaes;
+		}
 		
 		public void addReserva(Reserva reserva) throws SQLException, Exception 
 		{
@@ -160,45 +178,59 @@ public class DAOReserva
 		}
 		
 		
-		public ArrayList<Integer> addReservaDeGrupal(Reserva reserva) throws SQLException, Exception 
+		public int addReservaDeGrupal(Reserva reserva) throws SQLException, Exception 
 		{
-
-			ArrayList <Integer> ids  = new ArrayList<Integer>();
-			
-			
+			System.out.println("entre a ResDeGrupal");
+		
 			String sql2 = String.format("CREATE TABLE RS "
 					+ " (Id NUMBER (10, 0) NOT NULL, " + 
 					"CONSTRAINT PK_RSTEMP PRIMARY KEY (Id )) ");
 			
-			String sql3 = String.format(" INSERT INTO RS (ID)  VALUES (reserva_sequence.nextval) ");
+			System.out.println(sql2);
 			
+			String sql3 = String.format(" INSERT INTO RS (ID)  VALUES (reserva_sequence.nextval) ");
+			System.out.println(sql3);
 			String sql4 = String.format(" SELECT * FROM RS ");
 			
-
+			System.out.println(sql4);
 
 			
 			PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
 			PreparedStatement prepStmt3 = conn.prepareStatement(sql3);
 			PreparedStatement prepStmt4 = conn.prepareStatement(sql4);
-
+			
+			System.out.println("prepared statements!");
+			
 			recursos.add(prepStmt2);
-			recursos.add(prepStmt3);
-			recursos.add(prepStmt4);
-
-			
-			
 			prepStmt2.executeQuery();
+			recursos.add(prepStmt3);
 			prepStmt3.executeQuery();
-			ResultSet rs = prepStmt4.executeQuery();
-			int id = rs.getInt("ID");
-			ids.add(id);
+			recursos.add(prepStmt4);
 			
+			System.out.println("aded prepared staementsss");
+			
+			//prepStmt2.executeQuery();
+			System.out.println("execute stm2");
+			//prepStmt3.executeQuery();
+			System.out.println("execute stm3");
+			
+			ResultSet rs = prepStmt4.executeQuery();
+			System.err.println("rs con stm 4");
+			
+			int idS =0;
+			while (rs.next()) 
+			{
+				 idS = rs.getInt("ID");
+			}
+					
+			
+			System.out.println("EL IDDDD   " + idS);
 			
 			String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, CANTPERSONAS, FECHAINICIO, FECHAFIN, VALOR, ESTADO, "
 					+ " IDHABITACION, IDCLIENTE ) "
 					+ " VALUES ( %2$s , %3$s , '%4$s' ,'%5$s' , %6$s , '%7$s' , %8$s , %9$s) ", 
 										USUARIO, 
-										id,
+										idS,
 										reserva.getCantPersonas(),
 										reserva.getFechaInicio(),
 										reserva.getFechaFin(),
@@ -207,19 +239,23 @@ public class DAOReserva
 										reserva.getIdHabitacion(),
 										reserva.getIdCliente());
 		
-
+			System.out.println(sql);
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
 			prepStmt.executeQuery();
-			
+			System.out.println("yaas");
 		
 			String sql5 = String.format(" DROP TABLE RS ");
+			System.out.println(sql5);
 			PreparedStatement prepStmt5 = conn.prepareStatement(sql5);
+			System.out.println("prepared sql5");
 			recursos.add(prepStmt5);
 			prepStmt5.executeQuery();
+			System.out.println("ejecuta sql5");
 			
 			
-		return ids;	
+			
+		return idS;	
 
 		}
 		
