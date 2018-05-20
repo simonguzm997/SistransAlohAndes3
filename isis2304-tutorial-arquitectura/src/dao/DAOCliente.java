@@ -139,6 +139,42 @@ public class DAOCliente {
 		return ClientesFrecuentes;
 	}
 	
+	
+	public ArrayList<Cliente> getClientesRFC10(long idAlojamiento, String fecha1, String fecha2, String orderby) throws SQLException, Exception {
+		
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+
+		String sql = String.format(" SELECT %1$s.CLIENTES.*  "
+				+ " FROM (select * from ( "
+				+ "select * from %1$s.habitaciones " + 
+				" where idAlojamiento = %2$d ) B "
+				+ "inner join %1$s.reservas "
+				+ " on b.id = %1$s.reservas.IDHABITACION "
+				+ " WHERE FECHAINICIO > to_date('%3$s','DD-MON-YY') "
+				+ " AND FECHAFIN < to_date('%4$s','DD-MON-YY')) C "
+				+ " INNER JOIN %1$s.CLIENTES "
+				+ " ON C.IDCLIENTE= %1$s.CLIENTES.ID "
+				+ " ORDER BY %5$s ",
+				
+				USUARIO, idAlojamiento, fecha1, fecha2, orderby);
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			clientes.add(convertResultSetToCliente(rs));
+		}
+		return clientes;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Metodo que obtiene la informacion de todos los bebedores en la Base de Datos <br/>
 	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>

@@ -239,16 +239,12 @@ public class AlojamientoService {
 	 * @return	<b>Response Status 200</b> - JSON que contiene al bebedor que se desea modificar <br/>
 	 * 			<b>Response Status 500</b> - Excepcion durante el transcurso de la transaccion
 	 */
-	//TODO Requerimiento 5A: Identifique e implemente la anotacion correcta para la realizacion del metodo
-
-	//TODO Requerimiento 5B: Identifique e implemente las anotaciones que indican el tipo de contenido que produce Y consume el metodo 
 
 	@PUT
 	@Path ("habilitarAlojamiento"  + "/{id: \\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response habilitarAlojamiento(@PathParam( "id" ) Long id) {
-		//TODO Requerimiento 5B: Implemente el metodo a partir de los ejemplos anteriores y utilizando el Transaction Manager de Parranderos 
 		try {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
 			Alojamiento aloja = tm.getAlojamientoById(id);

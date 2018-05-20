@@ -11,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -115,6 +116,29 @@ public class ClienteService {
 				return Response.status(500).entity(doErrorMessage(e)).build();
 			}
 		}
+		
+		
+		@GET
+		@Path ("/RFC10")
+		@Produces({ MediaType.APPLICATION_JSON })
+		public Response getClientesRFC10(@QueryParam("IdAlojamiento")long idAlojamiento, 
+				@QueryParam("FechaInicio")String fecha1, 
+				@QueryParam("FechaFin")String fecha2, @QueryParam("OrderBy")String orderby ) 
+		{
+			
+			try {
+				AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+				List<Cliente> clientes;
+				clientes = tm.getClientesRFC10(idAlojamiento, fecha1, fecha2, orderby);
+				
+				
+				return Response.status(200).entity(clientes).build();
+			} 
+			catch (Exception e) {
+				return Response.status(500).entity(doErrorMessage(e)).build();
+			}
+		}
+		
 		
 		/**
 		 * Metodo que recibe un bebedor en formato JSON y lo agrega a la Base de Datos <br/>

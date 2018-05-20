@@ -1889,6 +1889,37 @@ public class AlohAndesTransactionManager
 			return ofertas;
 		}
 		
+		public List<Cliente> getClientesRFC10 (long idAlojamiento, String fecha1, String fecha2, String orderby) throws Exception
+		{
+			DAOCliente daoCliente = new DAOCliente();
+			List<Cliente> clientes;
+			try {
+				this.conn = darConexion();
+				conn.setReadOnly(true);
+				daoCliente.setConn(conn);
+				clientes = daoCliente.getClientesRFC10(idAlojamiento, fecha1, fecha2, orderby);
+				
+			}catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoCliente.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return clientes;
+		}
+		
 		/**
 		 * Metodo que modela la transaccion que agrega un operador a la base de datos. <br/>
 		 * <b> post: </b> se ha agregado el operador que entra como parametro <br/>
