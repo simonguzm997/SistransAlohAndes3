@@ -2317,17 +2317,17 @@ public class AlohAndesTransactionManager
 		 * @return Bebedor - Bebedor que se obtiene como resultado de la consulta.
 		 * @throws Exception -  cualquier error que se genere durante la transaccion
 		 */
-		public Operador getOperadorMejorPorSemana() throws Exception {
+		public ArrayList<Operador> getOperadorMejorPorSemana() throws Exception {
 			DAOOperador daoOperador = new DAOOperador();
 			Operador operador = null;
+			ArrayList<Operador> operadores = new ArrayList<>();
 			try 
 			{
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
-				operador = daoOperador.findMejorOperadorPorSemana();
-				if(operador == null)
-				{
-					throw new Exception("El bebedor con el id = "  + " no se encuentra persistido en la base de datos.");				
+				for (int i = 0; i < 52; i++) {
+					operador = daoOperador.findMejorOperadorPorSemana(i);
+					operadores.add(operador);
 				}
 			} 
 			catch (SQLException sqlException) {
@@ -2353,6 +2353,6 @@ public class AlohAndesTransactionManager
 					throw exception;
 				}
 			}
-			return operador;
+			return operadores;
 		}
 }

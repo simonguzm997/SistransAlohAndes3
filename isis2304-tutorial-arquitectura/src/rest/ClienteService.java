@@ -241,6 +241,8 @@ public class ClienteService {
 				return Response.status(500).entity(doErrorMessage(e)).build();
 			}
 		}
+		
+		
 
 		/**
 		 * Metodo que recibe un bebedor en formato JSON y lo elimina de la Base de Datos <br/>

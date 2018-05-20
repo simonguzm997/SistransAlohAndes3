@@ -157,7 +157,7 @@ public class OperadorService {
 		try {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
 			
-			Operador operador = tm.getOperadorMejorPorSemana();
+			ArrayList<Operador> operador = tm.getOperadorMejorPorSemana();
 			//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 			return Response.status(200).entity(operador).build();
 		} 

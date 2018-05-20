@@ -97,7 +97,7 @@ public class DAOOperador
 			return operador;
 		}
 		
-		public Operador findMejorOperadorPorSemana() throws SQLException, Exception 
+		public Operador findMejorOperadorPorSemana(int i) throws SQLException, Exception 
 		{
 			Operador operador = null;
 			String sql = " SELECT * FROM OPERADORES WHERE ID=( " +
@@ -110,7 +110,7 @@ public class DAOOperador
 					" ON HABITACIONES.ID=reservas.IDHABITACION " +
 					" INNER JOIN ALOJAMIENTOS " +
 					" ON ALOJAMIENTOS.ID=HABITACIONES.IDALOJAMIENTO) " +
-					" WHERE SEMANA = 1" +
+					" WHERE SEMANA = "+i +
 					" group by IDOPERADOR ORDER BY OCUPACION DESC) " +
 					" group by IDOPERADOR " +
 					" ORDER BY MAXIMO DESC) " +
