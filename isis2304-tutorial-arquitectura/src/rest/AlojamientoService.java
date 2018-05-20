@@ -88,7 +88,7 @@ public class AlojamientoService {
 	 * 			<b>Response Status 500</b> - Excepcion durante el transcurso de la transaccion
 	 */			
 	@GET
-	@Path("MejoresAlojamientosPorSemna")
+	@Path("MejoresAlojamientosPorSemana")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getMejoresAlojamientosPorSemana() {
 
@@ -111,7 +111,7 @@ public class AlojamientoService {
 	 * 			<b>Response Status 500</b> - Excepcion durante el transcurso de la transaccion
 	 */			
 	@GET
-	@Path("PeoresAlojamientosPorSemna")
+	@Path("PeoresAlojamientosPorSemana")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getPeoresAlojamientosPorSemana() {
 
