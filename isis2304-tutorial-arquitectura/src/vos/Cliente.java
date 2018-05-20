@@ -215,8 +215,20 @@ public class Cliente
 	public void setReservas(List<Reserva> reservas) 
 	{
 
+		
 		this.reservas = reservas;
 		
+	}
+	
+	public double calcularDinero ()
+	{
+		double r = 0;
+		for (int i =0; i<reservas.size(); i++)
+		{
+			r+= reservas.get(i).getValor();
+		}
+		
+		return r;
 	}
 	
 	
