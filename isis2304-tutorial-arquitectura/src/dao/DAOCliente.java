@@ -181,7 +181,7 @@ public class DAOCliente {
 				+ " on b.id = %1$s.reservas.IDHABITACION "
 				+ " WHERE FECHAFIN < to_date('%3$s','DD-MON-YY') "
 				+ " OR FECHAINICIO > to_date('%4$s','DD-MON-YY')) C "
-				+ " INNER JOIN %1$s.CLIENTES "
+				+ " RIGHT OUTER JOIN %1$s.CLIENTES "
 				+ " ON C.IDCLIENTE= %1$s.CLIENTES.ID "
 				+ " ORDER BY %5$s ",
 				
