@@ -1,5 +1,6 @@
 package dao;
 
+import java.awt.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -68,6 +69,7 @@ public class DAOReserva
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
 			ResultSet rs = prepStmt.executeQuery();
+			
 
 			while (rs.next()) {
 				reservaes.add(convertResultSetToReserva(rs));
@@ -137,7 +139,7 @@ public class DAOReserva
 
 			String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, CANTPERSONAS, FECHAINICIO, FECHAFIN, VALOR, ESTADO, "
 					+ " IDHABITACION, IDCLIENTE ) "
-					+ " VALUES ( reserva_sequence.nextval, %2$s , %3$s , '%4$s' , %5$s , '%6$s' , %7$s , %8$s ) ", 
+					+ " VALUES ( reserva_sequence.nextval, %2$s , '%3$s' , '%4$s' , %5$s , '%6$s' , %7$s , %8$s ) ", 
 										USUARIO, 
 										
 										reserva.getCantPersonas(),
@@ -148,10 +150,76 @@ public class DAOReserva
 										reserva.getIdHabitacion(),
 										reserva.getIdCliente());
 			System.out.println(sql);
+			
+			
 
 			PreparedStatement prepStmt = conn.prepareStatement(sql);
 			recursos.add(prepStmt);
 			prepStmt.executeQuery();
+
+		}
+		
+		
+		public ArrayList<Integer> addReservaDeGrupal(Reserva reserva) throws SQLException, Exception 
+		{
+
+			ArrayList <Integer> ids  = new ArrayList<Integer>();
+			
+			
+			String sql2 = String.format("CREATE TABLE RS "
+					+ " (Id NUMBER (10, 0) NOT NULL, " + 
+					"CONSTRAINT PK_RSTEMP PRIMARY KEY (Id )) ");
+			
+			String sql3 = String.format(" INSERT INTO RS (ID)  VALUES (reserva_sequence.nextval) ");
+			
+			String sql4 = String.format(" SELECT * FROM RS ");
+			
+
+
+			
+			PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
+			PreparedStatement prepStmt3 = conn.prepareStatement(sql3);
+			PreparedStatement prepStmt4 = conn.prepareStatement(sql4);
+
+			recursos.add(prepStmt2);
+			recursos.add(prepStmt3);
+			recursos.add(prepStmt4);
+
+			
+			
+			prepStmt2.executeQuery();
+			prepStmt3.executeQuery();
+			ResultSet rs = prepStmt4.executeQuery();
+			int id = rs.getInt("ID");
+			ids.add(id);
+			
+			
+			String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, CANTPERSONAS, FECHAINICIO, FECHAFIN, VALOR, ESTADO, "
+					+ " IDHABITACION, IDCLIENTE ) "
+					+ " VALUES ( %2$s , %3$s , '%4$s' ,'%5$s' , %6$s , '%7$s' , %8$s , %9$s) ", 
+										USUARIO, 
+										id,
+										reserva.getCantPersonas(),
+										reserva.getFechaInicio(),
+										reserva.getFechaFin(),
+										reserva.getValor(),
+										reserva.getEstado(),
+										reserva.getIdHabitacion(),
+										reserva.getIdCliente());
+		
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			prepStmt.executeQuery();
+			
+		
+			String sql5 = String.format(" DROP TABLE RS ");
+			PreparedStatement prepStmt5 = conn.prepareStatement(sql5);
+			recursos.add(prepStmt5);
+			prepStmt5.executeQuery();
+			
+			
+		return ids;	
 
 		}
 		
