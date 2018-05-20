@@ -137,9 +137,9 @@ public class DAOReserva
 
 			String sql = String.format("INSERT INTO %1$s.RESERVAS (ID, CANTPERSONAS, FECHAINICIO, FECHAFIN, VALOR, ESTADO, "
 					+ " IDHABITACION, IDCLIENTE ) "
-					+ " VALUES ( %2$s , '%3$s' , '%4$s' , '%5$s' , '%6$s' , '%7$s' , '%8$s' , '%9$s' ) ", 
+					+ " VALUES ( reserva_sequence.nextval, %2$s , %3$s , '%4$s' , %5$s , '%6$s' , %7$s , %8$s ) ", 
 										USUARIO, 
-										reserva.getId(),
+										
 										reserva.getCantPersonas(),
 										reserva.getFechaInicio(),
 										reserva.getFechaFin(),
