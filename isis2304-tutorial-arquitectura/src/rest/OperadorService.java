@@ -150,7 +150,7 @@ public class OperadorService {
 	 * 			<b>Response Status 500</b> - Excepcion durante el transcurso de la transaccion
 	 */			
 	@GET
-	@Path("porSemana")
+	@Path("MejorPorSemana")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getMejoresOperadoresPorSemana() {
 		
@@ -158,6 +158,30 @@ public class OperadorService {
 			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
 			
 			ArrayList<Operador> operador = tm.getOperadorMejorPorSemana();
+			//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
+			return Response.status(200).entity(operador).build();
+		} 
+		catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+	
+	/**
+	 * Metodo GET que trae a todos los bebedores en la Base de datos. <br/>
+	 * <b>Precondicion: </b> el archivo <em>'conectionData'</em> ha sido inicializado con las credenciales del usuario <br/>
+	 * <b>URL: </b> http://localhost:8080/TutorialParranderos/rest/bebedores <br/>
+	 * @return	<b>Response Status 200</b> - JSON que contiene a todos los bebedores que estan en la Base de Datos <br/>
+	 * 			<b>Response Status 500</b> - Excepcion durante el transcurso de la transaccion
+	 */			
+	@GET
+	@Path("PeorPorSemana")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getPeoresOperadoresPorSemana() {
+		
+		try {
+			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+			
+			ArrayList<Operador> operador = tm.getOperadorPeorPorSemana();
 			//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 			return Response.status(200).entity(operador).build();
 		} 

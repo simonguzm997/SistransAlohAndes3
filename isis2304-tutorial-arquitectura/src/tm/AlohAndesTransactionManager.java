@@ -2334,7 +2334,7 @@ public class AlohAndesTransactionManager
 			{
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
-				for (int i = 0; i < 52; i++) {
+				for (int i = 1; i < 52; i++) {
 					operador = daoOperador.findMejorOperadorPorSemana(i);
 					operadores.add(operador);
 				}
@@ -2364,6 +2364,142 @@ public class AlohAndesTransactionManager
 			}
 			return operadores;
 		}
+		
+		/**
+		 * Metodo que modela la transaccion que busca el bebedor en la base de datos que tiene el ID dado por parametro. <br/>
+		 * @param name -id del bebedor a buscar. id != null
+		 * @return Bebedor - Bebedor que se obtiene como resultado de la consulta.
+		 * @throws Exception -  cualquier error que se genere durante la transaccion
+		 */
+		public ArrayList<Operador> getOperadorPeorPorSemana() throws Exception {
+			DAOOperador daoOperador = new DAOOperador();
+			Operador operador = null;
+			ArrayList<Operador> operadores = new ArrayList<>();
+			try 
+			{
+				this.conn = darConexion();
+				daoOperador.setConn(conn);
+				for (int i = 1; i < 52; i++) {
+					operador = daoOperador.findPeorOperadorPorSemana(i);
+					operadores.add(operador);
+				}
+			} 
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoOperador.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return operadores;
+		}
+		
+		/**
+		 * Metodo que modela la transaccion que busca el bebedor en la base de datos que tiene el ID dado por parametro. <br/>
+		 * @param name -id del bebedor a buscar. id != null
+		 * @return Bebedor - Bebedor que se obtiene como resultado de la consulta.
+		 * @throws Exception -  cualquier error que se genere durante la transaccion
+		 */
+		public ArrayList<Alojamiento> getMejoresAlojamientosPorSemana() throws Exception {
+			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+			Alojamiento aloja = null;
+			ArrayList<Alojamiento> alojamientos = new ArrayList<>();
+			try 
+			{
+				this.conn = darConexion();
+				daoAlojamiento.setConn(conn);
+				for (int i = 1; i < 52; i++) {
+					aloja = daoAlojamiento.findMejorAlojamientoPorSemana(i);
+					alojamientos.add(aloja);
+				}
+			} 
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoAlojamiento.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return alojamientos;
+		}
+		
+		/**
+		 * Metodo que modela la transaccion que busca el bebedor en la base de datos que tiene el ID dado por parametro. <br/>
+		 * @param name -id del bebedor a buscar. id != null
+		 * @return Bebedor - Bebedor que se obtiene como resultado de la consulta.
+		 * @throws Exception -  cualquier error que se genere durante la transaccion
+		 */
+		public ArrayList<Alojamiento> getPeoresAlojamientosPorSemana() throws Exception {
+			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
+			Alojamiento aloja = null;
+			ArrayList<Alojamiento> alojamientos = new ArrayList<>();
+			try 
+			{
+				this.conn = darConexion();
+				daoAlojamiento.setConn(conn);
+				for (int i = 1; i < 52; i++) {
+					aloja = daoAlojamiento.findPeorAlojamientoPorSemana(i);
+					alojamientos.add(aloja);
+				}
+			} 
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoAlojamiento.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return alojamientos;
+		}
+		
 		
 
 }

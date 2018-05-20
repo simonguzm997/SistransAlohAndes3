@@ -1,5 +1,6 @@
 package rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -15,8 +16,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
+import jdk.nashorn.internal.ir.ObjectNode;
 import tm.AlohAndesTransactionManager;
 import vos.Alojamiento;
 
@@ -70,6 +74,52 @@ public class AlojamientoService {
 			//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
 			alojas = tm.getAllBebedores();
 			return Response.status(200).entity(alojas).build();
+		} 
+		catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+	
+	/**
+	 * Metodo GET que trae a todos los bebedores en la Base de datos. <br/>
+	 * <b>Precondicion: </b> el archivo <em>'conectionData'</em> ha sido inicializado con las credenciales del usuario <br/>
+	 * <b>URL: </b> http://localhost:8080/TutorialParranderos/rest/bebedores <br/>
+	 * @return	<b>Response Status 200</b> - JSON que contiene a todos los bebedores que estan en la Base de Datos <br/>
+	 * 			<b>Response Status 500</b> - Excepcion durante el transcurso de la transaccion
+	 */			
+	@GET
+	@Path("MejoresAlojamientosPorSemna")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getMejoresAlojamientosPorSemana() {
+
+		try {
+			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+			ArrayList<Alojamiento> mejores;
+			mejores = tm.getMejoresAlojamientosPorSemana();
+			return Response.status(200).entity(mejores).build();
+		} 
+		catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
+	
+	/**
+	 * Metodo GET que trae a todos los bebedores en la Base de datos. <br/>
+	 * <b>Precondicion: </b> el archivo <em>'conectionData'</em> ha sido inicializado con las credenciales del usuario <br/>
+	 * <b>URL: </b> http://localhost:8080/TutorialParranderos/rest/bebedores <br/>
+	 * @return	<b>Response Status 200</b> - JSON que contiene a todos los bebedores que estan en la Base de Datos <br/>
+	 * 			<b>Response Status 500</b> - Excepcion durante el transcurso de la transaccion
+	 */			
+	@GET
+	@Path("PeoresAlojamientosPorSemna")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getPeoresAlojamientosPorSemana() {
+
+		try {
+			AlohAndesTransactionManager tm = new AlohAndesTransactionManager(getPath());
+			ArrayList<Alojamiento> peores;
+			peores = tm.getPeoresAlojamientosPorSemana();
+			return Response.status(200).entity(peores).build();
 		} 
 		catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();

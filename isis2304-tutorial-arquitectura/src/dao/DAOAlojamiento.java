@@ -224,6 +224,83 @@ public class DAOAlojamiento
 	}
 
 	/**
+	 * Metodo que obtiene la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/> 
+	 * @param id el identificador del bebedor
+	 * @return la informacion del bebedor que cumple con los criterios de la sentecia SQL
+	 * 			Null si no existe el bebedor conlos criterios establecidos
+	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public Alojamiento findMejorAlojamientoPorSemana(int id) throws SQLException, Exception 
+	{
+		Alojamiento aloja = null;
+
+		String sql = " SELECT * FROM ALOJAMIENTOS WHERE ID=( " +
+				" SELECT IDALOJAMIENTO FROM ( " +
+				" SELECT MAX (ALOJAMIENTOS) ALOJAMIENTOS, IDALOJAMIENTO FROM ( " +
+				" SELECT COUNT (IDALOJAMIENTO) ALOJAMIENTOS, IDALOJAMIENTO FROM ( " +
+				" select to_char(FECHAINICIO, 'WW')semana ,ALOJAMIENTOS.ID IDALOJAMIENTO " +
+				" from RESERVAS " +
+				" INNER JOIN HABITACIONES " +
+				" ON HABITACIONES.ID=reservas.IDHABITACION " +
+				" INNER JOIN ALOJAMIENTOS " +
+				" ON ALOJAMIENTOS.ID=HABITACIONES.IDALOJAMIENTO) " +
+				" WHERE SEMANA = "+id +
+				" GROUP BY IDALOJAMIENTO " +
+				" ORDER BY ALOJAMIENTOS DESC) " +
+				" GROUP BY IDALOJAMIENTO " +
+				" ORDER BY ALOJAMIENTOS DESC) " +
+				" WHERE ROWNUM=1) "; 
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		if(rs.next()) {
+			aloja = convertResultSetToAlojamiento(rs);
+		}
+		return aloja;
+	}
+	
+	/**
+	 * Metodo que obtiene la informacion del bebedor en la Base de Datos que tiene el identificador dado por parametro<br/>
+	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/> 
+	 * @param id el identificador del bebedor
+	 * @return la informacion del bebedor que cumple con los criterios de la sentecia SQL
+	 * 			Null si no existe el bebedor conlos criterios establecidos
+	 * @throws SQLException SQLException Genera excepcion si hay error en la conexion o en la consulta SQL
+	 * @throws Exception Si se genera un error dentro del metodo.
+	 */
+	public Alojamiento findPeorAlojamientoPorSemana(int id) throws SQLException, Exception 
+	{
+		Alojamiento aloja = null;
+
+		String sql = " SELECT * FROM ALOJAMIENTOS WHERE ID=( " +
+				" SELECT IDALOJAMIENTO FROM ( " +
+				" SELECT MIN (ALOJAMIENTOS) ALOJAMIENTOS, IDALOJAMIENTO FROM ( " +
+				" SELECT COUNT (IDALOJAMIENTO) ALOJAMIENTOS, IDALOJAMIENTO FROM ( " +
+				" select to_char(FECHAINICIO, 'WW')semana ,ALOJAMIENTOS.ID IDALOJAMIENTO " +
+				" from RESERVAS " +
+				" INNER JOIN HABITACIONES " +
+				" ON HABITACIONES.ID=reservas.IDHABITACION " +
+				" INNER JOIN ALOJAMIENTOS " +
+				" ON ALOJAMIENTOS.ID=HABITACIONES.IDALOJAMIENTO) " +
+				" WHERE SEMANA = "+id +
+				" GROUP BY IDALOJAMIENTO " +
+				" ORDER BY ALOJAMIENTOS DESC) " +
+				" GROUP BY IDALOJAMIENTO " +
+				" ORDER BY ALOJAMIENTOS ASC) " +
+				" WHERE ROWNUM=1) "; 
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		if(rs.next()) {
+			aloja = convertResultSetToAlojamiento(rs);
+		}
+		return aloja;
+	}
+	/**
 	 * Metodo que agregar la informacion de un nuevo bebedor en la Base de Datos a partir del parametro ingresado<br/>
 	 * <b>Precondicion: </b> la conexion a sido inicializadoa <br/>  
 	 * @param bebedor Bebedor que desea agregar a la Base de Datos
