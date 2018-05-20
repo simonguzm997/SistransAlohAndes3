@@ -2311,7 +2311,4 @@ public class AlohAndesTransactionManager
 			}	
 			return multa;
 		}
-		
-		
-		
 }
