@@ -130,6 +130,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoAloja.setConn(conn);
 				
 				//Por simplicidad, solamente se obtienen los primeros 50 resultados de la consulta
@@ -175,6 +176,7 @@ public class AlohAndesTransactionManager
 			List<Operador> operadores;
 			try 
 			{
+				conn.setReadOnly(true);
 				this.conn = darConexion();
 				daoOperador.setConn(conn);
 				
@@ -264,6 +266,7 @@ public class AlohAndesTransactionManager
 				//TODO Requerimiento 3D: Obtenga la conexion a la Base de Datos (revise los metodos de la clase)
 				this.conn= darConexion();
 				//TODO Requerimiento 3E: Establezca la conexion en el objeto DAOBebedor (revise los metodos de la clase DAOBebedor)
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				daoAlojamiento.setConn(conn);
 				daoAlojamiento.addAlojamiento(aloja);
 
@@ -305,6 +308,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoAlojamiento.setConn(conn);
 				aloja7 = daoAlojamiento.findAlojamientoById(id);
 				if(aloja7 == null)
@@ -480,6 +484,7 @@ public class AlohAndesTransactionManager
 				this.conn= darConexion();
 				//TODO Requerimiento 3E: Establezca la conexion en el objeto DAOBebedor (revise los metodos de la clase DAOBebedor)
 				daoOperador.setConn(conn);
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				daoOperador.addOperador(operador);
 
 			}
@@ -657,6 +662,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoHabitacion.setConn(conn);
 				
 				habitacions = daoHabitacion.getHabitaciones();
@@ -751,6 +757,7 @@ public class AlohAndesTransactionManager
 			{
 				this.conn = darConexion();
 				daoHabitacion.setConn(conn);
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				daoHabitacion.addHabitacion(habitacion);
 
 			}
@@ -915,6 +922,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoHabitacion.setConn(conn);
 				
 				habitacions = daoHabitacion.getHabitacionesByIdAlojamiento(id);
@@ -959,6 +967,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoHabitacion.setConn(conn);
 				
 				habitaciones = daoHabitacion.getHabitacionesTop20();
@@ -999,6 +1008,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoHabitacion.setConn(conn);
 				
 				habitacions = daoHabitacion.getHabitacionesRFC4(f1, f2, r1, r2);
@@ -1055,6 +1065,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoComodidadExtra.setConn(conn);
 				
 				comodidadExtras = daoComodidadExtra.getComodidadExtraes();
@@ -1094,6 +1105,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoComodidadExtra.setConn(conn);
 				comodidadExtra = daoComodidadExtra.findComodidadExtraById(id);
 				if(comodidadExtra == null)
@@ -1140,6 +1152,7 @@ public class AlohAndesTransactionManager
 			}
 			catch (SQLException sqlException) {
 				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				sqlException.printStackTrace();
 				throw sqlException;
 			} 
@@ -1252,6 +1265,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoComodidadExtra.setConn(conn);
 				
 				comodidadExtras = daoComodidadExtra.findComodidadExtraByIdHabitacion(id);
@@ -1300,6 +1314,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoReserva.setConn(conn);
 				
 				reservas = daoReserva.getReservaes();
@@ -1332,7 +1347,7 @@ public class AlohAndesTransactionManager
 			return reservas;
 		}
 		
-		public Reserva getReservaById(int id) throws Exception
+		public Reserva getReservaById(Long id) throws Exception
 		{
 			DAOReserva daoReserva = new DAOReserva();
 			Reserva reserva = null;
@@ -1380,6 +1395,7 @@ public class AlohAndesTransactionManager
 			{
 				this.conn = darConexion();
 				daoReserva.setConn(conn);
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				daoReserva.addReserva(reserva);
 
 			}
@@ -1498,6 +1514,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoReserva.setConn(conn);
 				
 				reservas = daoReserva.findReservaByIdHabitacion(id);
@@ -1540,6 +1557,7 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoReserva.setConn(conn);
 				
 				reservas = daoReserva.findReservaByIdCliente(id);
@@ -1585,6 +1603,7 @@ public class AlohAndesTransactionManager
 			List<Cliente> ofertas;
 			try {
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoCliente.setConn(conn);
 				ofertas = daoCliente.getClientes();
 				
@@ -1621,8 +1640,10 @@ public class AlohAndesTransactionManager
 			try 
 			{
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoCliente.setConn(conn);
 				cliente = daoCliente.findClienteById(id);
+				cliente = daoCliente.getDineroCliente(cliente);
 				if(cliente == null)
 				{
 					throw new Exception("El bebedor con el id = " + id + " no se encuentra persistido en la base de datos.");				
@@ -1668,6 +1689,7 @@ public class AlohAndesTransactionManager
 			List<Cliente> ofertas;
 			try {
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoCliente.setConn(conn);
 				ofertas = daoCliente.getClientesFrecuentes();
 				
@@ -1705,6 +1727,7 @@ public class AlohAndesTransactionManager
 			{
 				this.conn= darConexion();
 				daoCliente.setConn(conn);
+				conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 				daoCliente.addCliente(cliente);
 			}
 			catch (SQLException sqlException) {
@@ -1823,6 +1846,7 @@ public class AlohAndesTransactionManager
 			DAOAlojamiento daoAlojamiento = new DAOAlojamiento();
 			ArrayNode fechas;
 			try {
+				conn.setReadOnly(true);
 				this.conn = darConexion();
 				daoAlojamiento.setConn(conn);
 				fechas = daoAlojamiento.getFechaMayorRecaudacion();
@@ -1859,6 +1883,7 @@ public class AlohAndesTransactionManager
 			ArrayNode fechas;
 			try {
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoAlojamiento.setConn(conn);
 				fechas = daoAlojamiento.getFechaMayorDemanda();
 				
@@ -1894,6 +1919,7 @@ public class AlohAndesTransactionManager
 			ArrayNode fechas;
 			try {
 				this.conn = darConexion();
+				conn.setReadOnly(true);
 				daoAlojamiento.setConn(conn);
 				fechas = daoAlojamiento.getFechaMenorDemanda();
 				
@@ -1917,6 +1943,83 @@ public class AlohAndesTransactionManager
 			}
 			return fechas;
 		}
+		
+		public Cliente getClienteDiasUsados (Cliente cli) throws Exception
+		{
+			DAOCliente daoCliente = new DAOCliente();
+			Cliente cliente;
+			try {
+				this.conn = darConexion();
+				conn.setReadOnly(true);
+				daoCliente.setConn(conn);
+				cliente = daoCliente.getDineroCliente(cli);
+				
+			}catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoCliente.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return cliente;
+		}
+		
+		public void cancelarReserva(Reserva reserva) throws Exception 
+		{
+			DAOReserva daoReserva = new DAOReserva();
+			
+			try
+			{
+				this.conn = darConexion();
+				daoReserva.setConn( conn );
+				Reserva reservas = daoReserva.findReservaById(reserva.getId());
+				if (reservas == null)
+				{
+					Exception e =new Exception ("La reserva que quiere actualizar no existe en la base de datos");
+					throw e;
+				}
+				else
+				{
+					daoReserva.cancelarReserva(reserva);
+				}
+
+			}
+			catch (SQLException sqlException) {
+				System.err.println("[EXCEPTION] SQLException:" + sqlException.getMessage());
+				sqlException.printStackTrace();
+				throw sqlException;
+			} 
+			catch (Exception exception) {
+				System.err.println("[EXCEPTION] General Exception:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			} 
+			finally {
+				try {
+					daoReserva.cerrarRecursos();
+					if(this.conn!=null){
+						this.conn.close();					
+					}
+				}
+				catch (SQLException exception) {
+					System.err.println("[EXCEPTION] SQLException While Closing Resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}	
+		}
+		
 		
 		
 		
